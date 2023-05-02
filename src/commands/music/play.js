@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { useMasterPlayer } = require('discord-player');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -10,10 +11,7 @@ module.exports = {
    * @param {import('discord.js').Interaction} interaction 
    */
   async execute(interaction) {
-    /**
-     * @type {import('discord-player').Player}
-     */
-    const player = interaction.client.player;
+    const player = useMasterPlayer();
     const channel = interaction.member.voice.channel;
     if (!channel) return interaction.reply('You are not connected to a voice channel!'); // make sure we have a voice channel
     const query = interaction.options.getString('query', true); // we need input/query to play

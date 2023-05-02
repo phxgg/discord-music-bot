@@ -13,10 +13,10 @@ const client = new Client({
   ],
 });
 
-client.player = new Player(client);
+const player = Player.singleton(client);
 (async () => {
   try {
-    await client.player.extractors.loadDefault();
+    await player.extractors.loadDefault();
   } catch (err) {
     console.error('Failed to load default extractors.');
     console.error(err);
@@ -31,7 +31,7 @@ const playerEventFiles = fs.readdirSync(playerEventsPath).filter(file => file.en
 for (const file of playerEventFiles) {
   const filePath = path.join(playerEventsPath, file);
   const event = require(filePath);
-  client.player.events.on(event.name, (...args) => event.execute(...args));
+  player.events.on(event.name, (...args) => event.execute(...args));
 }
 
 // Command handling
