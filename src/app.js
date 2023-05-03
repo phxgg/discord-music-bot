@@ -3,8 +3,6 @@ require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
-const { Player } = require('discord-player');
-const { SpotifyExtractor, SoundCloudExtractor } = require('@discord-player/extractor');
 
 const client = new Client({
   intents: [
@@ -12,27 +10,6 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates,
   ],
 });
-
-const player = Player.singleton(client);
-(async () => {
-  try {
-    await player.extractors.loadDefault();
-  } catch (err) {
-    console.error('Failed to load default extractors.');
-    console.error(err);
-    process.exit(1);
-  }
-})();
-
-// Player events
-const playerEventsPath = path.join(__dirname, 'player-events');
-const playerEventFiles = fs.readdirSync(playerEventsPath).filter(file => file.endsWith('.js'));
-
-for (const file of playerEventFiles) {
-  const filePath = path.join(playerEventsPath, file);
-  const event = require(filePath);
-  player.events.on(event.name, (...args) => event.execute(...args));
-}
 
 // Command handling
 client.commands = new Collection();
