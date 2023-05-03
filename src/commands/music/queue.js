@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
 const { useMasterPlayer } = require('discord-player');
 const Paginator = require('../../utils/paginator');
 
@@ -22,8 +22,25 @@ module.exports = {
         return interaction.reply('Queue is empty.');
       }
 
-      // TODO: Fix paginator
-      const paginator = new Paginator(queue.tracks.map((track, index) => { return `${index + 1}. ${track.title}`; }));
+      const pages = [];
+      queue.tracks.map((track, index) => {
+        if (index % 10 === 0) {
+          pages.push(new EmbedBuilder()
+            .setTitle('Queue')
+            .setDescription(`Page ${pages.length + 1}`)
+            .setThumbnail(queue.currentTrack.thumbnail)
+            .addFields(
+              queue.tracks.toArray().slice(index, index + 10).map((t, i) => ({
+                name: `${index + i + 1}. ${t.title} - ${t.author} (${t.duration})`,
+                value: `[Link](${t.url})`,
+              })),
+            )
+            .setFooter({ text: `Total tracks in queue: ${queue.tracks.size}`, iconURL: queue.metadata.user.displayAvatarURL() })
+            .setColor(Colors.Aqua));
+        }
+      });
+
+      const paginator = new Paginator(pages);
       paginator.start({
         interaction: interaction,
       });

@@ -2,12 +2,13 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
+  ComponentType,
 }
   = require('discord.js');
 
 module.exports = class Paginator {
   /**
-   * @param {MessageEditOptions[]} data Array with edit options for each page.
+   * @param {import('discord.js').Embed[]} data Array with edit options for each page.
    */
   constructor(data) {
     if (!data?.length) {
@@ -53,7 +54,7 @@ module.exports = class Paginator {
    * @param {number=} options.time
    * @returns {Promise<import('discord.js').Message>}
    */
-  async start({ interaction, time = 30000 }) {
+  async start({ interaction, time = 60000 }) {
     const message = await interaction.reply({
       ...this.getPage(0),
       fetchReply: true,
@@ -65,7 +66,7 @@ module.exports = class Paginator {
     const collector = message.createMessageComponentCollector({
       time,
       filter,
-      componentType: 'BUTTON',
+      componentType: ComponentType.Button,
     });
     collector.on('collect', (i) => this.onClicked(i, collector));
     collector.on('end', () => this.onEnd(interaction));
@@ -125,7 +126,7 @@ module.exports = class Paginator {
     this.currentPage = number;
     this.row.components
       .find((component) => component.data.custom_id === 'currentPage')
-      ?.setLabel(`${number + 1}/${this.data.length}`);
-    return { ...this.data[number], components: [this.row, this.stopRow] };
+      .setLabel(`${number + 1}/${this.data.length}`);
+    return { embeds: [this.data[number]], components: [this.row, this.stopRow] };
   }
 };
