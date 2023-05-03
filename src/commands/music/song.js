@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { useMasterPlayer } = require('discord-player');
+const MessageType = require('../../types/MessageType');
+const createEmbedMessage = require('../../utils/createEmbedMessage');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -7,12 +9,12 @@ module.exports = {
     .setDescription('View current playing song.'),
   /**
    * 
-   * @param {import('discord.js').Interaction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
     const player = useMasterPlayer();
     if (!player) {
-      return interaction.reply('Player is not ready!'); // make sure player is ready
+      return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
 
     try {

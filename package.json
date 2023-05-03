@@ -4,13 +4,19 @@
   "description": "A simple discord music bot",
   "author": "phxgg",
   "main": "src/app.js",
-  "type": "commonjs",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "register": "node scripts/register.js"
+    "register": "node scripts/register.js",
+    "unregister": "node scripts/unregister.js"
   },
-  "keywords": [],
+  "keywords": [
+    "discord",
+    "music",
+    "bot",
+    "discord.js",
+    "node.js"
+  ],
   "dependencies": {
     "@discord-player/extractor": "^4.2.1",
     "@discordjs/opus": "^0.9.0",

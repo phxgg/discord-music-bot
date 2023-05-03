@@ -1,3 +1,6 @@
+const MessageType = require('../types/MessageType');
+const createEmbedMessage = require('../utils/createEmbedMessage');
+
 module.exports = {
   name: 'playerSkip',
   /**
@@ -8,9 +11,9 @@ module.exports = {
   execute(queue, track) {
     // Emitted when the audio player fails to load the stream for a song
     /**
-     * @type {import('discord.js').Interaction}
+     * @type {import('discord.js').CommandInteraction}
      */
     const metadata = queue.metadata;
-    metadata.channel.send(`Skipping **${track.title}** due to an issue!`);
+    metadata.channel.send(createEmbedMessage(MessageType.Warning, `Skipping **${track.title}** due to an issue!`));
   },
 };

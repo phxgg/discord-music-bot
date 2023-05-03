@@ -5,8 +5,8 @@ const createEmbedMessage = require('../../utils/createEmbedMessage');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('skip')
-    .setDescription('Skip current track.'),
+    .setName('stop')
+    .setDescription('Stop player and clear queue.'),
   /**
    * 
    * @param {import('discord.js').CommandInteraction} interaction 
@@ -19,13 +19,12 @@ module.exports = {
 
     try {
       const queue = player.nodes.get(interaction.guild);
-      if (!queue || !queue.isPlaying()) {
-        return interaction.reply('Nothing is playing!');
+      if (!queue) {
+        return interaction.reply(createEmbedMessage(MessageType.Warning, 'There is no queue.'));
       }
 
-      const currentTrack = queue.currentTrack;
-      queue.node.skip();
-      return interaction.reply(createEmbedMessage(MessageType.Info, `Skipped ${currentTrack.title}!`));
+      queue.delete();
+      return interaction.reply(createEmbedMessage(MessageType.Info, 'Stopped player'));
     } catch (err) {
       return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
     }

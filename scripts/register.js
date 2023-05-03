@@ -4,6 +4,11 @@ const { REST, Routes } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 
+if (!process.env.APPLICATION_ID || !process.env.GUILD_ID || !process.env.DISCORD_BOT_TOKEN) {
+  console.error('[ERROR] Missing required environment variables.');
+  process.exit(1);
+}
+
 const commands = [];
 // Grab all the command files from the commands directory you created earlier
 const foldersPath = path.join(__dirname, '../src/commands');
@@ -40,8 +45,8 @@ const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
     );
 
     console.log(`Successfully reloaded ${data.length} application (/) commands.`);
-  } catch (error) {
+  } catch (err) {
     // And of course, make sure you catch and log any errors!
-    console.error(error);
+    console.error(err);
   }
 })();

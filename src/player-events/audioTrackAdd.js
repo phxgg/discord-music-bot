@@ -1,3 +1,6 @@
+const MessageType = require('../types/MessageType');
+const createEmbedMessage = require('../utils/createEmbedMessage');
+
 module.exports = {
   name: 'audioTrackAdd',
   /**
@@ -8,9 +11,9 @@ module.exports = {
   execute(queue, track) {
     // Emitted when the player adds a single song to its queue
     /**
-     * @type {import('discord.js').Interaction}
+     * @type {import('discord.js').CommandInteraction}
      */
     const metadata = queue.metadata;
-    metadata.channel.send(`Track **${track.title}** queued`);
+    metadata.channel.send(createEmbedMessage(MessageType.Success, `Added ${track.title} to queue.`));
   },
 };

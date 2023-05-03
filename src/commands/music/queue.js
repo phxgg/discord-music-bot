@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
 const { useMasterPlayer } = require('discord-player');
 const Paginator = require('../../utils/paginator');
+const MessageType = require('../../types/MessageType');
+const createEmbedMessage = require('../../utils/createEmbedMessage');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -8,18 +10,18 @@ module.exports = {
     .setDescription('Display current queue.'),
   /**
    * 
-   * @param {import('discord.js').Interaction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
     const player = useMasterPlayer();
     if (!player) {
-      return interaction.reply('Player is not ready!'); // make sure player is ready
+      return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
 
     try {
       const queue = player.nodes.get(interaction.guild);
-      if (!queue || !queue.isPlaying()) {
-        return interaction.reply('Queue is empty.');
+      if (!queue || !queue.isPlaying() || queue.tracks.size === 0) {
+        return interaction.reply(createEmbedMessage(MessageType.Info, 'Queue is empty.'));
       }
 
       const pages = [];
@@ -31,7 +33,7 @@ module.exports = {
             .setThumbnail(queue.currentTrack.thumbnail)
             .addFields(
               queue.tracks.toArray().slice(index, index + 10).map((t, i) => ({
-                name: `${index + i + 1}. ${t.title} - ${t.author} (${t.duration})`,
+                name: `${index + i + 1}. ${t.author} - ${t.title} (${t.duration})`,
                 value: `[Link](${t.url})`,
               })),
             )
@@ -46,7 +48,7 @@ module.exports = {
       });
     } catch (err) {
       console.error(err);
-      return interaction.reply(`Something went wrong: ${err}`);
+      return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
     }
   },
 };
