@@ -9,7 +9,7 @@ module.exports = {
    * @param {import('discord-player').Track[]} tracks
    */
   execute(queue, tracks) {
-    // Emitted when the player adds a single song to its queue
+    // Emitted when the player adds multiple songs to its queue
     /**
      * @type {import('discord.js').CommandInteraction}
      */

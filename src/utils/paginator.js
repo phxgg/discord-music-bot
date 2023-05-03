@@ -1,3 +1,5 @@
+/* Credits to DankMemer/sniper for this code. */
+
 const {
   ActionRowBuilder,
   ButtonBuilder,
@@ -8,7 +10,7 @@ const {
 
 module.exports = class Paginator {
   /**
-   * @param {import('discord.js').Embed[]} data Array with edit options for each page.
+   * @param {import('discord.js').Embed[]} data Array of embeds (pages).
    */
   constructor(data) {
     if (!data?.length) {
