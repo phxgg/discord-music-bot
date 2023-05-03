@@ -32,7 +32,7 @@ module.exports = {
           metadata: interaction, // we can access this metadata object using queue.metadata later on
         },
       });
-
+      
       return interaction.followUp(`**${track.title}** enqueued!`);
     } catch (err) {
       // let's return error if something failed

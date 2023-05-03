@@ -15,9 +15,8 @@ module.exports = {
     console.log(`Logged in as ${client.user.tag}`);
 
     // Initialize discord player
-    const player = Player.singleton(client, {
-      
-    });
+    // TODO: See what player options we can use
+    const player = Player.singleton(client);
     (async () => {
       try {
         await player.extractors.loadDefault();
