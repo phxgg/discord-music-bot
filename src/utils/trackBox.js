@@ -7,6 +7,8 @@ const {
   Colors,
 }
   = require('discord.js');
+const MessageType = require('../types/MessageType');
+const createEmbedMessage = require('./createEmbedMessage');
 
 module.exports = class TrackBox {
   /**
@@ -20,6 +22,7 @@ module.exports = class TrackBox {
       throw new TypeError('TrackBox constructor data cannot be empty.');
     }
 
+    this.updateProgressBarInterval = null;
     this.collector = null;
     this.channel = channel;
     this.queue = queue;
@@ -35,8 +38,8 @@ module.exports = class TrackBox {
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('pause')
-        .setLabel('⏯')
-        .setStyle(ButtonStyle.Primary),
+        .setLabel('⏸')
+        .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('next')
         .setLabel('⏭')
@@ -44,9 +47,17 @@ module.exports = class TrackBox {
       new ButtonBuilder()
         .setCustomId('shuffle')
         .setLabel('🔀')
-        .setStyle(ButtonStyle.Success),
+        .setStyle(ButtonStyle.Secondary),
     );
     this.stopRow = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId('backward30')
+        .setLabel('Backward 30s')
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setCustomId('forward30')
+        .setLabel('Forward 30s')
+        .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('stop')
         .setLabel('⏹')
@@ -54,9 +65,54 @@ module.exports = class TrackBox {
     );
   }
 
-  updateComponents() {
+  updatePauseButton() {
     this.row.components.filter((component) => component.data.custom_id === 'pause')[0]
-      .setStyle(this.queue.node.isPaused() ? ButtonStyle.Success : ButtonStyle.Primary);
+      .setLabel(this.queue.node.isPaused() ? '⏵' : '⏸')
+      .setStyle(this.queue.node.isPaused() ? ButtonStyle.Primary : ButtonStyle.Secondary);
+  }
+
+  setButtonDisabled(customId, disabled) {
+    this.row.components.filter((component) => component.data.custom_id === customId)[0]
+      .setDisabled(disabled);
+  }
+
+  updateProgressBar() {
+    if (this.message) {
+      try {
+        this.message.edit({
+          embeds: [this.buildTrackBoxEmbed()],
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
+
+  buildTrackBoxEmbed() {
+    const progressBar = '```' + this.queue.node.createProgressBar() + '```';
+    return new EmbedBuilder()
+      .setTitle(`Now Playing: ${this.queue.currentTrack.author} - ${this.queue.currentTrack.title}`)
+      .setDescription(progressBar)
+      .setThumbnail(this.queue.currentTrack.thumbnail)
+      .addFields(
+        {
+          name: 'Link',
+          value: `[Click](${this.queue.currentTrack.url})`,
+          inline: true,
+        },
+        {
+          name: 'Duration',
+          value: `${this.queue.currentTrack.duration}`,
+          inline: true,
+        },
+        {
+          name: 'In Queue',
+          value: `${this.queue.tracks.size} tracks`,
+          inline: true,
+        },
+      )
+      .setFooter({ text: 'Discord Music Bot' })
+      .setColor(Colors.Purple);
   }
 
   /**
@@ -64,22 +120,8 @@ module.exports = class TrackBox {
    * @returns {Promise<import('discord.js').Message>}
    */
   async start() {
-    if (this.collector) {
-      this.collector.stop();
-    }
-
-    if (!this.queue || !this.queue.isPlaying()) {
-      if (this.message) {
-        await this.message.delete();
-      }
-    }
-
-    const trackBox = new EmbedBuilder()
-      .setTitle('Now Playing')
-      .setDescription(`[${this.queue.currentTrack.title}](${this.queue.currentTrack.url})`)
-      .setThumbnail(this.queue.currentTrack.thumbnail)
-      .setFooter({ text: 'TrackBox' })
-      .setColor(Colors.Purple);
+    await this.destroy();
+    this.updatePauseButton();
 
     if (this.message) {
       try {
@@ -90,17 +132,16 @@ module.exports = class TrackBox {
     }
 
     const trackBoxMessage = await this.channel.send({
-      embeds: [trackBox],
+      embeds: [this.buildTrackBoxEmbed()],
       components: [this.row, this.stopRow],
       fetchReply: true,
     });
     this.message = trackBoxMessage;
 
-    // const filter = (i) => {
-    //   return i.user.id === interaction.user.id;
-    // };
+    // Update progress bar each 10 seconds.
+    this.updateProgressBarInterval = setInterval(() => this.updateProgressBar(), 10000);
+
     this.collector = this.message.createMessageComponentCollector({
-      // filter,
       time: this.queue.currentTrack.durationMS + 30000,
       componentType: ComponentType.Button,
     });
@@ -119,7 +160,7 @@ module.exports = class TrackBox {
         // this.collector.resetTimer({ time: this.queue.currentTrack.durationMS + 30000 });
         this.queue.node.setPaused(!this.queue.node.isPaused());
       }
-      this.updateComponents();
+      this.updatePauseButton();
       await interaction.update({ components: [this.row, this.stopRow] });
       // await interaction.update(this.getPage(this.currentPage - 1));
     } else if (interaction.customId === 'next') {
@@ -131,16 +172,33 @@ module.exports = class TrackBox {
       interaction.deferUpdate();
       if (this.queue) {
         this.queue.tracks.shuffle();
+        await interaction.channel.send(createEmbedMessage(MessageType.Info, `<@${interaction.user.id}> Shuffled the queue.`));
+      }
+    }
+    // TODO: Implement 30 seconds backwards and forwards buttons.
+    else if (interaction.customId === 'backward30') {
+      interaction.deferUpdate();
+      if (this.queue) {
+        // this.queue.node.seek(this.queue.node.playbackTime - 30000);
+      }
+    } else if (interaction.customId === 'forward30') {
+      interaction.deferUpdate();
+      if (this.queue) {
+        // this.queue.node.seek(this.queue.node.playbackTime + 30000);
       }
     } else if (interaction.customId === 'stop') {
       if (this.queue) {
-        this.queue.delete(); // this will emit the emptyQueue event which will destroy the trackbox
+        this.queue.delete(); // this will emit the emptyQueue event which will call trackbox.destroy()
       }
     }
   }
 
   async destroy() {
     try {
+      if (this.updateProgressBarInterval) {
+        clearInterval(this.updateProgressBarInterval);
+      }
+
       if (this.collector) {
         this.collector.stop();
       }
@@ -148,9 +206,15 @@ module.exports = class TrackBox {
       if (this.message) {
         await this.message.delete();
       }
-      this.message = null;
     } catch (err) {
       console.error(err);
+    } finally {
+      // no need to set this.collector to null
+      // because it will be set to null in the onEnd() method
+      // after we call this.collector.stop()
+
+      this.updateProgressBarInterval = null;
+      this.message = null;
     }
   }
 
@@ -160,11 +224,6 @@ module.exports = class TrackBox {
    */
   async onEnd() {
     console.log('TrackBox collector ended.');
-
-    // this.row.components.forEach((component) => component.setDisabled(true));
-    // if (this.message) {
-    //   await this.message.delete();
-    // }
-    // this.message = null;
+    this.collector = null;
   }
 };

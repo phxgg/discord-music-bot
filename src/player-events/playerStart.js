@@ -15,13 +15,16 @@ module.exports = {
      * @type {import('discord.js').CommandInteraction}
      */
     const metadata = queue.metadata;
-    metadata.channel.send(createEmbedMessage(MessageType.Info, `Now playing **${track.title}**!`));
-    if (!queue.trackbox) {
-      queue.trackbox = new TrackBox({
-        channel: metadata.channel,
-        queue: queue,
-      });
+    if (process.env.ENABLE_TRACKBOX) {
+      if (!queue.trackbox) {
+        queue.trackbox = new TrackBox({
+          channel: metadata.channel,
+          queue: queue,
+        });
+      }
+      queue.trackbox.start();
+    } else {
+      metadata.channel.send(createEmbedMessage(MessageType.Info, `Now playing **${track.title}**!`));
     }
-    queue.trackbox.start();
   },
 };

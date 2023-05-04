@@ -35,7 +35,7 @@ module.exports = {
         },
       });
 
-      return interaction.followUp(createEmbedMessage(MessageType.Info, `${track.title} enqueued!`));
+      return interaction.followUp(createEmbedMessage(MessageType.Info, `**${track.title}** enqueued!`));
     } catch (err) {
       // let's return error if something failed
       return interaction.followUp(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
