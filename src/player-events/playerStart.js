@@ -1,5 +1,6 @@
 const MessageType = require('../types/MessageType');
 const createEmbedMessage = require('../utils/createEmbedMessage');
+const TrackBox = require('../utils/trackBox');
 
 module.exports = {
   name: 'playerStart',
@@ -15,5 +16,12 @@ module.exports = {
      */
     const metadata = queue.metadata;
     metadata.channel.send(createEmbedMessage(MessageType.Info, `Now playing **${track.title}**!`));
+    if (!queue.trackbox) {
+      queue.trackbox = new TrackBox({
+        channel: metadata.channel,
+        queue: queue,
+      });
+    }
+    queue.trackbox.start();
   },
 };

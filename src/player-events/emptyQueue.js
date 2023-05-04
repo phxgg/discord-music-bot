@@ -10,5 +10,9 @@ module.exports = {
      */
     const metadata = queue.metadata;
     metadata.channel.send(createEmbedMessage(MessageType.Info, 'Queue finished!'));
+    if (queue.trackbox) {
+      queue.trackbox.destroy();
+    }
+    delete queue.trackbox;
   },
 };

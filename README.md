@@ -16,7 +16,8 @@ A Discord bot that plays music.
 
 ## TODO
 
-- [ ] Track Box
+- [ ] **PRIORITY**: Check if this works in multiple guilds
+- [ ] Work on Track Box
 - [ ] Better message handling
 - [ ] Lyrics command
 - More that I can't think of now...
