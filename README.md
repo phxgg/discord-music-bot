@@ -12,8 +12,8 @@ A Discord bot that plays music.
 1. Copy `.env.example` to `.env` and configure. It is recommended to not change the `DP_FORCE_YTDL_MOD` variable.
 2. Install dependencies: `npm install`
 3. Deploy commands:
-  - For a specific guild: `npm run deploy` (must have set the `GUILD_ID` variable in `.env`)
-  - For all guilds: `npm run deploy-global` (will take a while for discord to deploy)
+    - For a specific guild: `npm run deploy` (must have set the `GUILD_ID` variable in `.env`)
+    - For all guilds: `npm run deploy-global` (will take a while for discord to deploy)
 4. Start the bot: `npm start`
 
 ## Undeploy commands:
