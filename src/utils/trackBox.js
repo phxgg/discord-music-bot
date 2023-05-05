@@ -22,7 +22,7 @@ module.exports = class TrackBox {
       throw new TypeError('TrackBox constructor data cannot be empty.');
     }
 
-    this.updateProgressBarInterval = null;
+    this.updateMessageInterval = null;
     this.collector = null;
     this.channel = channel;
     this.queue = queue;
@@ -93,7 +93,7 @@ module.exports = class TrackBox {
     }
   }
 
-  updateProgressBar() {
+  updateMessage() {
     if (this.message) {
       try {
         this.updatePauseButton();
@@ -151,8 +151,8 @@ module.exports = class TrackBox {
     });
     this.message = trackBoxMessage;
 
-    // Update progress bar each 10 seconds.
-    this.updateProgressBarInterval = setInterval(() => this.updateProgressBar(), 10000);
+    // Update message each 10 seconds.
+    this.updateMessageInterval = setInterval(() => this.updateMessage(), 10000);
 
     this.collector = this.message.createMessageComponentCollector({
       time: this.queue.currentTrack.durationMS + 30000,
@@ -215,8 +215,8 @@ module.exports = class TrackBox {
         this.message = null;
       }
 
-      if (this.updateProgressBarInterval) {
-        clearInterval(this.updateProgressBarInterval);
+      if (this.updateMessageInterval) {
+        clearInterval(this.updateMessageInterval);
       }
 
       if (this.collector) {
@@ -229,7 +229,7 @@ module.exports = class TrackBox {
       // because it will be set to null in the onEnd() method
       // after we call this.collector.stop()
 
-      this.updateProgressBarInterval = null;
+      this.updateMessageInterval = null;
       this.message = null;
     }
   }
