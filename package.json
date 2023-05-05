@@ -7,9 +7,10 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "register": "node scripts/register.js",
-    "unregister": "node scripts/unregister.js",
-    "register-guild": "node scripts/registerGuild.js"
+    "deploy": "node scripts/deploy.js",
+    "undeploy": "node scripts/undeploy.js",
+    "deploy-global": "node scripts/deployGlobal.js",
+    "undeploy-global": "node scripts/undeployGlobal.js"
   },
   "keywords": [
     "discord",

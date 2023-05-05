@@ -93,7 +93,7 @@ module.exports = class TrackBox {
 
   /**
    * This method should be called when the player gets resumed.
-   * This method will reset things that were set by the playerPause method.
+   * This method will reset things that were set by the playerPause() method.
    */
   playerResume() {
     this.updatePauseButton();

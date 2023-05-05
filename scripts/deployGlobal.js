@@ -4,7 +4,7 @@ const { REST, Routes } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 
-if (!process.env.APPLICATION_ID || !process.env.GUILD_ID || !process.env.DISCORD_BOT_TOKEN) {
+if (!process.env.APPLICATION_ID || !process.env.DISCORD_BOT_TOKEN) {
   console.error('[ERROR] Missing required environment variables.');
   process.exit(1);
 }
@@ -38,9 +38,9 @@ const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
   try {
     console.log(`Started refreshing ${commands.length} application (/) commands.`);
 
-    // The put method is used to fully refresh all commands in the guild with the current set
+    // The put method is used to fully refresh all global commands with the current set
     const data = await rest.put(
-      Routes.applicationGuildCommands(process.env.APPLICATION_ID, process.env.GUILD_ID),
+      Routes.applicationCommands(process.env.APPLICATION_ID),
       { body: commands },
     );
 

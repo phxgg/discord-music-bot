@@ -4,8 +4,12 @@ const { REST, Routes } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 
-// Get guild id from command line arguments
-const guildId = process.argv[2];
+const guildId = process.env.GUILD_ID || process.argv[2];
+
+if (!guildId) {
+  console.error('[ERROR] Missing required guild id.');
+  process.exit(1);
+}
 
 if (!process.env.APPLICATION_ID || !process.env.DISCORD_BOT_TOKEN || !guildId) {
   console.error('[ERROR] Missing required environment variables.');
@@ -39,7 +43,7 @@ const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
 // and deploy your commands!
 (async () => {
   try {
-    console.log(`Started refreshing ${commands.length} application (/) commands.`);
+    console.log(`Started refreshing ${commands.length} guild (/) commands.`);
 
     // The put method is used to fully refresh all commands in the guild with the current set
     const data = await rest.put(
@@ -47,7 +51,7 @@ const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
       { body: commands },
     );
 
-    console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    console.log(`Successfully reloaded ${data.length} guild (/) commands.`);
   } catch (err) {
     // And of course, make sure you catch and log any errors!
     console.error(err);
