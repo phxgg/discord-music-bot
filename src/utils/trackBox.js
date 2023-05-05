@@ -52,11 +52,11 @@ module.exports = class TrackBox {
     this.stopRow = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('backward30')
-        .setLabel('Backward 30s')
+        .setLabel('>> 30s')
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('forward30')
-        .setLabel('Forward 30s')
+        .setLabel('30s <<')
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('stop')
@@ -65,22 +65,42 @@ module.exports = class TrackBox {
     );
   }
 
+  enableButtons() {
+    this.row.components.forEach((component) => component.data.custom_id !== 'previous' && component.setDisabled(false));
+    this.stopRow.components.forEach((component) => component.setDisabled(false));
+  }
+
+  disableButtons() {
+    this.row.components.forEach((component) => component.setDisabled(true));
+    this.stopRow.components.forEach((component) => component.setDisabled(true));
+  }
+
   updatePauseButton() {
     this.row.components.filter((component) => component.data.custom_id === 'pause')[0]
       .setLabel(this.queue.node.isPaused() ? '⏵' : '⏸')
       .setStyle(this.queue.node.isPaused() ? ButtonStyle.Primary : ButtonStyle.Secondary);
   }
 
-  setButtonDisabled(customId, disabled) {
-    this.row.components.filter((component) => component.data.custom_id === customId)[0]
-      .setDisabled(disabled);
+  async updateMessageComponents() {
+    if (this.message) {
+      try {
+        await this.message.edit({
+          components: [this.row, this.stopRow],
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
   }
 
   updateProgressBar() {
     if (this.message) {
       try {
+        this.updatePauseButton();
+        const embed = this.buildTrackBoxEmbed();
         this.message.edit({
-          embeds: [this.buildTrackBoxEmbed()],
+          embeds: [embed],
+          components: [this.row, this.stopRow],
         });
       } catch (err) {
         console.log(err);
@@ -122,14 +142,7 @@ module.exports = class TrackBox {
   async start() {
     await this.destroy();
     this.updatePauseButton();
-
-    if (this.message) {
-      try {
-        await this.message.delete();
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    this.enableButtons();
 
     const trackBoxMessage = await this.channel.send({
       embeds: [this.buildTrackBoxEmbed()],
@@ -195,16 +208,19 @@ module.exports = class TrackBox {
 
   async destroy() {
     try {
+      if (this.message) {
+        await this.message.delete();
+        // set this.message to null before we stop the collector for performance reasons.
+        // If we don't do this, the collector will try to update the message components when it's unnecessary.
+        this.message = null;
+      }
+
       if (this.updateProgressBarInterval) {
         clearInterval(this.updateProgressBarInterval);
       }
 
       if (this.collector) {
         this.collector.stop();
-      }
-
-      if (this.message) {
-        await this.message.delete();
       }
     } catch (err) {
       console.error(err);
@@ -224,6 +240,8 @@ module.exports = class TrackBox {
    */
   async onEnd() {
     console.log('TrackBox collector ended.');
+    this.disableButtons();
+    await this.updateMessageComponents();
     this.collector = null;
   }
 };

@@ -16,9 +16,8 @@ A Discord bot that plays music.
 
 ## TODO
 
-- [ ] **PRIORITY**: Check if this works in multiple guilds
-- [ ] If we pause a track via the track box, the collector timer still runs. Thus, if we pause a track for a long time, the collector will stop and we won't be able to use the track box buttons anymore. A possible solution is to destroy the queue if a track is paused for too long.
-- [ ] The track box button interactions are different from the command interactions. This can be confusing because if, for example, somebody pauses a track using `/pause`, then the track box buttons will still show the `pause` button when it should be displaying the `play` button.
+- [ ] If we pause a track via the track box, the collector timer still runs. Thus, if we pause a track for a long time, the collector will stop and we won't be able to use the track box buttons anymore. A possible solution is to destroy the queue (or the trackbox only) if a track is paused for too long.
+- [x] ~~The track box button interactions are different from the command interactions. This can be confusing because if, for example, somebody pauses a track using `/pause`, then the track box buttons will still show the `pause` button when it should be displaying the `play` button.~~ Fixed using player events that will update the trackbox buttons.
 - [ ] Better message handling
 - [ ] Lyrics command
 - [ ] Volume command

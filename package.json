@@ -8,7 +8,8 @@
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "register": "node scripts/register.js",
-    "unregister": "node scripts/unregister.js"
+    "unregister": "node scripts/unregister.js",
+    "register-guild": "node scripts/registerGuild.js"
   },
   "keywords": [
     "discord",
