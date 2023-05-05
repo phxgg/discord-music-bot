@@ -81,10 +81,7 @@ module.exports = class TrackBox {
     }
 
     const time = this.queue.currentTrack.durationMS + 10000;
-    const resetTimer = () => {
-      this.collector.resetTimer({ time: time });
-      console.log('resetTimer');
-    };
+    const resetTimer = () => this.collector.resetTimer({ time: time });
     // immediately reset the timer
     resetTimer();
     // reset the timer every x seconds
