@@ -3,6 +3,10 @@ const createEmbedMessage = require('../utils/createEmbedMessage');
 
 module.exports = {
   name: 'emptyChannel',
+  /**
+   * 
+   * @param {import('discord-player').GuildQueue} queue 
+   */
   execute(queue) {
     // Emitted when the voice channel has been empty for the set threshold
     // Bot will automatically leave the voice channel with this event

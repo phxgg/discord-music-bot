@@ -2,7 +2,7 @@ module.exports = {
   name: 'playerResume',
   /**
    * 
-   * @param {*} queue 
+   * @param {import('discord-player').GuildQueue} queue 
    * @param {import('discord-player').Track} track 
    */
   execute(queue) {
@@ -11,9 +11,13 @@ module.exports = {
      * @type {import('discord.js').CommandInteraction}
      */
     const metadata = queue.metadata;
-    if (queue.trackbox) {
-      queue.trackbox.updatePauseButton();
-      queue.trackbox.updateMessageComponents();
+
+    /**
+     * @type {import('../utils/trackBox').}
+     */
+    const trackbox = queue.trackbox;
+    if (trackbox) {
+      trackbox.playerResume();
     }
   },
 };

@@ -23,6 +23,7 @@ module.exports = class TrackBox {
     }
 
     this.updateMessageInterval = null;
+    this.resetCollectorTimerInterval = null;
     this.collector = null;
     this.channel = channel;
     this.queue = queue;
@@ -63,6 +64,49 @@ module.exports = class TrackBox {
         .setLabel('⏹')
         .setStyle(ButtonStyle.Danger),
     );
+  }
+
+  /**
+   * This method should be called when the player gets paused.
+   * This method will keep resetting the component collector timer so that the it won't time out when the player is paused.
+   * If this method is not called, the component collector will be timed out and the buttons will be disabled.
+   */
+  playerPause() {
+    this.updatePauseButton();
+    this.updateMessageComponents();
+
+    if (this.resetCollectorTimerInterval) {
+      clearInterval(this.resetCollectorTimerInterval);
+      this.resetCollectorTimerInterval = null;
+    }
+
+    const time = this.queue.currentTrack.durationMS + 10000;
+    const resetTimer = () => {
+      this.collector.resetTimer({ time: time });
+      console.log('resetTimer');
+    };
+    // immediately reset the timer
+    resetTimer();
+    // reset the timer every x seconds
+    this.resetCollectorTimerInterval = setInterval(resetTimer, time - 1000);
+  }
+
+  /**
+   * This method should be called when the player gets resumed.
+   * This method will reset things that were set by the playerPause method.
+   */
+  playerResume() {
+    this.updatePauseButton();
+    this.updateMessageComponents();
+
+    if (this.resetCollectorTimerInterval) {
+      clearInterval(this.resetCollectorTimerInterval);
+      this.resetCollectorTimerInterval = null;
+    }
+    const time = this.queue.currentTrack.durationMS + 10000;
+    const resetTimer = () => this.collector.resetTimer({ time: time });
+    // immediately reset the timer
+    resetTimer();
   }
 
   enableButtons() {
@@ -118,7 +162,6 @@ module.exports = class TrackBox {
         {
           name: 'Link',
           value: `[Click](${this.queue.currentTrack.url})`,
-          inline: true,
         },
         {
           name: 'Duration',
@@ -129,6 +172,10 @@ module.exports = class TrackBox {
           name: 'In Queue',
           value: `${this.queue.tracks.size} tracks`,
           inline: true,
+        },
+        {
+          name: 'Volume',
+          value: `${this.queue.node.volume}%`,
         },
       )
       .setFooter({ text: 'Discord Music Bot' })
@@ -155,7 +202,7 @@ module.exports = class TrackBox {
     this.updateMessageInterval = setInterval(() => this.updateMessage(), 10000);
 
     this.collector = this.message.createMessageComponentCollector({
-      time: this.queue.currentTrack.durationMS + 30000,
+      time: this.queue.currentTrack.durationMS + 10000,
       componentType: ComponentType.Button,
     });
     this.collector.on('collect', (i) => this.onClicked(i));

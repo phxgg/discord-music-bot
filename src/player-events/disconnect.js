@@ -3,6 +3,10 @@ const createEmbedMessage = require('../utils/createEmbedMessage');
 
 module.exports = {
   name: 'disconnect',
+  /**
+   * 
+   * @param {import('discord-player').GuildQueue} queue 
+   */
   execute(queue) {
     // Emitted when the bot leaves the voice channel
     /**

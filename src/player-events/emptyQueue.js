@@ -3,6 +3,10 @@ const createEmbedMessage = require('../utils/createEmbedMessage');
 
 module.exports = {
   name: 'emptyQueue',
+  /**
+   * 
+   * @param {import('discord-player').GuildQueue} queue 
+   */
   execute(queue) {
     // Emitted when the player queue has finished
     /**

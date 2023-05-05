@@ -5,7 +5,7 @@ module.exports = {
   name: 'playerSkip',
   /**
    * 
-   * @param {*} queue 
+   * @param {import('discord-player').GuildQueue} queue 
    * @param {import('discord-player').Track} track 
    */
   execute(queue, track) {
