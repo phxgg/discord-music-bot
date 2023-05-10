@@ -7,16 +7,16 @@ module.exports = {
    * 
    * @param {import('discord-player').GuildQueue} queue 
    */
-  execute(queue) {
+  async execute(queue) {
     // Emitted when the player queue has finished
     /**
      * @type {import('discord.js').CommandInteraction}
      */
     const metadata = queue.metadata;
-    metadata.channel.send(createEmbedMessage(MessageType.Info, 'Queue finished!'));
     if (queue.trackbox) {
-      queue.trackbox.destroy();
+      await queue.trackbox.destroy();
     }
     delete queue.trackbox;
+    await metadata.channel.send(createEmbedMessage(MessageType.Info, 'Queue finished!'));
   },
 };

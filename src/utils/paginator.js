@@ -54,7 +54,7 @@ module.exports = class Paginator {
    * @param {object} options
    * @param {import('discord.js').CommandInteraction} options.interaction
    * @param {number=} options.time
-   * @returns {Promise<import('discord.js').Message>}
+   * @returns {Promise<void>}
    */
   async start({ interaction, time = 60000 }) {
     const message = await interaction.reply({

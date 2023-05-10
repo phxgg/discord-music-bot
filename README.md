@@ -23,6 +23,7 @@ A Discord bot that plays music.
 
 ## TODO
 
+- [ ] Better error handling. For now, log errors in a file.
 - [ ] Better message handling
 - [ ] Lyrics command
 - More that I can't think of now...

@@ -9,7 +9,7 @@ module.exports = {
    * @param {import('discord-player').GuildQueue} queue 
    * @param {import('discord-player').Track} track
    */
-  execute(queue, track) {
+  async execute(queue, track) {
     // Emitted when the player starts to play a song
     /**
      * @type {import('discord.js').CommandInteraction}
@@ -24,7 +24,7 @@ module.exports = {
       }
       queue.trackbox.start();
     } else {
-      metadata.channel.send(createEmbedMessage(MessageType.Info, `Now playing **${track.title}**!`));
+      await metadata.channel.send(createEmbedMessage(MessageType.Info, `Now playing **${track.title}**!`));
     }
   },
 };

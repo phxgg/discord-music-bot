@@ -5,6 +5,9 @@ const {
   ComponentType,
   EmbedBuilder,
   Colors,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
 }
   = require('discord.js');
 const MessageType = require('../types/MessageType');
@@ -14,8 +17,8 @@ module.exports = class TrackBox {
   /**
    * 
    * @param {object} options 
-   * @param {import('discord.js').TextChannel} options.channel 
-   * @param {import('discord-player').GuildQueue} options.queue 
+   * @param {import('discord.js').TextChannel} options.channel The channel where the trackbox will be sent.
+   * @param {import('discord-player').GuildQueue} options.queue The player queue.
    */
   constructor({ channel, queue }) {
     if (!channel || !queue) {
@@ -24,11 +27,14 @@ module.exports = class TrackBox {
 
     this.updateMessageInterval = null;
     this.resetCollectorTimerInterval = null;
+    /**
+     * @type {import('discord.js').InteractionCollector} The component collector.
+     */
     this.collector = null;
     this.channel = channel;
     this.queue = queue;
     /**
-     * @type {import('discord.js').Message}
+     * @type {import('discord.js').Message} The message that will display the trackbox embed.
      */
     this.message = null;
     this.row = new ActionRowBuilder().addComponents(
@@ -70,10 +76,11 @@ module.exports = class TrackBox {
    * This method should be called when the player gets paused.
    * This method will keep resetting the component collector timer so that the it won't time out when the player is paused.
    * If this method is not called, the component collector will be timed out and the buttons will be disabled.
+   * @returns {Promise<void>}
    */
-  playerPause() {
+  async playerPause() {
     this.updatePauseButton();
-    this.updateMessageComponents();
+    await this.updateMessageComponents();
 
     if (this.resetCollectorTimerInterval) {
       clearInterval(this.resetCollectorTimerInterval);
@@ -91,10 +98,11 @@ module.exports = class TrackBox {
   /**
    * This method should be called when the player gets resumed.
    * This method will reset things that were set by the playerPause() method.
+   * @returns {Promise<void>}
    */
-  playerResume() {
+  async playerResume() {
     this.updatePauseButton();
-    this.updateMessageComponents();
+    await this.updateMessageComponents();
 
     if (this.resetCollectorTimerInterval) {
       clearInterval(this.resetCollectorTimerInterval);
@@ -134,12 +142,12 @@ module.exports = class TrackBox {
     }
   }
 
-  updateMessage() {
+  async updateMessage() {
     if (this.message) {
       try {
         this.updatePauseButton();
         const embed = this.buildTrackBoxEmbed();
-        this.message.edit({
+        await this.message.edit({
           embeds: [embed],
           components: [this.row, this.stopRow],
         });
@@ -159,6 +167,7 @@ module.exports = class TrackBox {
         {
           name: 'Link',
           value: `[Click](${this.queue.currentTrack.url})`,
+          inline: true,
         },
         {
           name: 'Duration',
@@ -181,7 +190,7 @@ module.exports = class TrackBox {
 
   /**
    * Starts the trackbox.
-   * @returns {Promise<import('discord.js').Message>}
+   * @returns {Promise<void>}
    */
   async start() {
     await this.destroy();
@@ -221,9 +230,10 @@ module.exports = class TrackBox {
       await interaction.update({ components: [this.row, this.stopRow] });
       // await interaction.update(this.getPage(this.currentPage - 1));
     } else if (interaction.customId === 'next') {
-      interaction.deferUpdate();
-      if (this.queue) {
-        this.queue.node.skip();
+      if (!this.queue || !this.queue.node.skip()) {
+        interaction.deferUpdate();
+      } else {
+        await interaction.update({ components: [], embeds: [], content: 'Skipping...' });
       }
     } else if (interaction.customId === 'shuffle') {
       interaction.deferUpdate();
