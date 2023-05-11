@@ -22,6 +22,7 @@ A Discord bot that plays music.
 | `APPLICATION_ID` | Discord application ID | `null` | `true` |
 | `GUILD_ID` | Guild ID to deploy commands to | `null` | `false` if you deploy globally |
 | `GENIUS_ACCESS_TOKEN` | Genius API access token if you want `/lyrics` to use your own API | `null` | `false` |
+| `ENABLE_TRACKBOX` | Whether you wish to enable the track box player. | `true` | `false` |
 | `DP_FORCE_YTDL_MOD` | Force the use of a specific streaming library **(suggested not to change)** | `@distube/ytdl-core` | `false` |
 
 ## Deploy commands
