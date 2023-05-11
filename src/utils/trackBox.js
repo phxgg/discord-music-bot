@@ -52,21 +52,17 @@ module.exports = class TrackBox {
         .setCustomId('shuffle')
         .setLabel('🔀')
         .setStyle(ButtonStyle.Secondary),
-    );
-    this.stopRow = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId('backward30')
-        .setLabel('>> 30s')
-        .setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setCustomId('forward30')
-        .setLabel('30s <<')
-        .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('stop')
         .setLabel('⏹')
         .setStyle(ButtonStyle.Danger),
     );
+    // this.secondRow = new ActionRowBuilder().addComponents(
+    //   new ButtonBuilder()
+    //     .setCustomId('stop')
+    //     .setLabel('⏹')
+    //     .setStyle(ButtonStyle.Danger),
+    // );
   }
 
   /**
@@ -113,12 +109,12 @@ module.exports = class TrackBox {
 
   enableButtons() {
     this.row.components.forEach((component) => component.data.custom_id !== 'previous' && component.setDisabled(false));
-    this.stopRow.components.forEach((component) => component.setDisabled(false));
+    // this.secondRow.components.forEach((component) => component.setDisabled(false));
   }
 
   disableButtons() {
     this.row.components.forEach((component) => component.setDisabled(true));
-    this.stopRow.components.forEach((component) => component.setDisabled(true));
+    // this.secondRow.components.forEach((component) => component.setDisabled(true));
   }
 
   updatePauseButton() {
@@ -131,7 +127,7 @@ module.exports = class TrackBox {
     if (this.message) {
       try {
         await this.message.edit({
-          components: [this.row, this.stopRow],
+          components: [this.row], // , this.secondRow
         });
       } catch (err) {
         console.error(err);
@@ -146,7 +142,7 @@ module.exports = class TrackBox {
         const embed = this.buildTrackBoxEmbed();
         await this.message.edit({
           embeds: [embed],
-          components: [this.row, this.stopRow],
+          components: [this.row], // , this.secondRow
         });
       } catch (err) {
         console.log(err);
@@ -157,7 +153,11 @@ module.exports = class TrackBox {
   buildTrackBoxEmbed() {
     const progressBar = '```' + this.queue.node.createProgressBar() + '```';
     return new EmbedBuilder()
-      .setTitle(`Now Playing: ${this.queue.currentTrack.author} - ${this.queue.currentTrack.title}`)
+      .setAuthor({
+        name: 'Now Playing',
+      })
+      .setTitle(`${this.queue.currentTrack.author} - ${this.queue.currentTrack.title}`)
+      .setURL(this.queue.currentTrack.url)
       .setDescription(progressBar)
       .setThumbnail(this.queue.currentTrack.thumbnail)
       .addFields(
@@ -196,7 +196,7 @@ module.exports = class TrackBox {
 
     const trackBoxMessage = await this.channel.send({
       embeds: [this.buildTrackBoxEmbed()],
-      components: [this.row, this.stopRow],
+      components: [this.row], // , this.secondRow
       fetchReply: true,
     });
     this.message = trackBoxMessage;
@@ -224,7 +224,7 @@ module.exports = class TrackBox {
         this.queue.node.setPaused(!this.queue.node.isPaused());
       }
       this.updatePauseButton();
-      await interaction.update({ components: [this.row, this.stopRow] });
+      await interaction.update({ components: [this.row] }); // , this.secondRow
       // await interaction.update(this.getPage(this.currentPage - 1));
     } else if (interaction.customId === 'next') {
       if (!this.queue || !this.queue.node.skip()) {
@@ -237,18 +237,6 @@ module.exports = class TrackBox {
       if (this.queue) {
         this.queue.tracks.shuffle();
         await interaction.channel.send(createEmbedMessage(MessageType.Info, `<@${interaction.user.id}> Shuffled the queue.`));
-      }
-    }
-    // TODO: Implement 30 seconds backwards and forwards buttons.
-    else if (interaction.customId === 'backward30') {
-      interaction.deferUpdate();
-      if (this.queue) {
-        // this.queue.node.seek(this.queue.node.playbackTime - 30000);
-      }
-    } else if (interaction.customId === 'forward30') {
-      interaction.deferUpdate();
-      if (this.queue) {
-        // this.queue.node.seek(this.queue.node.playbackTime + 30000);
       }
     } else if (interaction.customId === 'stop') {
       if (this.queue) {

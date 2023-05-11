@@ -4,6 +4,15 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 
+process
+  .on('unhandledRejection', (reason, p) => {
+    console.error(reason, 'Unhandled Rejection at Promise', p);
+  })
+  .on('uncaughtException', (err) => {
+    console.error(err, 'Uncaught Exception thrown');
+    process.exit(1);
+  });
+
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -44,4 +53,6 @@ for (const file of eventFiles) {
   }
 }
 
-client.login(process.env.DISCORD_BOT_TOKEN);
+client.login(process.env.DISCORD_BOT_TOKEN).catch((err) => {
+  console.error('[ERROR] Failed to login to Discord.\n', err);
+});
