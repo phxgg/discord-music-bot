@@ -5,9 +5,6 @@ const {
   ComponentType,
   EmbedBuilder,
   Colors,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
 }
   = require('discord.js');
 const MessageType = require('../types/MessageType');
