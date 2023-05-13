@@ -24,6 +24,7 @@ A Discord bot that plays music.
 | `GENIUS_ACCESS_TOKEN` | Genius API access token if you want `/lyrics` to use your own API | `null` | `false` |
 | `ENABLE_TRACKBOX` | Whether you wish to enable the track box player. | `true` | `false` |
 | `DP_FORCE_YTDL_MOD` | Force the use of a specific streaming library **(suggested not to change)** | `@distube/ytdl-core` | `false` |
+| `ENABLE_MONITORING` | Whether you wish to enable the monitoring web server. Visit `http://localhost:3000` if enabled. | `true` | `false` |
 
 ## Deploy commands
 

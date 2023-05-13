@@ -278,7 +278,6 @@ module.exports = class TrackBox {
    * @returns {Promise<void>}
    */
   async onEnd() {
-    console.log('TrackBox collector ended.');
     this.disableButtons();
     await this.updateMessageComponents();
     this.collector = null;
