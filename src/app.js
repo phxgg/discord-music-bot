@@ -3,6 +3,8 @@ require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const express = require('express');
+const app = express();
 
 process
   .on('unhandledRejection', (reason, p) => {
@@ -55,4 +57,14 @@ for (const file of eventFiles) {
 
 client.login(process.env.DISCORD_BOT_TOKEN).catch((err) => {
   console.error('[ERROR] Failed to login to Discord.\n', err);
+});
+
+app.use(require('express-status-monitor')());
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.listen(3000, () => {
+  console.log('Listening on port 3000');
 });
