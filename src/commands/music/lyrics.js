@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
-const { useMasterPlayer } = require('discord-player');
+const { useMasterPlayer, useQueue } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 const { lyricsExtractor } = require('@discord-player/extractor');
@@ -24,7 +24,7 @@ module.exports = {
       let songToSearch = null;
       const query = interaction.options.getString('query');
       if (!query) {
-        const queue = player.nodes.get(interaction.guild);
+        const queue = useQueue(interaction.guild.id);
         if (!queue || !queue.isPlaying()) {
           return interaction.reply(createEmbedMessage(MessageType.Warning, 'You did not provide a song title, and the player is not playing anything.', true));
         } else {

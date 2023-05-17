@@ -4,11 +4,20 @@ const {
   ButtonStyle,
   ComponentType,
   EmbedBuilder,
-  Colors,
 }
   = require('discord.js');
 const MessageType = require('../types/MessageType');
 const createEmbedMessage = require('./createEmbedMessage');
+const { QueueRepeatMode } = require('discord-player');
+
+const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
+const COLLECTOR_EXTRA_TIME = 10000;
+
+const getLoopModeName = (value) => {
+  const indexOfN = Object.values(QueueRepeatMode).indexOf(value);
+  const key = Object.keys(QueueRepeatMode)[indexOfN];
+  return key;
+};
 
 module.exports = class TrackBox {
   /**
@@ -80,7 +89,7 @@ module.exports = class TrackBox {
       this.resetCollectorTimerInterval = null;
     }
 
-    const time = this.queue.currentTrack.durationMS + 10000;
+    const time = this.queue.currentTrack.durationMS + COLLECTOR_EXTRA_TIME;
     const resetTimer = () => this.collector.resetTimer({ time: time });
     // immediately reset the timer
     resetTimer();
@@ -101,14 +110,14 @@ module.exports = class TrackBox {
       clearInterval(this.resetCollectorTimerInterval);
       this.resetCollectorTimerInterval = null;
     }
-    const time = this.queue.currentTrack.durationMS + 10000;
+    const time = this.queue.currentTrack.durationMS + COLLECTOR_EXTRA_TIME;
     const resetTimer = () => this.collector.resetTimer({ time: time });
     // immediately reset the timer
     resetTimer();
   }
 
   enableButtons() {
-    this.row.components.forEach((component) => component.data.custom_id !== 'previous' && component.setDisabled(false));
+    this.row.components.forEach((component) => component.setDisabled(false));
     // this.secondRow.components.forEach((component) => component.setDisabled(false));
   }
 
@@ -177,12 +186,23 @@ module.exports = class TrackBox {
           inline: true,
         },
         {
+          name: 'Requested by',
+          value: `<@${this.queue.currentTrack.requestedBy.id}>`,
+          inline: true,
+        },
+        {
           name: 'Volume',
           value: `${this.queue.node.volume}%`,
+          inline: true,
+        },
+        {
+          name: 'Loop',
+          value: `\`${getLoopModeName(this.queue.repeatMode)}\``,
+          inline: true,
         },
       )
       .setFooter({ text: 'Discord Music Bot' })
-      .setColor(Colors.Purple);
+      .setColor(MessageType.TrackBox);
   }
 
   /**
@@ -202,10 +222,10 @@ module.exports = class TrackBox {
     this.message = trackBoxMessage;
 
     // Update message each 10 seconds.
-    this.updateMessageInterval = setInterval(() => this.updateMessage(), 10000);
+    this.updateMessageInterval = setInterval(() => this.updateMessage(), UPDATE_MESSAGE_INTERVAL);
 
     this.collector = this.message.createMessageComponentCollector({
-      time: this.queue.currentTrack.durationMS + 10000,
+      time: this.queue.currentTrack.durationMS + COLLECTOR_EXTRA_TIME,
       componentType: ComponentType.Button,
     });
     this.collector.on('collect', (i) => this.onClicked(i));
@@ -218,14 +238,25 @@ module.exports = class TrackBox {
    * @returns {Promise<void>}
    */
   async onClicked(interaction) {
-    if (interaction.customId === 'pause') {
+    if (interaction.customId === 'previous') {
+      if (!this.queue) {
+        interaction.deferUpdate();
+        return;
+      }
+
+      await this.queue.history.previous().then(async () => {
+        interaction.update({ components: [], embeds: [], content: 'Going back...' });
+      }).catch(async (err) => {
+        interaction.deferUpdate();
+        interaction.channel.send(createEmbedMessage(MessageType.Warning, `<@${interaction.user.id}> ` + (err.message || 'An error occurred!')));
+      });
+    } else if (interaction.customId === 'pause') {
       if (this.queue) {
         // this.collector.resetTimer({ time: this.queue.currentTrack.durationMS + 30000 });
         this.queue.node.setPaused(!this.queue.node.isPaused());
       }
       this.updatePauseButton();
       await interaction.update({ components: [this.row] }); // , this.secondRow
-      // await interaction.update(this.getPage(this.currentPage - 1));
     } else if (interaction.customId === 'next') {
       if (!this.queue || !this.queue.node.skip()) {
         interaction.deferUpdate();

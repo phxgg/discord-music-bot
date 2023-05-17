@@ -1,7 +1,7 @@
 # discord-music-bot
 
 > __Warning__
-> This project is still in development and is not ready for use yet.
+> This project is still in development.
 
 A Discord bot that plays music.
 
@@ -38,5 +38,4 @@ A Discord bot that plays music.
 ## TODO
 
 - [ ] Better error handling.
-- [ ] Better message handling
 - More that I can't think of now...

@@ -14,6 +14,6 @@ module.exports = {
      * @type {import('discord.js').CommandInteraction}
      */
     const metadata = queue.metadata;
-    await metadata.channel.send(createEmbedMessage(MessageType.Success, `Added ${track.title} to queue.`));
+    // await metadata.channel.send(createEmbedMessage(MessageType.Success, `Added ${track.title} to queue.`));
   },
 };

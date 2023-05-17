@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { useMasterPlayer } = require('discord-player');
+const { useMasterPlayer, useQueue } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('play')
-    .setDescription('Play a track.')
+    .setName('playnext')
+    .setDescription('Insert a track at the top of the queue and skip current track.')
     .addStringOption(option => option.setName('query').setDescription('The song to play').setRequired(true)),
   /**
    * 
@@ -28,15 +28,19 @@ module.exports = {
     await interaction.deferReply();
 
     try {
-      const { track } = await player.play(channel, query, {
-        nodeOptions: {
-          // nodeOptions are the options for guild node (aka your queue in simple word)
-          metadata: interaction, // we can access this metadata object using queue.metadata later on
-        },
-        requestedBy: interaction.user, // who requested the track
-      });
+      const queue = useQueue(interaction.guild.id);
+      if (!queue || !queue.isPlaying()) {
+        return interaction.reply(createEmbedMessage(MessageType.Error, 'Nothing is playing!'));
+      }
 
-      return interaction.followUp(createEmbedMessage(MessageType.Info, `**${track.title}** enqueued!`));
+      const search = await player.search(query, { requestedBy: interaction.user });
+      if (!search || search.tracks.length === 0) {
+        return interaction.followUp(createEmbedMessage(MessageType.Error, 'No results found!'));
+      }
+
+      queue.insertTrack(search.tracks[0], 0);
+      queue.node.skip();
+      return interaction.followUp(createEmbedMessage(MessageType.Info, `**${search.tracks[0].title}** playing now!`));
     } catch (err) {
       // let's return error if something failed
       return interaction.followUp(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));

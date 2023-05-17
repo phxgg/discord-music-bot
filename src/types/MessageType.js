@@ -5,6 +5,8 @@ const MessageType = {
   Warning: Colors.Orange,
   Error: Colors.DarkRed,
   Success: Colors.Green,
+  CurrentSong: Colors.Aqua,
+  TrackBox: Colors.LuminousVividPink,
 };
 
 module.exports = MessageType;

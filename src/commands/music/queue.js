@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
-const { useMasterPlayer } = require('discord-player');
+const { useMasterPlayer, useQueue } = require('discord-player');
 const Paginator = require('../../utils/paginator');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
@@ -19,7 +19,7 @@ module.exports = {
     }
 
     try {
-      const queue = player.nodes.get(interaction.guild);
+      const queue = useQueue(interaction.guild.id);
       if (!queue || !queue.isPlaying() || queue.tracks.size === 0) {
         return interaction.reply(createEmbedMessage(MessageType.Info, 'Queue is empty.'));
       }

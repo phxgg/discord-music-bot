@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { useMasterPlayer } = require('discord-player');
+const { useMasterPlayer, useQueue } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 
@@ -18,15 +18,15 @@ module.exports = {
     }
 
     try {
-      const queue = player.nodes.get(interaction.guild);
+      const queue = useQueue(interaction.guild.id);
       if (!queue || !queue.isPlaying()) {
-        return interaction.reply('Nothing is playing!');
+        return interaction.reply(createEmbedMessage(MessageType.Error, 'Nothing is playing!'));
       }
 
       const currentTrack = queue.currentTrack;
-      return interaction.reply(`Current track is **[${currentTrack.title}](${currentTrack.url})** by **${currentTrack.author}**!`);
+      return interaction.reply(createEmbedMessage(MessageType.Success, `Current track is **[${currentTrack.title}](${currentTrack.url})** by **${currentTrack.author}**!`));
     } catch (err) {
-      return interaction.reply(`Something went wrong: ${err}`);
+      return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
     }
   },
 };
