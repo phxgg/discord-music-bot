@@ -5,9 +5,9 @@ const createEmbedMessage = require('../../utils/createEmbedMessage');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('playnext')
-    .setDescription('Insert a track at the top of the queue.')
-    .addStringOption(option => option.setName('query').setDescription('The song to insert').setRequired(true)),
+    .setName('playnow')
+    .setDescription('Insert a track at the top of the queue and skip current track.')
+    .addStringOption(option => option.setName('query').setDescription('The song to play').setRequired(true)),
   /**
    * 
    * @param {import('discord.js').CommandInteraction} interaction 
@@ -39,7 +39,8 @@ module.exports = {
       }
 
       queue.insertTrack(search.tracks[0], 0);
-      return interaction.followUp(createEmbedMessage(MessageType.Info, `**${search.tracks[0].title}** queued up next!`));
+      queue.node.skip();
+      return interaction.followUp(createEmbedMessage(MessageType.Info, `**${search.tracks[0].title}** playing now!`));
     } catch (err) {
       // let's return error if something failed
       return interaction.followUp(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
