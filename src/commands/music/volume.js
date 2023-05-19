@@ -9,7 +9,6 @@ module.exports = {
     .setDescription('Adjust the player volume.')
     .addNumberOption(option => option.setName('value').setDescription('Volume level').setRequired(true).setMaxValue(100).setMinValue(0)),
   /**
-   * 
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
@@ -18,12 +17,12 @@ module.exports = {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
 
-    try {
-      const queue = useQueue(interaction.guild.id);
-      if (!queue || !queue.isPlaying()) {
-        return interaction.reply(createEmbedMessage(MessageType.Warning, 'There is no queue.'));
-      }
+    const queue = useQueue(interaction.guild.id);
+    if (!queue || !queue.isPlaying()) {
+      return interaction.reply(createEmbedMessage(MessageType.Warning, 'There is no queue.'));
+    }
 
+    try {
       // const value = interaction.options.getString('value', true); // we need input/query to play
       const value = interaction.options.getNumber('value', true);
 

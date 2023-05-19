@@ -8,7 +8,6 @@ module.exports = {
     .setName('song')
     .setDescription('View current playing song.'),
   /**
-   * 
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
@@ -17,12 +16,12 @@ module.exports = {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
 
-    try {
-      const queue = useQueue(interaction.guild.id);
-      if (!queue || !queue.isPlaying()) {
-        return interaction.reply(createEmbedMessage(MessageType.Error, 'Nothing is playing!'));
-      }
+    const queue = useQueue(interaction.guild.id);
+    if (!queue || !queue.isPlaying()) {
+      return interaction.reply(createEmbedMessage(MessageType.Error, 'Nothing is playing!'));
+    }
 
+    try {
       const currentTrack = queue.currentTrack;
       return interaction.reply(createEmbedMessage(MessageType.Success, `Current track is **[${currentTrack.title}](${currentTrack.url})** by **${currentTrack.author}**!`));
     } catch (err) {

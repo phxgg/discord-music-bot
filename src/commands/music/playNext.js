@@ -9,7 +9,6 @@ module.exports = {
     .setDescription('Insert a track at the top of the queue.')
     .addStringOption(option => option.setName('query').setDescription('The song to insert').setRequired(true)),
   /**
-   * 
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
@@ -24,25 +23,23 @@ module.exports = {
     }
     const query = interaction.options.getString('query', true); // we need input/query to play
 
-    // let's defer the interaction as things can take time to process
+    const queue = useQueue(interaction.guild.id);
+    if (!queue || !queue.isPlaying()) {
+      return interaction.reply(createEmbedMessage(MessageType.Error, 'Nothing is playing!'));
+    }
+
     await interaction.deferReply();
-
     try {
-      const queue = useQueue(interaction.guild.id);
-      if (!queue || !queue.isPlaying()) {
-        return interaction.reply(createEmbedMessage(MessageType.Error, 'Nothing is playing!'));
-      }
-
       const search = await player.search(query, { requestedBy: interaction.user });
       if (!search || search.tracks.length === 0) {
-        return interaction.followUp(createEmbedMessage(MessageType.Error, 'No results found!'));
+        return interaction.editReply(createEmbedMessage(MessageType.Error, 'No results found!'));
       }
 
       queue.insertTrack(search.tracks[0], 0);
-      return interaction.followUp(createEmbedMessage(MessageType.Info, `**${search.tracks[0].title}** queued up next!`));
+      return interaction.editReply(createEmbedMessage(MessageType.Info, `**${search.tracks[0].title}** queued up next!`));
     } catch (err) {
       // let's return error if something failed
-      return interaction.followUp(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
+      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
     }
   },
 };

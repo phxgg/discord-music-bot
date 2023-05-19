@@ -9,7 +9,6 @@ module.exports = {
     .setDescription('Play a track.')
     .addStringOption(option => option.setName('query').setDescription('The song to play').setRequired(true)),
   /**
-   * 
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
@@ -26,7 +25,6 @@ module.exports = {
 
     // let's defer the interaction as things can take time to process
     await interaction.deferReply();
-
     try {
       const { track } = await player.play(channel, query, {
         nodeOptions: {

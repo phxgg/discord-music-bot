@@ -9,7 +9,6 @@ module.exports = {
     .setName('queue')
     .setDescription('Display current queue.'),
   /**
-   * 
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
@@ -18,12 +17,13 @@ module.exports = {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
 
-    try {
-      const queue = useQueue(interaction.guild.id);
-      if (!queue || !queue.isPlaying() || queue.tracks.size === 0) {
-        return interaction.reply(createEmbedMessage(MessageType.Info, 'Queue is empty.'));
-      }
+    const queue = useQueue(interaction.guild.id);
+    if (!queue || queue.tracks.size === 0) {
+      return interaction.reply(createEmbedMessage(MessageType.Info, 'Queue is empty.'));
+    }
 
+    await interaction.deferReply();
+    try {
       const pages = [];
       queue.tracks.map((track, index) => {
         if (index % 10 === 0) {
@@ -47,8 +47,7 @@ module.exports = {
         interaction: interaction,
       });
     } catch (err) {
-      console.error(err);
-      return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
+      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
     }
   },
 };

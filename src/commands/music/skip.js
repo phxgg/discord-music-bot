@@ -8,7 +8,6 @@ module.exports = {
     .setName('skip')
     .setDescription('Skip current track.'),
   /**
-   * 
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
@@ -17,17 +16,18 @@ module.exports = {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
 
-    try {
-      const queue = useQueue(interaction.guild.id);
-      if (!queue || !queue.isPlaying()) {
-        return interaction.reply(createEmbedMessage(MessageType.Error, 'Nothing is playing!'));
-      }
+    const queue = useQueue(interaction.guild.id);
+    if (!queue || !queue.isPlaying()) {
+      return interaction.reply(createEmbedMessage(MessageType.Error, 'Nothing is playing!'));
+    }
 
+    await interaction.deferReply();
+    try {
       const currentTrack = queue.currentTrack;
       queue.node.skip();
-      return interaction.reply(createEmbedMessage(MessageType.Info, `Skipped ${currentTrack.title}!`));
+      return interaction.editReply(createEmbedMessage(MessageType.Info, `Skipped ${currentTrack.title}!`));
     } catch (err) {
-      return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
+      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
     }
   },
 };

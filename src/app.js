@@ -6,10 +6,10 @@ const { Client, GatewayIntentBits, Collection } = require('discord.js');
 
 process
   .on('unhandledRejection', (reason, p) => {
-    console.error(reason, 'Unhandled Rejection at Promise', p);
+    console.error(reason, 'Unhandled Rejection at Promise\n', p);
   })
   .on('uncaughtException', (err) => {
-    console.error(err, 'Uncaught Exception thrown');
+    console.error(err, 'Uncaught Exception thrown\n');
     process.exit(1);
   });
 

@@ -8,7 +8,6 @@ module.exports = {
     .setName('pause')
     .setDescription('Pause/resume player.'),
   /**
-   * 
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
@@ -17,12 +16,12 @@ module.exports = {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
 
+    const queue = useQueue(interaction.guild.id);
+    if (!queue || !queue.isPlaying()) {
+      return interaction.reply(createEmbedMessage(MessageType.Warning, 'There is no queue.'));
+    }
+    
     try {
-      const queue = useQueue(interaction.guild.id);
-      if (!queue || !queue.isPlaying()) {
-        return interaction.reply(createEmbedMessage(MessageType.Warning, 'There is no queue.'));
-      }
-
       queue.node.setPaused(!queue.node.isPaused());
       return interaction.reply(createEmbedMessage(MessageType.Info, `Player is now ${queue.node.isPaused() ? 'paused' : 'resumed'}.`));
     } catch (err) {

@@ -8,7 +8,6 @@ module.exports = {
     .setName('shuffle')
     .setDescription('Shuffle the queue.'),
   /**
-   * 
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
@@ -17,16 +16,17 @@ module.exports = {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
 
-    try {
-      const queue = useQueue(interaction.guild.id);
-      if (!queue || !queue.isPlaying()) {
-        return interaction.reply(createEmbedMessage(MessageType.Warning, 'There is no queue.'));
-      }
+    const queue = useQueue(interaction.guild.id);
+    if (!queue || !queue.isPlaying()) {
+      return interaction.reply(createEmbedMessage(MessageType.Warning, 'There is no queue.'));
+    }
 
+    await interaction.deferReply();
+    try {
       queue.tracks.shuffle();
-      return interaction.reply(createEmbedMessage(MessageType.Info, 'Shuffled queue.'));
+      return interaction.editReply(createEmbedMessage(MessageType.Info, 'Shuffled queue.'));
     } catch (err) {
-      return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
+      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
     }
   },
 };
