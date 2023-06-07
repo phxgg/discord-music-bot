@@ -57,7 +57,7 @@ module.exports = class Paginator {
    * @returns {Promise<void>}
    */
   async start({ interaction, time = 60000 }) {
-    const message = await interaction.reply({
+    const message = await interaction.editReply({
       ...this.getPage(0),
       fetchReply: true,
     });
