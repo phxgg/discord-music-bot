@@ -5,8 +5,8 @@
   "author": "phxgg",
   "main": "src/app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
     "deploy": "node scripts/deploy.js",
     "undeploy": "node scripts/undeploy.js",
     "deploy-global": "node scripts/deployGlobal.js",

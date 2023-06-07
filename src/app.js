@@ -56,19 +56,3 @@ for (const file of eventFiles) {
 client.login(process.env.DISCORD_BOT_TOKEN).catch((err) => {
   console.error('[ERROR] Failed to login to Discord.\n', err);
 });
-
-// Monitoring web server
-if (process.env.ENABLE_MONITORING === 'true') {
-  const express = require('express');
-  const app = express();
-
-  app.use(require('express-status-monitor')());
-
-  app.get('/', (req, res) => {
-    res.redirect('/status');
-  });
-
-  app.listen(3000, () => {
-    console.log('[Discord Music Bot] Monitoring web server: http://localhost:3000');
-  });
-}
