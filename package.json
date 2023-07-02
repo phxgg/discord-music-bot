@@ -29,7 +29,7 @@
     "ffmpeg-static": "^5.1.0"
   },
   "devDependencies": {
-    "eslint": "^8.39.0",
+    "eslint": "^8.44.0",
     "nodemon": "^2.0.22"
   }
 }
