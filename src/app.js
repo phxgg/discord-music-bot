@@ -57,5 +57,5 @@ for (const file of eventFiles) {
 }
 
 client.login(process.env.DISCORD_BOT_TOKEN).catch((err) => {
-  console.error('[ERROR] Failed to login to Discord.\n', err);
+  logger.error('Failed to login to Discord.', err);
 });

@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const logger = require('../../utils/logger');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -69,7 +70,7 @@ module.exports = {
         return interaction.editReply({ embeds: [embed] });
       })
       .catch((err) => {
-        console.error(err);
+        logger.error('There was an error while fetching stats.', err);
         return interaction.editReply('There was an error while fetching stats.');
       });
   },

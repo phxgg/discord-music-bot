@@ -1,3 +1,5 @@
+const logger = require('../utils/logger');
+
 module.exports = {
   name: 'playerPause',
   /**
@@ -6,6 +8,7 @@ module.exports = {
    * @param {import('discord-player').Track} track 
    */
   async execute(queue) {
+    logger.info(`${queue.guild.id} -> playerPause event`);
     // Emitted when the audio player fails to load the stream for a song
     /**
      * @type {import('discord.js').CommandInteraction}

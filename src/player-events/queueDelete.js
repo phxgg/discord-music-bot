@@ -10,7 +10,7 @@ module.exports = {
    * @param {import('discord-player').GuildQueue} queue 
    */
   async execute(queue) {
-    logger.info(`${queue.guild.id} -> queueDelete emitted`);
+    logger.info(`${queue.guild.id} -> queueDelete event`);
     // Emitted when the player queue has been deleted
     /**
      * @type {import('discord.js').CommandInteraction}

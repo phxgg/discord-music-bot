@@ -13,7 +13,7 @@ module.exports = {
    * @returns 
    */
   async execute(client) {
-    console.log(`Logged in as ${client.user.tag}`);
+    logger.info(`Logged in as ${client.user.tag}`);
     client.user.setActivity('music', { type: ActivityType.Listening });
 
     // Initialize discord player
@@ -22,8 +22,7 @@ module.exports = {
     try {
       await player.extractors.loadDefault();
     } catch (err) {
-      console.error('Failed to load default extractors.');
-      console.error(err);
+      logger.error('Failed to load default extractors.', err);
       process.exit(1);
     }
 

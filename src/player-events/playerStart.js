@@ -1,5 +1,6 @@
 const MessageType = require('../types/MessageType');
 const createEmbedMessage = require('../utils/createEmbedMessage');
+const logger = require('../utils/logger');
 const TrackBox = require('../utils/trackBox');
 
 module.exports = {
@@ -10,6 +11,7 @@ module.exports = {
    * @param {import('discord-player').Track} track
    */
   async execute(queue, track) {
+    logger.info(`${queue.guild.id} -> playerStart event`);
     // Emitted when the player starts to play a song
     /**
      * @type {import('discord.js').CommandInteraction}
@@ -24,7 +26,7 @@ module.exports = {
       }
       queue.trackbox.start();
     } else {
-      await metadata.channel.send(createEmbedMessage(MessageType.Info, `Now playing **${track.title}**!`));
+      await metadata.channel.send(createEmbedMessage(MessageType.Info, `Now playing **[${track.title}](${track.url})**!`));
     }
   },
 };

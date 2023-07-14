@@ -9,6 +9,8 @@ const {
 const MessageType = require('../types/MessageType');
 const createEmbedMessage = require('./createEmbedMessage');
 const { QueueRepeatMode, GuildQueueEvent } = require('discord-player');
+const appConfig = require('../config/appConfig');
+const logger = require('../utils/logger');
 
 const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
 const COLLECTOR_EXTRA_TIME = 10000;
@@ -139,7 +141,7 @@ module.exports = class TrackBox {
           components: [this.row], // , this.secondRow
         });
       } catch (err) {
-        console.error(err);
+        logger.error(`updateMessageComponents() -> ${this.queue.guild.id}`, err);
       }
     }
   }
@@ -154,12 +156,16 @@ module.exports = class TrackBox {
           components: [this.row], // , this.secondRow
         });
       } catch (err) {
-        console.log(err);
+        logger.error(`updateMessage() -> ${this.queue.guild.id}`, err);
       }
     }
   }
 
   buildTrackBoxEmbed() {
+    if (!this.queue) {
+      throw new TypeError('buildTrackBoxEmbed() -> queue cannot be empty.');
+    }
+
     const progressBar = '```' + this.queue.node.createProgressBar() + '```';
     return new EmbedBuilder()
       .setAuthor({
@@ -201,7 +207,7 @@ module.exports = class TrackBox {
           inline: true,
         },
       )
-      .setFooter({ text: 'Discord Music Bot' })
+      .setFooter({ text: appConfig.name })
       .setColor(MessageType.TrackBox);
   }
 
@@ -297,7 +303,7 @@ module.exports = class TrackBox {
         this.collector.stop();
       }
     } catch (err) {
-      console.error(err);
+      logger.error(`destroy() -> ${this.queue.guild.id}`, err);
     } finally {
       // no need to set this.collector to null
       // because it will be set to null in the onEnd() method

@@ -1,5 +1,6 @@
 const MessageType = require('../types/MessageType');
 const createEmbedMessage = require('../utils/createEmbedMessage');
+const logger = require('../utils/logger');
 
 module.exports = {
   name: 'audioTracksAdd',
@@ -9,6 +10,7 @@ module.exports = {
    * @param {import('discord-player').Track[]} tracks
    */
   async execute(queue, tracks) {
+    logger.info(`${queue.guild.id} -> audioTracksAdd event`);
     // Emitted when the player adds multiple songs to its queue
     /**
      * @type {import('discord.js').CommandInteraction}

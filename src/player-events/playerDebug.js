@@ -1,3 +1,5 @@
+const logger = require('../utils/logger');
+
 module.exports = {
   name: 'debug',
   /**
@@ -8,6 +10,6 @@ module.exports = {
   async execute(queue, message) {
     // Emitted when the player queue sends debug info
     // Useful for seeing what state the current queue is at
-    // console.log(`Player debug event: ${message}`);
+    logger.debug(`Player debug event -> ${queue.guild.id} -> ${message}`);
   },
 };

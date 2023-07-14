@@ -10,7 +10,7 @@ module.exports = {
    * @param {import('discord-player').GuildQueue} queue 
    */
   async execute(queue) {
-    logger.info(`${queue.guild.id} -> emptyChannel emitted`);
+    logger.info(`${queue.guild.id} -> emptyChannel event`);
     // Emitted when the voice channel has been empty for the set threshold
     // Bot will automatically leave the voice channel with this event
     /**

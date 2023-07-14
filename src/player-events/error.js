@@ -1,3 +1,5 @@
+const logger = require('../utils/logger');
+
 module.exports = {
   name: 'error',
   /**
@@ -7,7 +9,6 @@ module.exports = {
    */
   async execute(queue, err) {
     // Emitted when the player queue encounters error
-    console.error(`General player error event: ${err.message}`);
-    console.error(err);
+    logger.error(`Player queue error -> ${queue.guild.id}`, err);
   },
 };

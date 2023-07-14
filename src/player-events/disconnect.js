@@ -10,7 +10,7 @@ module.exports = {
    * @param {import('discord-player').GuildQueue} queue 
    */
   async execute(queue) {
-    logger.info(`${queue.guild.id} -> disconnect emitted`);
+    logger.info(`${queue.guild.id} -> disconnect event`);
     // Emitted when the bot leaves the voice channel
     /**
      * @type {import('discord.js').CommandInteraction}

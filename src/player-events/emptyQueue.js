@@ -10,7 +10,7 @@ module.exports = {
    * @param {import('discord-player').GuildQueue} queue 
    */
   async execute(queue) {
-    logger.info(`${queue.guild.id} -> emptyQueue emitted`);
+    logger.info(`${queue.guild.id} -> emptyQueue event`);
     // Emitted when the player queue has finished
     /**
      * @type {import('discord.js').CommandInteraction}

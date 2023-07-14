@@ -1,3 +1,5 @@
+const logger = require('../utils/logger');
+
 module.exports = {
   name: 'playerError',
   /**
@@ -7,7 +9,6 @@ module.exports = {
    */
   async execute(queue, err) {
     // Emitted when the audio player errors while streaming audio track
-    console.error(`Player error event: ${err.message}`);
-    console.error(err);
+    logger.error(`Player error event -> ${queue.guild.id}`, err);
   },
 };
