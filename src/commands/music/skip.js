@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { useMasterPlayer, useQueue } = require('discord-player');
+const { useMainPlayer, useQueue } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 
@@ -11,7 +11,7 @@ module.exports = {
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
-    const player = useMasterPlayer();
+    const player = useMainPlayer();
     if (!player) {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
@@ -25,7 +25,7 @@ module.exports = {
     try {
       const currentTrack = queue.currentTrack;
       queue.node.skip();
-      return interaction.editReply(createEmbedMessage(MessageType.Info, `Skipped ${currentTrack.title}!`));
+      return interaction.editReply(createEmbedMessage(MessageType.Info, `Skipped **[${currentTrack.title}](${currentTrack.url})**!`));
     } catch (err) {
       return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
     }

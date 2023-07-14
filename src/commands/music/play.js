@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { useMasterPlayer } = require('discord-player');
+const { useMainPlayer } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 
@@ -12,7 +12,7 @@ module.exports = {
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
-    const player = useMasterPlayer();
+    const player = useMainPlayer();
     if (!player) {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }

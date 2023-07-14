@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { useMasterPlayer, useQueue } = require('discord-player');
+const { useMainPlayer, useQueue, useTimeline } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 
@@ -12,7 +12,7 @@ module.exports = {
    * @param {import('discord.js').CommandInteraction} interaction 
    */
   async execute(interaction) {
-    const player = useMasterPlayer();
+    const player = useMainPlayer();
     if (!player) {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
@@ -22,11 +22,12 @@ module.exports = {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'There is no queue.'));
     }
 
+    const { setVolume } = useTimeline(interaction.guild.id);
+
     try {
       // const value = interaction.options.getString('value', true); // we need input/query to play
       const value = interaction.options.getNumber('value', true);
-
-      queue.node.setVolume(value);
+      setVolume(value);
       return interaction.reply(createEmbedMessage(MessageType.Info, `Volume set to ${value}.`));
     } catch (err) {
       return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));

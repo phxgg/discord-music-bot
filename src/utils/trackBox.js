@@ -8,7 +8,7 @@ const {
   = require('discord.js');
 const MessageType = require('../types/MessageType');
 const createEmbedMessage = require('./createEmbedMessage');
-const { QueueRepeatMode } = require('discord-player');
+const { QueueRepeatMode, GuildQueueEvent } = require('discord-player');
 
 const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
 const COLLECTOR_EXTRA_TIME = 10000;
@@ -271,7 +271,11 @@ module.exports = class TrackBox {
       }
     } else if (interaction.customId === 'stop') {
       if (this.queue) {
-        this.queue.delete(); // this will emit the emptyQueue event which will call trackbox.destroy()
+        // there's currently a bug with discord-player that will not emit the queueDelete event
+        // so for now we're manually doing it.
+        this.queue.emit(GuildQueueEvent.queueDelete, this.queue);
+
+        this.queue.delete(); // this will emit the queueDelete event which will call trackbox.destroy()
       }
     }
   }

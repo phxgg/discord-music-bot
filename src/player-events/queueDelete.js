@@ -1,22 +1,22 @@
 const MessageType = require('../types/MessageType');
-const cleanupQueue = require('../utils/cleanupQueue');
 const createEmbedMessage = require('../utils/createEmbedMessage');
+const cleanupQueue = require('../utils/cleanupQueue');
 const logger = require('../utils/logger');
 
 module.exports = {
-  name: 'disconnect',
+  name: 'queueDelete',
   /**
    * 
    * @param {import('discord-player').GuildQueue} queue 
    */
   async execute(queue) {
-    logger.info(`${queue.guild.id} -> disconnect emitted`);
-    // Emitted when the bot leaves the voice channel
+    logger.info(`${queue.guild.id} -> queueDelete emitted`);
+    // Emitted when the player queue has been deleted
     /**
      * @type {import('discord.js').CommandInteraction}
      */
     const metadata = queue.metadata;
     await cleanupQueue(queue);
-    await metadata.channel.send(createEmbedMessage(MessageType.Info, 'Looks like my job here is done, leaving now!'));
+    await metadata.channel.send(createEmbedMessage(MessageType.Info, 'Queue deleted!'));
   },
 };

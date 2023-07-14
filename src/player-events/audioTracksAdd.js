@@ -17,7 +17,7 @@ module.exports = {
     await metadata.channel.send(createEmbedMessage(
       MessageType.Success,
       tracks[0].playlist?.title
-        ? `Added ${tracks.length} tracks from playlist [${tracks[0].playlist?.title}](${tracks[0].playlist?.url}) to queue.`
+        ? `Added ${tracks.length} tracks from playlist **[${tracks[0].playlist?.title}](${tracks[0].playlist?.url})** to queue.`
         : `Added ${tracks.length} tracks to queue.`,
     ));
   },

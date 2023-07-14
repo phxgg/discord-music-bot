@@ -4,6 +4,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 
+const logger = require('./utils/logger');
+
 process
   .on('unhandledRejection', (reason, p) => {
     console.error(reason, 'Unhandled Rejection at Promise\n', p);
@@ -13,6 +15,7 @@ process
     process.exit(1);
   });
 
+// Discord client
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,

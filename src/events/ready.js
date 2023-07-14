@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Player } = require('discord-player');
 const { Events, ActivityType } = require('discord.js');
+const logger = require('../utils/logger');
 
 module.exports = {
   name: Events.ClientReady,
