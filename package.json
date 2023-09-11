@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "A simple discord music bot",
   "author": "phxgg",
+  "engines": {
+    "node": ">=18"
+  },
   "main": "src/app.js",
   "scripts": {
     "start": "node src/index.js",
