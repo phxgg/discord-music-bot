@@ -277,10 +277,6 @@ module.exports = class TrackBox {
       }
     } else if (interaction.customId === 'stop') {
       if (this.queue) {
-        // there's currently a bug with discord-player that will not emit the queueDelete event
-        // so for now we're manually doing it.
-        this.queue.emit(GuildQueueEvent.queueDelete, this.queue);
-
         this.queue.delete(); // this will emit the queueDelete event which will call trackbox.destroy()
       }
     }
