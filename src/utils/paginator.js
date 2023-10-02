@@ -5,8 +5,7 @@ const {
   ButtonBuilder,
   ButtonStyle,
   ComponentType,
-}
-  = require('discord.js');
+} = require('discord.js');
 
 module.exports = class Paginator {
   /**

@@ -2,6 +2,8 @@ const { SlashCommandBuilder } = require('discord.js');
 const { useMainPlayer, useQueue } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
+const logger = require('../../utils/logger');
+const { parseError } = require('../../utils/funcs');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -38,8 +40,8 @@ module.exports = {
       queue.insertTrack(search.tracks[0], 0);
       return interaction.editReply(createEmbedMessage(MessageType.Info, `**${search.tracks[0].title}** queued up next!`));
     } catch (err) {
-      // let's return error if something failed
-      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
+      logger.error(`${interaction.guild.id} -> ${err}`);
+      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${parseError(err)}`));
     }
   },
 };

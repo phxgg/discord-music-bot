@@ -2,6 +2,8 @@ const { SlashCommandBuilder } = require('discord.js');
 const { useMainPlayer, useQueue } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
+const logger = require('../../utils/logger');
+const { parseError } = require('../../utils/funcs');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -27,7 +29,8 @@ module.exports = {
       queue.node.skip();
       return interaction.editReply(createEmbedMessage(MessageType.Info, `Skipped **[${currentTrack.title}](${currentTrack.url})**!`));
     } catch (err) {
-      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
+      logger.error(`${interaction.guild.id} -> ${err}`);
+      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${parseError(err)}`));
     }
   },
 };

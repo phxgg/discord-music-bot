@@ -5,7 +5,6 @@ const logger = require('../utils/logger');
 module.exports = {
   name: 'playerSkip',
   /**
-   * 
    * @param {import('discord-player').GuildQueue} queue 
    * @param {import('discord-player').Track} track 
    */

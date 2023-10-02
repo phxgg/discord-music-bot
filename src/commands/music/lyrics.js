@@ -4,6 +4,8 @@ const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 const { lyricsExtractor } = require('@discord-player/extractor');
 const lyricsFinder = lyricsExtractor(process.env.GENIUS_ACCESS_TOKEN);
+const logger = require('../../utils/logger');
+const { parseError } = require('../../utils/funcs');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -56,7 +58,8 @@ module.exports = {
 
       return interaction.editReply({ embeds: [embed] });
     } catch (err) {
-      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
+      logger.error(`${interaction.guild.id} -> ${err}`);
+      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${parseError(err)}`));
     }
   },
 };

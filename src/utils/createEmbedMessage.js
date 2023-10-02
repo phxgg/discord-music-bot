@@ -1,7 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 
 /**
- * 
  * @param {*} messageType 
  * @param {string} message 
  * @param {boolean=} ephemeral

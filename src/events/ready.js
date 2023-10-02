@@ -16,9 +16,19 @@ module.exports = {
     logger.info(`Logged in as ${client.user.tag}`);
     client.user.setActivity('music', { type: ActivityType.Listening });
 
+    // Player options
+    const playerOptions = {};
+    if (process.env.ENABLE_IP_ROTATION === 'true') {
+      const ipv6Blocks = process.env.IPV6_BLOCKS.split(' ');
+      Object.assign(playerOptions, {
+        ipconfig: {
+          blocks: ipv6Blocks,
+        },
+      });
+    }
+
     // Initialize discord player
-    // TODO: See what player options we can use
-    const player = Player.singleton(client);
+    const player = Player.singleton(client, playerOptions);
     try {
       await player.extractors.loadDefault();
     } catch (err) {

@@ -11,6 +11,7 @@ const createEmbedMessage = require('./createEmbedMessage');
 const { QueueRepeatMode, GuildQueueEvent } = require('discord-player');
 const appConfig = require('../config/appConfig');
 const logger = require('../utils/logger');
+const { parseError } = require('./funcs');
 
 const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
 const COLLECTOR_EXTRA_TIME = 10000;
@@ -254,7 +255,7 @@ module.exports = class TrackBox {
         interaction.update({ components: [], embeds: [], content: 'Going back...' });
       }).catch(async (err) => {
         interaction.deferUpdate();
-        interaction.channel.send(createEmbedMessage(MessageType.Warning, `<@${interaction.user.id}> ` + (err.message || 'An error occurred!')));
+        interaction.channel.send(createEmbedMessage(MessageType.Warning, `<@${interaction.user.id}> ` + (parseError(err) || 'An error occurred!')));
       });
     } else if (interaction.customId === 'pause') {
       if (this.queue) {
