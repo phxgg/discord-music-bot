@@ -20,10 +20,12 @@ A Discord bot that plays music.
 | -------- | ----------- | ------------- | -------- |
 | `DISCORD_BOT_TOKEN` | Discord bot token | `null` | `true` |
 | `APPLICATION_ID` | Discord application ID | `null` | `true` |
-| `GUILD_ID` | Guild ID to deploy commands to | `null` | `false` if you deploy globally |
 | `GENIUS_ACCESS_TOKEN` | Genius API access token if you want `/lyrics` to use your own API | `null` | `false` |
+| `GUILD_ID` | Guild ID to deploy commands to | `null` | `false` if you deploy globally |
+| `DP_FORCE_YTDL_MOD` | Force the use of a specific streaming library **(suggested not to change)** | `youtube-ext` | `false` |
 | `ENABLE_TRACKBOX` | Whether you wish to enable the track box player. | `true` | `false` |
-| `DP_FORCE_YTDL_MOD` | Force the use of a specific streaming library **(suggested not to change)** | `@distube/ytdl-core` | `false` |
+| `ENABLE_IP_ROTATION` | Whether you wish to enable IP rotation for YouTube. | `false` | `false` |
+| `IPV6_BLOCKS` | A space-separated list of IPv6 blocks to use for IP rotation. | `null` | `false` if `ENABLE_IP_ROTATION` is `false` |
 
 ## Deploy commands
 

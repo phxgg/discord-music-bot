@@ -17,7 +17,7 @@ module.exports = {
      * @type {import('discord.js').CommandInteraction}
      */
     const metadata = queue.metadata;
-    if (process.env.ENABLE_TRACKBOX) {
+    if (process.env.ENABLE_TRACKBOX === 'true') {
       if (!queue.trackbox) {
         queue.trackbox = new TrackBox({
           channel: metadata.channel,
