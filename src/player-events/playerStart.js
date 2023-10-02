@@ -6,7 +6,6 @@ const TrackBox = require('../utils/trackBox');
 module.exports = {
   name: 'playerStart',
   /**
-   * 
    * @param {import('discord-player').GuildQueue} queue 
    * @param {import('discord-player').Track} track
    */

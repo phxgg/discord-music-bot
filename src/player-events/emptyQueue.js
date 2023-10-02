@@ -6,7 +6,6 @@ const logger = require('../utils/logger');
 module.exports = {
   name: 'emptyQueue',
   /**
-   * 
    * @param {import('discord-player').GuildQueue} queue 
    */
   async execute(queue) {

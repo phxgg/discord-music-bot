@@ -5,7 +5,6 @@ const logger = require('../utils/logger');
 module.exports = {
   name: 'audioTracksAdd',
   /**
-   * 
    * @param {import('discord-player').GuildQueue} queue 
    * @param {import('discord-player').Track[]} tracks
    */

@@ -3,7 +3,6 @@ const logger = require('../utils/logger');
 module.exports = {
   name: 'playerError',
   /**
-   * 
    * @param {import('discord-player').GuildQueue} queue 
    * @param {*} err 
    */

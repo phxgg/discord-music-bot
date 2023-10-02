@@ -3,7 +3,6 @@ const logger = require('../utils/logger');
 module.exports = {
   name: 'playerResume',
   /**
-   * 
    * @param {import('discord-player').GuildQueue} queue 
    * @param {import('discord-player').Track} track 
    */

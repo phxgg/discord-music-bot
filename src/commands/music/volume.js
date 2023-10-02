@@ -3,6 +3,7 @@ const { useMainPlayer, useQueue, useTimeline } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 const logger = require('../../utils/logger');
+const { parseError } = require('../../utils/funcs');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -32,7 +33,7 @@ module.exports = {
       return interaction.reply(createEmbedMessage(MessageType.Info, `Volume set to ${value}.`));
     } catch (err) {
       logger.error(`${interaction.guild.id} -> ${err}`);
-      return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err.message}`));
+      return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${parseError(err)}`));
     }
   },
 };

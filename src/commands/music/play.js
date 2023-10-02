@@ -3,6 +3,7 @@ const { useMainPlayer } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 const logger = require('../../utils/logger');
+const { parseError } = require('../../utils/funcs');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -38,7 +39,7 @@ module.exports = {
       return interaction.followUp(createEmbedMessage(MessageType.Info, `**${track.title}** enqueued!`));
     } catch (err) {
       logger.error(`${interaction.guild.id} -> ${err}`);
-      return interaction.followUp(createEmbedMessage(MessageType.Error, `Something went wrong: ${err.message}`));
+      return interaction.followUp(createEmbedMessage(MessageType.Error, `Something went wrong: ${parseError(err)}`));
     }
   },
 };
