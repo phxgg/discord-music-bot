@@ -10,7 +10,7 @@ const parseError = (err) => {
   if (process.env.NODE_ENV === 'development') {
     return err.stack;
   } else {
-    return err.code || 'ERROR Occurred';
+    return err.name || 'Unknown error';
   }
 };
 
