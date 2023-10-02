@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { useMainPlayer, useQueue } = require('discord-player');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
+const logger = require('../../utils/logger');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -25,7 +26,8 @@ module.exports = {
       const currentTrack = queue.currentTrack;
       return interaction.reply(createEmbedMessage(MessageType.Success, `Current track is **[${currentTrack.title}](${currentTrack.url})** by **${currentTrack.author}**!`));
     } catch (err) {
-      return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
+      logger.error(`${interaction.guild.id} -> ${err}`);
+      return interaction.reply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err.message}`));
     }
   },
 };

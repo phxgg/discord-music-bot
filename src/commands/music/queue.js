@@ -3,6 +3,7 @@ const { useMainPlayer, useQueue } = require('discord-player');
 const Paginator = require('../../utils/paginator');
 const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
+const logger = require('../../utils/logger');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -47,7 +48,8 @@ module.exports = {
         interaction: interaction,
       });
     } catch (err) {
-      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err}`));
+      logger.error(`${interaction.guild.id} -> ${err}`);
+      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${err.message}`));
     }
   },
 };
