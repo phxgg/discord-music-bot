@@ -30,7 +30,7 @@
     "dotenv": "^16.3.1",
     "ffmpeg-static": "^5.2.0",
     "winston": "^3.10.0",
-    "ytdl-core": "^4.11.5"
+    "youtube-ext": "^1.1.14"
   },
   "devDependencies": {
     "eslint": "^8.50.0",
