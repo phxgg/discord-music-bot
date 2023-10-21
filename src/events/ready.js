@@ -8,9 +8,9 @@ module.exports = {
   name: Events.ClientReady,
   once: true,
   /**
-   * 
-   * @param {import('discord.js').Client} client 
-   * @returns 
+   * This event runs once when the client starts.
+   * @param {import('discord.js').Client} client
+   * @returns {Promise<void>}
    */
   async execute(client) {
     logger.info(`Logged in as ${client.user.tag}`);

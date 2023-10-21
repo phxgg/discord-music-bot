@@ -5,8 +5,7 @@ module.exports = {
     .setName('ping')
     .setDescription('Replies with pong!'),
   /**
-   * 
-   * @param {import('discord.js').CommandInteraction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction
    */
   async execute(interaction) {
     await interaction.reply('Pong!');

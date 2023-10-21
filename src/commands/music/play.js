@@ -4,14 +4,16 @@ const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 const logger = require('../../utils/logger');
 const { parseError } = require('../../utils/funcs');
+const inVoiceChannel = require('../../middleware/inVoiceChannel');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('play')
     .setDescription('Play a track.')
     .addStringOption(option => option.setName('query').setDescription('The song to play').setRequired(true)),
+  middleware: [inVoiceChannel],
   /**
-   * @param {import('discord.js').CommandInteraction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction
    */
   async execute(interaction) {
     const player = useMainPlayer();
@@ -20,9 +22,6 @@ module.exports = {
     }
 
     const channel = interaction.member.voice.channel;
-    if (!channel) {
-      return interaction.reply(createEmbedMessage(MessageType.Error, 'You are not connected to a voice channel.')); // make sure we have a voice channel
-    }
     const query = interaction.options.getString('query', true); // we need input/query to play
 
     // let's defer the interaction as things can take time to process

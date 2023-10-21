@@ -7,8 +7,7 @@ module.exports = {
     .setDescription('Application stats')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
   /**
-   * 
-   * @param {import('discord.js').CommandInteraction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction
    */
   async execute(interaction) {
     await interaction.deferReply();

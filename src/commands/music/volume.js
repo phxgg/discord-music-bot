@@ -4,14 +4,16 @@ const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 const logger = require('../../utils/logger');
 const { parseError } = require('../../utils/funcs');
+const inSameVoiceChannel = require('../../middleware/inSameVoiceChannel');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('volume')
     .setDescription('Adjust the player volume.')
     .addNumberOption(option => option.setName('value').setDescription('Volume level').setRequired(true).setMaxValue(100).setMinValue(0)),
+  middleware: [inSameVoiceChannel],
   /**
-   * @param {import('discord.js').CommandInteraction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction
    */
   async execute(interaction) {
     const player = useMainPlayer();

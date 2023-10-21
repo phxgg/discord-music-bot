@@ -11,7 +11,7 @@ module.exports = {
     .setName('queue')
     .setDescription('Display current queue.'),
   /**
-   * @param {import('discord.js').CommandInteraction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction
    */
   async execute(interaction) {
     const player = useMainPlayer();

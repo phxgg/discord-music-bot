@@ -13,7 +13,7 @@ module.exports = {
     .setDescription('Get song lyrics.')
     .addStringOption(option => option.setName('query').setDescription('Song title. If empty we\'ll check for the current playing song.').setRequired(false)),
   /**
-   * @param {import('discord.js').CommandInteraction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction
    */
   async execute(interaction) {
     const player = useMainPlayer();

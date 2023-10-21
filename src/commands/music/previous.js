@@ -4,13 +4,15 @@ const MessageType = require('../../types/MessageType');
 const createEmbedMessage = require('../../utils/createEmbedMessage');
 const logger = require('../../utils/logger');
 const { parseError } = require('../../utils/funcs');
+const inSameVoiceChannel = require('../../middleware/inSameVoiceChannel');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('previous')
     .setDescription('Play previous track.'),
+  middleware: [inSameVoiceChannel],
   /**
-   * @param {import('discord.js').CommandInteraction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction
    */
   async execute(interaction) {
     const player = useMainPlayer();

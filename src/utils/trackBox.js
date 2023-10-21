@@ -4,14 +4,14 @@ const {
   ButtonStyle,
   ComponentType,
   EmbedBuilder,
-}
-  = require('discord.js');
+} = require('discord.js');
 const MessageType = require('../types/MessageType');
 const createEmbedMessage = require('./createEmbedMessage');
 const { QueueRepeatMode, GuildQueueEvent } = require('discord-player');
 const appConfig = require('../config/appConfig');
 const logger = require('../utils/logger');
 const { parseError } = require('./funcs');
+const inSameVoiceChannel = require('../middleware/inSameVoiceChannel');
 
 const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
 const COLLECTOR_EXTRA_TIME = 10000;
@@ -245,10 +245,14 @@ module.exports = class TrackBox {
    * @returns {Promise<void>}
    */
   async onClicked(interaction) {
+    // run the inSameVoiceChannel middleware
+    if (!(await inSameVoiceChannel(interaction))) {
+      return;
+    }
+
     if (interaction.customId === 'previous') {
       if (!this.queue) {
-        interaction.deferUpdate();
-        return;
+        return interaction.deferUpdate();
       }
 
       await this.queue.history.previous().then(async () => {
