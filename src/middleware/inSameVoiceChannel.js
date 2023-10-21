@@ -4,8 +4,8 @@ const createEmbedMessage = require('../utils/createEmbedMessage');
 
 /**
  * Middleware to check if the user is connected in the same voice channel as the bot.
- * You should not use inSameVoiceChannel along with inVoiceChannel,
- * as the inSameVoiceChannel middleware already checks if the user is connected in a voice channel.
+ * You should not use `inSameVoiceChannel` along with `inVoiceChannel`,
+ * as the `inSameVoiceChannel` middleware already checks if the user is connected in a voice channel.
  * @param {import('discord.js').Interaction} interaction The interaction object.
  * @returns {Promise<boolean>} Whether the user is in the same voice channel as the bot.
  */

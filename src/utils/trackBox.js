@@ -25,7 +25,7 @@ const getLoopModeName = (value) => {
 module.exports = class TrackBox {
   /**
    * 
-   * @param {object} options 
+   * @param {object} options
    * @param {import('discord.js').TextChannel} options.channel The channel where the trackbox will be sent.
    * @param {import('discord-player').GuildQueue} options.queue The player queue.
    */
