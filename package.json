@@ -30,11 +30,10 @@
     "discord.js": "^14.13.0",
     "dotenv": "^16.3.1",
     "ffmpeg-static": "^5.2.0",
-    "winston": "^3.11.0",
-    "youtube-ext": "^1.1.16"
+    "winston": "^3.11.0"
   },
   "devDependencies": {
-    "eslint": "^8.51.0",
+    "eslint": "^8.52.0",
     "nodemon": "^3.0.1"
   }
 }
