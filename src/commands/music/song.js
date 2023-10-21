@@ -10,7 +10,7 @@ module.exports = {
     .setName('song')
     .setDescription('View current playing song.'),
   /**
-   * @param {import('discord.js').CommandInteraction} interaction 
+   * @param {import('discord.js').CommandInteraction} interaction
    */
   async execute(interaction) {
     const player = useMainPlayer();
