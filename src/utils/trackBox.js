@@ -25,9 +25,9 @@ const getLoopModeName = (value) => {
 module.exports = class TrackBox {
   /**
    * 
-   * @param {object} options 
-   * @param {import('discord.js').TextChannel} options.channel The channel where the trackbox will be sent.
-   * @param {import('discord-player').GuildQueue} options.queue The player queue.
+   * @param {object} options
+   * @param {import('discord.js').TextChannel} options.channel The channel where the trackbox will be sent
+   * @param {import('discord-player').GuildQueue} options.queue The player queue
    */
   constructor({ channel, queue }) {
     if (!channel || !queue) {
@@ -37,13 +37,13 @@ module.exports = class TrackBox {
     this.updateMessageInterval = null;
     this.resetCollectorTimerInterval = null;
     /**
-     * @type {import('discord.js').InteractionCollector} The component collector.
+     * @type {import('discord.js').InteractionCollector} The component collector
      */
     this.collector = null;
     this.channel = channel;
     this.queue = queue;
     /**
-     * @type {import('discord.js').Message} The message that will display the trackbox embed.
+     * @type {import('discord.js').Message} The message that will display the trackbox embed
      */
     this.message = null;
     this.row = new ActionRowBuilder().addComponents(
@@ -135,6 +135,10 @@ module.exports = class TrackBox {
       .setStyle(this.queue.node.isPaused() ? ButtonStyle.Primary : ButtonStyle.Secondary);
   }
 
+  /**
+   * Updates the message components.
+   * @returns {Promise<void>}
+   */
   async updateMessageComponents() {
     if (this.message) {
       try {
@@ -147,6 +151,10 @@ module.exports = class TrackBox {
     }
   }
 
+  /**
+   * Updates the trackbox message.
+   * @returns {Promise<void>}
+   */
   async updateMessage() {
     if (this.message) {
       try {
@@ -221,12 +229,11 @@ module.exports = class TrackBox {
     this.updatePauseButton();
     this.enableButtons();
 
-    const trackBoxMessage = await this.channel.send({
+    this.message = await this.channel.send({
       embeds: [this.buildTrackBoxEmbed()],
       components: [this.row], // , this.secondRow
       fetchReply: true,
     });
-    this.message = trackBoxMessage;
 
     // Update message each 10 seconds.
     this.updateMessageInterval = setInterval(() => this.updateMessage(), UPDATE_MESSAGE_INTERVAL);
@@ -287,6 +294,10 @@ module.exports = class TrackBox {
     }
   }
 
+  /**
+   * Deletes the trackbox message and stops the collector.
+   * @returns {Promise<void>}
+   */
   async destroy() {
     try {
       if (this.message) {
