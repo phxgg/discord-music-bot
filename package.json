@@ -23,17 +23,17 @@
     "node.js"
   ],
   "dependencies": {
-    "@discord-player/extractor": "^4.4.5",
+    "@discord-player/extractor": "^4.4.6",
     "@discordjs/opus": "^0.9.0",
     "@distube/ytdl-core": "^4.13.3",
-    "discord-player": "^6.6.6",
+    "discord-player": "^6.6.7",
     "discord.js": "^14.14.1",
-    "dotenv": "^16.3.1",
+    "dotenv": "^16.4.4",
     "ffmpeg-static": "^5.2.0",
     "winston": "^3.11.0"
   },
   "devDependencies": {
     "eslint": "^8.56.0",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.3"
   }
 }
