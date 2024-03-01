@@ -28,12 +28,12 @@
     "@distube/ytdl-core": "^4.13.3",
     "discord-player": "^6.6.7",
     "discord.js": "^14.14.1",
-    "dotenv": "^16.4.4",
+    "dotenv": "^16.4.5",
     "ffmpeg-static": "^5.2.0",
     "winston": "^3.11.0"
   },
   "devDependencies": {
-    "eslint": "^8.56.0",
-    "nodemon": "^3.0.3"
+    "eslint": "^8.57.0",
+    "nodemon": "^3.1.0"
   }
 }
