@@ -41,17 +41,17 @@ module.exports = {
       const trimmedLyrics = lyrics.plainLyrics.substring(0, 1997);
 
       const embed = new EmbedBuilder()
-        .setTitle(lyrics.title)
-        .setURL(lyrics.url)
-        .setThumbnail(lyrics.thumbnail)
+        .setTitle(lyrics.trackName)
+        // .setURL(lyrics.url)
+        // .setThumbnail(lyrics.thumbnail)
         .setAuthor({
-          name: lyrics.artist.name,
-          iconURL: lyrics.artist.image,
-          url: lyrics.artist.url,
+          name: lyrics.artistName,
+          // iconURL: lyrics.artist.image,
+          // url: lyrics.artist.url,
         })
         .setDescription(trimmedLyrics.length === 1997 ? `${trimmedLyrics}...` : trimmedLyrics)
         .setFooter({
-          text: 'Powered by Genius',
+          text: 'Powered by LRCLIB',
         })
         .setColor(Colors.Yellow);
 
