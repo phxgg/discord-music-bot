@@ -4,7 +4,7 @@
   "description": "A simple discord music bot",
   "author": "phxgg",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "main": "src/app.js",
   "scripts": {
@@ -13,7 +13,9 @@
     "deploy": "node scripts/deploy.js",
     "undeploy": "node scripts/undeploy.js",
     "deploy-global": "node scripts/deployGlobal.js",
-    "undeploy-global": "node scripts/undeployGlobal.js"
+    "undeploy-global": "node scripts/undeployGlobal.js",
+    "ncu:check": "npx npm-check-updates -x eslint",
+    "ncu:update": "npx npm-check-updates -u -x eslint"
   },
   "keywords": [
     "discord",
@@ -23,17 +25,18 @@
     "node.js"
   ],
   "dependencies": {
-    "@discord-player/extractor": "^4.4.6",
+    "@discord-player/extractor": "^4.4.7",
     "@discordjs/opus": "^0.9.0",
-    "@distube/ytdl-core": "^4.13.3",
-    "discord-player": "^6.6.7",
-    "discord.js": "^14.14.1",
+    "@distube/ytdl-core": "^4.13.4",
+    "@web-scrobbler/metadata-filter": "^3.1.0",
+    "discord-player": "^6.6.9",
+    "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
     "ffmpeg-static": "^5.2.0",
-    "winston": "^3.11.0"
+    "winston": "^3.13.0"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.3"
   }
 }
