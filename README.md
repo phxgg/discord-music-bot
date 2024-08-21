@@ -11,8 +11,9 @@ A Discord bot that plays music.
 
 1. Copy `.env.example` to `.env` and configure the values. See [Environment variables](#environment-variables) for more information.
 2. Install dependencies: `npm install`
-3. Deploy commands. See [Deploy commands](#deploy-commands) for more information.
-4. Start the bot: `npm start`
+3. Install FFmpeg on your system: [FFmpeg](https://ffmpeg.org/download.html)
+4. Deploy commands. See [Deploy commands](#deploy-commands) for more information.
+5. Start the bot: `npm start`
 
 ## Environment variables
 
