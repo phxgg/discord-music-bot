@@ -21,12 +21,12 @@ A Discord bot that plays music.
 | -------- | ----------- | ------------- | -------- |
 | `DISCORD_BOT_TOKEN` | Discord bot token | `null` | `true` |
 | `APPLICATION_ID` | Discord application ID | `null` | `true` |
-| `GENIUS_ACCESS_TOKEN` | Genius API access token if you want `/lyrics` to use your own API | `null` | `false` |
 | `GUILD_ID` | Guild ID to deploy commands to | `null` | `false` if you deploy globally |
-| `DP_FORCE_YTDL_MOD` | Force the use of a specific streaming library | `@distube/ytdl-core` | `false` |
+| `YT_EXTRACTOR_AUTH` | YouTube AUTH tokens for the extractor. [View Docs](https://github.com/retrouser955/discord-player-youtubei) | `null` | `false` |
 | `ENABLE_TRACKBOX` | Whether you wish to enable the track box player. | `true` | `false` |
 | `ENABLE_IP_ROTATION` | Whether you wish to enable IP rotation for YouTube. | `false` | `false` |
 | `IPV6_BLOCKS` | A space-separated list of IPv6 blocks to use for IP rotation. | `null` | `false` if `ENABLE_IP_ROTATION` is `false` |
+| `NODE_ENV` | Node environment. Use `development` or `production` | `development` | `true` |
 
 ## Deploy commands
 
