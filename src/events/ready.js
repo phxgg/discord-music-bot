@@ -3,6 +3,7 @@ const path = require('node:path');
 const { Player } = require('discord-player');
 const { Events, ActivityType } = require('discord.js');
 const logger = require('../utils/logger');
+const { YoutubeiExtractor } = require('discord-player-youtubei');
 
 module.exports = {
   name: Events.ClientReady,
@@ -17,7 +18,13 @@ module.exports = {
     client.user.setActivity('music', { type: ActivityType.Listening });
 
     // Player options
-    const playerOptions = {};
+    /**
+     * @type {Omit<import('discord-player').PlayerInitOptions, 'ignoreInstance'>}
+     */
+    const playerOptions = {
+      skipFFmpeg: false,
+      useLegacyFFmpeg: false,
+    };
     if (process.env.ENABLE_IP_ROTATION === 'true') {
       const ipv6Blocks = process.env.IPV6_BLOCKS.split(' ');
       Object.assign(playerOptions, {
@@ -30,9 +37,18 @@ module.exports = {
     // Initialize discord player
     const player = Player.singleton(client, playerOptions);
     try {
-      await player.extractors.loadDefault();
+      // await player.extractors.loadDefault();
+      await player.extractors.register(YoutubeiExtractor, {
+        authentication: process.env.YT_EXTRACTOR_AUTH || '',
+        streamOptions: {
+          useClient: 'iOS',
+          highWaterMark: 2 * 1024 * 1024, // 2MB, default is 512 KB (512 * 1024)
+        },
+      });
+      // load all default extractors except YouTubeExtractor since we are using YoutubeiExtractor
+      await player.extractors.loadDefault((ext) => !['YouTubeExtractor'].includes(ext));
     } catch (err) {
-      logger.error('Failed to load default extractors.', err);
+      logger.error('Failed to register extractors.', err);
       process.exit(1);
     }
 
