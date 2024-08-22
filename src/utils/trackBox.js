@@ -175,7 +175,14 @@ module.exports = class TrackBox {
       throw new TypeError('buildTrackBoxEmbed() -> queue cannot be empty.');
     }
 
-    const progressBar = '```' + this.queue.node.createProgressBar() + '```';
+    let progressBar;
+    try {
+      progressBar = '```' + this.queue.node.createProgressBar() + '```';
+    } catch (err) {
+      progressBar = '```An error occurred while creating the progress bar.```';
+      logger.error(`buildTrackBoxEmbed() -> ${this.queue.guild.id}`, err);
+    }
+
     return new EmbedBuilder()
       .setAuthor({
         name: 'Now Playing',
