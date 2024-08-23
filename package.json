@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node .",
+    "format": "prettier --write \"src/**/*.ts\"",
     "preview": "tsc && node .",
     "dev": "concurrently \"tsc -w\" \"nodemon --watch dist dist/index.js\"",
     "deploy": "node scripts/deploy.js",
@@ -36,12 +37,18 @@
     "winston": "^3.14.2"
   },
   "devDependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
     "@types/dotenv": "^6.1.1",
     "@types/node": "^22.5.0",
     "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^8.2.0",
+    "@typescript-eslint/parser": "^8.2.0",
     "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "nodemon": "^3.1.4",
+    "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }

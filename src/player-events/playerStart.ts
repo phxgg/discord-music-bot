@@ -1,9 +1,10 @@
-import { GuildQueue, Track } from "discord-player";
-import logger from "../utils/logger";
-import TrackBox from "../utils/trackBox";
-import { CommandInteraction } from "discord.js";
-import { MessageType } from "../types/MessageType";
-import { createEmbedMessage } from "../utils/funcs";
+import { CommandInteraction } from 'discord.js';
+import { GuildQueue, Track } from 'discord-player';
+
+import { MessageType } from '../types/MessageType';
+import { createEmbedMessage } from '../utils/funcs';
+import logger from '../utils/logger';
+import TrackBox from '../utils/trackBox';
 
 export default {
   name: 'playerStart',
@@ -20,7 +21,12 @@ export default {
       }
       queue.trackbox.start();
     } else {
-      await metadata.channel?.send(createEmbedMessage(MessageType.Info, `Now playing **[${track.title}](${track.url})**!`));
+      await metadata.channel?.send(
+        createEmbedMessage(
+          MessageType.Info,
+          `Now playing **[${track.title}](${track.url})**!`,
+        ),
+      );
     }
   },
 };

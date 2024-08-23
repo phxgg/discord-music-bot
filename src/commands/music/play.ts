@@ -1,27 +1,43 @@
-import { ChatInputCommandInteraction, GuildMember, SlashCommandBuilder } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  GuildMember,
+  SlashCommandBuilder,
+} from 'discord.js';
 import { useMainPlayer } from 'discord-player';
-import { MessageType } from '../../types/MessageType';
-import { createEmbedMessage } from '../../utils/funcs';
-import logger from '../../utils/logger';
-import { parseError } from '../../utils/funcs';
+
 import inVoiceChannel from '../../middleware/inVoiceChannel';
+import { MessageType } from '../../types/MessageType';
+import { createEmbedMessage, parseError } from '../../utils/funcs';
+import logger from '../../utils/logger';
 
 export default {
   data: new SlashCommandBuilder()
     .setName('play')
     .setDescription('Play a track.')
-    .addStringOption(option => option.setName('query').setDescription('The song to play').setRequired(true)),
+    .addStringOption((option) =>
+      option
+        .setName('query')
+        .setDescription('The song to play')
+        .setRequired(true),
+    ),
   middleware: [inVoiceChannel],
   async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
-      return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
+      return interaction.reply(
+        createEmbedMessage(MessageType.Warning, 'Player is not ready.'),
+      );
     }
 
     const member = interaction.member as GuildMember | null;
     const channel = member?.voice.channel;
     if (!channel) {
-      return interaction.reply(createEmbedMessage(MessageType.Warning, 'You need to be in a voice channel to play music!'));
+      return interaction.reply(
+        createEmbedMessage(
+          MessageType.Warning,
+          'You need to be in a voice channel to play music!',
+        ),
+      );
     }
     const query = interaction.options.getString('query', true); // we need input/query to play
 
@@ -36,10 +52,17 @@ export default {
         requestedBy: interaction.user, // who requested the track
       });
 
-      return interaction.followUp(createEmbedMessage(MessageType.Info, `**${track.title}** enqueued!`));
+      return interaction.followUp(
+        createEmbedMessage(MessageType.Info, `**${track.title}** enqueued!`),
+      );
     } catch (err) {
       logger.error(`${interaction.guild!.id} -> ${err}`);
-      return interaction.followUp(createEmbedMessage(MessageType.Error, `Something went wrong: ${parseError(err)}`));
+      return interaction.followUp(
+        createEmbedMessage(
+          MessageType.Error,
+          `Something went wrong: ${parseError(err)}`,
+        ),
+      );
     }
   },
 };

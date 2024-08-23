@@ -1,5 +1,6 @@
-import { GuildQueue } from "discord-player";
-import logger from "../utils/logger";
+import { GuildQueue } from 'discord-player';
+
+import logger from '../utils/logger';
 
 export default {
   name: 'playerError',

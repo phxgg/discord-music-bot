@@ -1,8 +1,9 @@
-import { GuildQueue } from "discord-player";
-import logger from "../utils/logger";
-import { CommandInteraction } from "discord.js";
-import { cleanupQueue, createEmbedMessage } from "../utils/funcs";
-import { MessageType } from "../types/MessageType";
+import { CommandInteraction } from 'discord.js';
+import { GuildQueue } from 'discord-player';
+
+import { MessageType } from '../types/MessageType';
+import { cleanupQueue, createEmbedMessage } from '../utils/funcs';
+import logger from '../utils/logger';
 
 export default {
   name: 'emptyQueue',
@@ -11,6 +12,8 @@ export default {
     // Emitted when the player queue has finished
     const metadata = queue.metadata as CommandInteraction;
     await cleanupQueue(queue);
-    await metadata.channel?.send(createEmbedMessage(MessageType.Info, 'Queue finished!'));
+    await metadata.channel?.send(
+      createEmbedMessage(MessageType.Info, 'Queue finished!'),
+    );
   },
 };

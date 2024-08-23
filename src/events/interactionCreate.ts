@@ -1,5 +1,6 @@
-import { Events, Interaction } from "discord.js";
-import logger from "../utils/logger";
+import { Events, Interaction } from 'discord.js';
+
+import logger from '../utils/logger';
 
 export default {
   name: Events.InteractionCreate,
@@ -11,7 +12,9 @@ export default {
 
     const command = interaction.client.commands?.get(interaction.commandName);
     if (!command) {
-      console.error(`No command matching ${interaction.commandName} was found.`);
+      console.error(
+        `No command matching ${interaction.commandName} was found.`,
+      );
       return;
     }
 

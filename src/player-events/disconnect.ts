@@ -1,8 +1,9 @@
-import { GuildQueue } from "discord-player";
-import logger from "../utils/logger";
-import { cleanupQueue, createEmbedMessage } from "../utils/funcs";
-import { CommandInteraction } from "discord.js";
-import { MessageType } from "../types/MessageType";
+import { CommandInteraction } from 'discord.js';
+import { GuildQueue } from 'discord-player';
+
+import { MessageType } from '../types/MessageType';
+import { cleanupQueue, createEmbedMessage } from '../utils/funcs';
+import logger from '../utils/logger';
 
 export default {
   name: 'disconnect',
@@ -11,6 +12,11 @@ export default {
     // Emitted when the bot leaves the voice channel
     const metadata = queue.metadata as CommandInteraction;
     await cleanupQueue(queue);
-    await metadata.channel?.send(createEmbedMessage(MessageType.Info, 'Looks like my job here is done, leaving now!'));
+    await metadata.channel?.send(
+      createEmbedMessage(
+        MessageType.Info,
+        'Looks like my job here is done, leaving now!',
+      ),
+    );
   },
 };

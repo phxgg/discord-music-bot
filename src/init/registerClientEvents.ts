@@ -1,10 +1,12 @@
-import { Client } from "discord.js";
-import path from "path";
-import fs from "fs";
+import fs from 'fs';
+import path from 'path';
+import { Client } from 'discord.js';
 
 export async function registerClientEvents(client: Client) {
   const eventsPath = path.join(__dirname, '..', 'events');
-  const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+  const eventFiles = fs
+    .readdirSync(eventsPath)
+    .filter((file) => file.endsWith('.js'));
 
   for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);

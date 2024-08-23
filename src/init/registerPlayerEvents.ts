@@ -1,10 +1,12 @@
-import path from "path";
-import fs from "fs";
-import { Player } from "discord-player";
+import fs from 'fs';
+import path from 'path';
+import { Player } from 'discord-player';
 
 export async function registerPlayerEvents(player: Player) {
   const playerEventsPath = path.join(__dirname, '..', 'player-events');
-  const playerEventFiles = fs.readdirSync(playerEventsPath).filter(file => file.endsWith('.js'));
+  const playerEventFiles = fs
+    .readdirSync(playerEventsPath)
+    .filter((file) => file.endsWith('.js'));
 
   for (const file of playerEventFiles) {
     const filePath = path.join(playerEventsPath, file);

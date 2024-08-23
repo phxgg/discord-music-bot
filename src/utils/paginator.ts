@@ -8,8 +8,8 @@ import {
   CommandInteraction,
   ComponentType,
   EmbedBuilder,
-  InteractionCollector
-} from "discord.js";
+  InteractionCollector,
+} from 'discord.js';
 
 export default class Paginator {
   data: EmbedBuilder[];
@@ -54,9 +54,12 @@ export default class Paginator {
   /**
    * Starts the paginator.
    */
-  public async start({ interaction, time = 60000 }: {
-    interaction: CommandInteraction,
-    time?: number,
+  public async start({
+    interaction,
+    time = 60000,
+  }: {
+    interaction: CommandInteraction;
+    time?: number;
   }): Promise<void> {
     const message = await interaction.editReply({
       ...this.getPage(0),
@@ -78,7 +81,10 @@ export default class Paginator {
   /**
    * Listener for when a button is clicked.
    */
-  private async onClicked(interaction: ButtonInteraction, collector: InteractionCollector<ButtonInteraction>): Promise<void> {
+  private async onClicked(
+    interaction: ButtonInteraction,
+    collector: InteractionCollector<ButtonInteraction>,
+  ): Promise<void> {
     if (interaction.customId === 'first') {
       if (this.currentPage === 0) {
         interaction.deferUpdate();
@@ -121,8 +127,14 @@ export default class Paginator {
    */
   private getPage(number: number) {
     this.currentPage = number;
-    this.row.components.filter((component) => (component.data as any).custom_id === 'currentPage')[0]
+    this.row.components
+      .filter(
+        (component) => (component.data as any).custom_id === 'currentPage',
+      )[0]
       .setLabel(`${number + 1}/${this.data.length}`);
-    return { embeds: [this.data[number]], components: [this.row, this.stopRow] };
+    return {
+      embeds: [this.data[number]],
+      components: [this.row, this.stopRow],
+    };
   }
-};
+}
