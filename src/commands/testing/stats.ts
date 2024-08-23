@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
 import logger from "../../utils/logger";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('stats')
     .setDescription('Application stats')

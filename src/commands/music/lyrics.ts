@@ -5,7 +5,7 @@ import { createEmbedMessage } from '../../utils/funcs';
 import logger from '../../utils/logger';
 import { parseError } from '../../utils/funcs';
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('lyrics')
     .setDescription('Get song lyrics.')

@@ -6,7 +6,7 @@ import logger from '../../utils/logger';
 import { parseError } from '../../utils/funcs';
 import inSameVoiceChannel from '../../middleware/inSameVoiceChannel';
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('previous')
     .setDescription('Play previous track.'),

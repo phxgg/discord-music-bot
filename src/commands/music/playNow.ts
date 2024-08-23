@@ -6,7 +6,7 @@ import logger from '../../utils/logger';
 import { parseError } from '../../utils/funcs';
 import inVoiceChannel from '../../middleware/inVoiceChannel';
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('playnow')
     .setDescription('Insert a track at the top of the queue and skip current track.')
