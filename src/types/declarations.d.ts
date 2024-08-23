@@ -1,4 +1,4 @@
-import { CommandInteraction } from "discord.js";
+import { CommandInteraction, Collection } from "discord.js";
 import TrackBox from "../utils/trackBox";
 
 declare module 'discord-player' {

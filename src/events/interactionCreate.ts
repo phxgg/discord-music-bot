@@ -5,14 +5,11 @@ export default {
   name: Events.InteractionCreate,
   /**
    * This event runs when a user creates an interaction.
-   * @param {import('discord.js').Interaction} interaction
-   * @returns {Promise<void>}
    */
   async execute(interaction: Interaction) {
     if (!interaction.isChatInputCommand()) return;
 
-    const command = interaction.client.commands.get(interaction.commandName);
-
+    const command = interaction.client.commands?.get(interaction.commandName);
     if (!command) {
       console.error(`No command matching ${interaction.commandName} was found.`);
       return;
