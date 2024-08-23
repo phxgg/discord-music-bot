@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node .",
+    "preview": "tsc && node .",
     "dev": "concurrently \"tsc -w\" \"nodemon --watch dist dist/index.js\"",
     "deploy": "node scripts/deploy.js",
     "undeploy": "node scripts/undeploy.js",
