@@ -1,6 +1,15 @@
 /* Credits to DankMemer/sniper for this code. */
 
-import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CommandInteraction, ComponentType, EmbedBuilder, InteractionCollector, type Embed } from "discord.js";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonInteraction,
+  ButtonStyle,
+  CommandInteraction,
+  ComponentType,
+  EmbedBuilder,
+  InteractionCollector
+} from "discord.js";
 
 export default class Paginator {
   data: EmbedBuilder[];
@@ -45,7 +54,7 @@ export default class Paginator {
   /**
    * Starts the paginator.
    */
-  async start({ interaction, time = 60000 }: {
+  public async start({ interaction, time = 60000 }: {
     interaction: CommandInteraction,
     time?: number,
   }): Promise<void> {
@@ -68,11 +77,8 @@ export default class Paginator {
 
   /**
    * Listener for when a button is clicked.
-   * @param {import('discord.js').ButtonInteraction} interaction
-   * @param {import('discord.js').InteractionCollector} collector
-   * @returns {Promise<void>}
    */
-  async onClicked(interaction: ButtonInteraction, collector: InteractionCollector<ButtonInteraction>): Promise<void> {
+  private async onClicked(interaction: ButtonInteraction, collector: InteractionCollector<ButtonInteraction>): Promise<void> {
     if (interaction.customId === 'first') {
       if (this.currentPage === 0) {
         interaction.deferUpdate();
@@ -105,7 +111,7 @@ export default class Paginator {
   /**
    * Listener for when the collector ends.
    */
-  async onEnd(interaction: CommandInteraction): Promise<void> {
+  private async onEnd(interaction: CommandInteraction): Promise<void> {
     this.row.components.forEach((component) => component.setDisabled(true));
     await interaction.editReply({ components: [this.row] });
   }
@@ -113,7 +119,7 @@ export default class Paginator {
   /**
    * Gets the send options for a page.
    */
-  getPage(number: number) {
+  private getPage(number: number) {
     this.currentPage = number;
     this.row.components.filter((component) => (component.data as any).custom_id === 'currentPage')[0]
       .setLabel(`${number + 1}/${this.data.length}`);
