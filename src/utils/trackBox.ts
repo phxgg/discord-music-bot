@@ -19,10 +19,19 @@ import { createEmbedMessage, parseError } from "./funcs";
 const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
 const COLLECTOR_EXTRA_TIME = 10000;
 
-const getLoopModeName = (value: string) => {
-  const indexOfN = Object.values(QueueRepeatMode).indexOf(value);
-  const key = Object.keys(QueueRepeatMode)[indexOfN];
-  return key;
+function getLoopModeName(value: QueueRepeatMode): string {
+  switch (value) {
+    case QueueRepeatMode.OFF:
+      return 'Off';
+    case QueueRepeatMode.TRACK:
+      return 'Track';
+    case QueueRepeatMode.QUEUE:
+      return 'Queue';
+    case QueueRepeatMode.AUTOPLAY:
+      return 'Autoplay';
+    default:
+      return 'Unknown';
+  }
 };
 
 export default class TrackBox {
@@ -211,7 +220,7 @@ export default class TrackBox {
         },
         {
           name: 'Loop',
-          value: `\`${getLoopModeName(this.queue.repeatMode.toString())}\``,
+          value: `\`${getLoopModeName(this.queue.repeatMode)}\``,
           inline: true,
         },
       )
