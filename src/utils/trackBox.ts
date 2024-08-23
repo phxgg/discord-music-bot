@@ -103,13 +103,13 @@ export default class TrackBox {
     resetTimer();
   }
 
-  enableButtons() {
-    this.row.components.forEach((component) => component instanceof ButtonBuilder && component.setDisabled(false));
+  private enableButtons() {
+    this.row.components.forEach((component) => component.setDisabled(false));
     // this.secondRow.components.forEach((component) => component.setDisabled(false));
   }
 
-  disableButtons() {
-    this.row.components.forEach((component) => component instanceof ButtonBuilder && component.setDisabled(true));
+  private disableButtons() {
+    this.row.components.forEach((component) => component.setDisabled(true));
     // this.secondRow.components.forEach((component) => component.setDisabled(true));
   }
 
@@ -137,7 +137,7 @@ export default class TrackBox {
   /**
    * Updates the trackbox message.
    */
-  async updateMessage(): Promise<void> {
+  private async updateMessage(): Promise<void> {
     if (this.message) {
       try {
         this.updatePauseButton();
@@ -152,7 +152,7 @@ export default class TrackBox {
     }
   }
 
-  public buildTrackBoxEmbed(): EmbedBuilder {
+  private buildTrackBoxEmbed(): EmbedBuilder {
     if (!this.queue) {
       throw new TypeError('buildTrackBoxEmbed() -> queue cannot be empty.');
     }
@@ -220,7 +220,7 @@ export default class TrackBox {
     this.message = await this.channel.send({
       embeds: [this.buildTrackBoxEmbed()],
       components: [this.row], // , this.secondRow
-      // fetchReply: true,
+      // fetchReply: true, // TODO: fix types to have this enabled
     });
 
     // Update message each 10 seconds.
@@ -237,7 +237,7 @@ export default class TrackBox {
   /**
    * Listener for when a button is clicked.
    */
-  async onClicked(interaction: ButtonInteraction) {
+  private async onClicked(interaction: ButtonInteraction) {
     // run the inSameVoiceChannel middleware
     if (!(await inSameVoiceChannel(interaction))) {
       return;
@@ -283,7 +283,7 @@ export default class TrackBox {
   /**
    * Deletes the trackbox message and stops the collector.
    */
-  async destroy(): Promise<void> {
+  public async destroy(): Promise<void> {
     try {
       if (this.message) {
         await this.message.delete();
@@ -314,7 +314,7 @@ export default class TrackBox {
   /**
    * Listener for when the collector ends.
    */
-  async onEnd(): Promise<void> {
+  private async onEnd(): Promise<void> {
     this.disableButtons();
     await this.updateMessageComponents();
     this.collector = null;
