@@ -1,23 +1,22 @@
-const appConfig = require('../config/appConfig');
-const MessageType = require('../types/MessageType');
-const createEmbedMessage = require('../utils/createEmbedMessage');
+import { appConfig } from "../config/appConfig";
+import { createEmbedMessage } from "../utils/funcs";
+import { MessageType } from "../types/MessageType";
+import type { Interaction } from "discord.js";
 
 /**
  * Middleware to check if the user is connected in the same voice channel as the bot.
  * You should not use `inSameVoiceChannel` along with `inVoiceChannel`,
  * as the `inSameVoiceChannel` middleware already checks if the user is connected in a voice channel.
- * @param {import('discord.js').Interaction} interaction The interaction object.
- * @returns {Promise<boolean>} Whether the user is in the same voice channel as the bot.
  */
-const inSameVoiceChannel = async (interaction) => {
+export default async function inSameVoiceChannel(interaction: Interaction): Promise<boolean> {
   try {
-    const botChannel = interaction.guild.members.me.voice.channel;
+    const botChannel = interaction?.guild?.members?.me?.voice.channel;
     if (!botChannel) {
       await interaction.reply(createEmbedMessage(MessageType.Error, `${appConfig.name} is not connected to a voice channel.`));
       return false;
     }
 
-    const channel = interaction.member.voice.channel;
+    const channel = interaction?.member?.voice?.channel;
     if (!channel) {
       await interaction.reply(createEmbedMessage(MessageType.Error, 'You are not connected to a voice channel.'));
       return false;
@@ -32,5 +31,3 @@ const inSameVoiceChannel = async (interaction) => {
     return false;
   }
 };
-
-module.exports = inSameVoiceChannel;

@@ -1,27 +1,28 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { useMainPlayer } = require('discord-player');
-const MessageType = require('../../types/MessageType');
-const createEmbedMessage = require('../../utils/createEmbedMessage');
-const logger = require('../../utils/logger');
-const { parseError } = require('../../utils/funcs');
-const inVoiceChannel = require('../../middleware/inVoiceChannel');
+import { ChatInputCommandInteraction, GuildMember, SlashCommandBuilder } from 'discord.js';
+import { useMainPlayer } from 'discord-player';
+import { MessageType } from '../../types/MessageType';
+import { createEmbedMessage } from '../../utils/funcs';
+import logger from '../../utils/logger';
+import { parseError } from '../../utils/funcs';
+import inVoiceChannel from '../../middleware/inVoiceChannel';
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName('play')
     .setDescription('Play a track.')
     .addStringOption(option => option.setName('query').setDescription('The song to play').setRequired(true)),
   middleware: [inVoiceChannel],
-  /**
-   * @param {import('discord.js').CommandInteraction} interaction
-   */
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
     }
 
-    const channel = interaction.member.voice.channel;
+    const member = interaction.member as GuildMember | null;
+    const channel = member?.voice.channel;
+    if (!channel) {
+      return interaction.reply(createEmbedMessage(MessageType.Warning, 'You need to be in a voice channel to play music!'));
+    }
     const query = interaction.options.getString('query', true); // we need input/query to play
 
     // let's defer the interaction as things can take time to process
@@ -37,7 +38,7 @@ module.exports = {
 
       return interaction.followUp(createEmbedMessage(MessageType.Info, `**${track.title}** enqueued!`));
     } catch (err) {
-      logger.error(`${interaction.guild.id} -> ${err}`);
+      logger.error(`${interaction.guild!.id} -> ${err}`);
       return interaction.followUp(createEmbedMessage(MessageType.Error, `Something went wrong: ${parseError(err)}`));
     }
   },

@@ -1,19 +1,16 @@
-const { SlashCommandBuilder, EmbedBuilder, Colors } = require('discord.js');
-const { useQueue, useMainPlayer } = require('discord-player');
-const MessageType = require('../../types/MessageType');
-const createEmbedMessage = require('../../utils/createEmbedMessage');
-const logger = require('../../utils/logger');
-const { parseError } = require('../../utils/funcs');
+import { ChatInputCommandInteraction, Colors, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import { useMainPlayer, useQueue } from 'discord-player';
+import { MessageType } from '../../types/MessageType';
+import { createEmbedMessage } from '../../utils/funcs';
+import logger from '../../utils/logger';
+import { parseError } from '../../utils/funcs';
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('lyrics')
     .setDescription('Get song lyrics.')
     .addStringOption(option => option.setName('query').setDescription('Song title. If empty we\'ll check for the current playing song.').setRequired(false)),
-  /**
-   * @param {import('discord.js').CommandInteraction} interaction
-   */
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
       return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
@@ -23,12 +20,12 @@ module.exports = {
     try {
       let songToSearch = null;
       const query = interaction.options.getString('query');
-      const queue = useQueue(interaction.guild.id);
+      const queue = useQueue(interaction.guild!.id);
       if (!query) {
         if (!queue || !queue.isPlaying()) {
           return interaction.editReply(createEmbedMessage(MessageType.Warning, 'You did not provide a song title, and the player is not playing anything.', true));
         } else {
-          songToSearch = `${queue.currentTrack.cleanTitle} ${queue.currentTrack.author}`;
+          songToSearch = `${queue.currentTrack?.cleanTitle} ${queue.currentTrack?.author}`;
         }
       } else {
         songToSearch = query;
@@ -57,7 +54,7 @@ module.exports = {
 
       return interaction.editReply({ embeds: [embed] });
     } catch (err) {
-      logger.error(`${interaction.guild.id} -> ${err}`);
+      logger.error(`${interaction.guild!.id} -> ${err}`);
       return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${parseError(err)}`));
     }
   },

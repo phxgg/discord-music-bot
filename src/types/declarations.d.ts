@@ -7,3 +7,9 @@ declare module 'discord-player' {
     metadata?: CommandInteraction;
   }
 }
+
+declare module 'discord.js' {
+  interface Client {
+    commands?: Collection<string, any>;
+  }
+}

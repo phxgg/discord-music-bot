@@ -1,44 +1,50 @@
-const {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ComponentType,
-  EmbedBuilder,
-} = require('discord.js');
-const MessageType = require('../types/MessageType');
-const createEmbedMessage = require('./createEmbedMessage');
-const { QueueRepeatMode, GuildQueueEvent } = require('discord-player');
-const appConfig = require('../config/appConfig');
-const logger = require('../utils/logger');
-const { parseError } = require('./funcs');
-const inSameVoiceChannel = require('../middleware/inSameVoiceChannel');
+// const {
+//   ActionRowBuilder,
+//   ButtonBuilder,
+//   ButtonStyle,
+//   ComponentType,
+//   EmbedBuilder,
+// } = require('discord.js');
+// const MessageType = require('../types/MessageType');
+// const createEmbedMessage = require('./createEmbedMessage');
+// const { QueueRepeatMode, GuildQueueEvent } = require('discord-player');
+// const appConfig = require('../config/appConfig');
+// const logger = require('../utils/logger');
+// const { parseError } = require('./funcs');
+// const inSameVoiceChannel = require('../middleware/inSameVoiceChannel');
+
+import { GuildQueue, QueueRepeatMode } from "discord-player";
+import { ActionRowBuilder, AnyComponentBuilder, APIButtonComponent, ButtonBuilder, ButtonInteraction, ButtonStyle, InteractionCollector, Message, TextChannel } from "discord.js";
+import logger from "./logger";
 
 const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
 const COLLECTOR_EXTRA_TIME = 10000;
 
-const getLoopModeName = (value) => {
+const getLoopModeName = (value: string) => {
   const indexOfN = Object.values(QueueRepeatMode).indexOf(value);
   const key = Object.keys(QueueRepeatMode)[indexOfN];
   return key;
 };
 
-module.exports = class TrackBox {
-  /**
-   * 
-   * @param {object} options
-   * @param {import('discord.js').TextChannel} options.channel The channel where the trackbox will be sent
-   * @param {import('discord-player').GuildQueue} options.queue The player queue
-   */
-  constructor({ channel, queue }) {
+export default class TrackBox {
+  updateMessageInterval: NodeJS.Timeout | null = null;
+  resetCollectorTimerInterval: NodeJS.Timeout | null = null;
+  collector: InteractionCollector<ButtonInteraction> | null = null;
+  channel: TextChannel;
+  queue: GuildQueue;
+  message: Message | null = null;
+  row: ActionRowBuilder;
+
+  constructor({ channel, queue }: {
+    channel: TextChannel,
+    queue: GuildQueue
+  }) {
     if (!channel || !queue) {
       throw new TypeError('TrackBox constructor data cannot be empty.');
     }
 
     this.updateMessageInterval = null;
     this.resetCollectorTimerInterval = null;
-    /**
-     * @type {import('discord.js').InteractionCollector} The component collector
-     */
     this.collector = null;
     this.channel = channel;
     this.queue = queue;
@@ -92,8 +98,8 @@ module.exports = class TrackBox {
       this.resetCollectorTimerInterval = null;
     }
 
-    const time = this.queue.currentTrack.durationMS + COLLECTOR_EXTRA_TIME;
-    const resetTimer = () => this.collector.resetTimer({ time: time });
+    const time = (this.queue.currentTrack?.durationMS || 0) + COLLECTOR_EXTRA_TIME;
+    const resetTimer = () => this.collector?.resetTimer({ time: time });
     // immediately reset the timer
     resetTimer();
     // reset the timer every x seconds
@@ -113,19 +119,19 @@ module.exports = class TrackBox {
       clearInterval(this.resetCollectorTimerInterval);
       this.resetCollectorTimerInterval = null;
     }
-    const time = this.queue.currentTrack.durationMS + COLLECTOR_EXTRA_TIME;
-    const resetTimer = () => this.collector.resetTimer({ time: time });
+    const time = (this.queue.currentTrack?.durationMS || 0) + COLLECTOR_EXTRA_TIME;
+    const resetTimer = () => this.collector?.resetTimer({ time: time });
     // immediately reset the timer
     resetTimer();
   }
 
   enableButtons() {
-    this.row.components.forEach((component) => component.setDisabled(false));
+    this.row.components.forEach((component) => component instanceof ButtonBuilder && component.setDisabled(false));
     // this.secondRow.components.forEach((component) => component.setDisabled(false));
   }
 
   disableButtons() {
-    this.row.components.forEach((component) => component.setDisabled(true));
+    this.row.components.forEach((component) => component instanceof ButtonBuilder && component.setDisabled(true));
     // this.secondRow.components.forEach((component) => component.setDisabled(true));
   }
 

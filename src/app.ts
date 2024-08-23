@@ -1,10 +1,9 @@
-require('dotenv').config();
+import 'dotenv/config';
 
-const fs = require('node:fs');
-const path = require('node:path');
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
-
-const logger = require('./utils/logger');
+import { Client, GatewayIntentBits, Collection } from 'discord.js';
+import fs from 'fs';
+import path from 'path';
+import logger from './utils/logger';
 
 process
   .on('unhandledRejection', (reason, p) => {
@@ -25,7 +24,7 @@ const client = new Client({
 
 // Command handling
 client.commands = new Collection();
-const foldersPath = path.join(__dirname, 'commands');
+const foldersPath = path.join(__dirname, 'dist', 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
@@ -43,7 +42,7 @@ for (const folder of commandFolders) {
 }
 
 // Event handling
-const eventsPath = path.join(__dirname, 'events');
+const eventsPath = path.join(__dirname, 'dist', 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {

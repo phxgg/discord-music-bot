@@ -1,17 +1,14 @@
 /* Credits to DankMemer/sniper for this code. */
 
-const {
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ComponentType,
-} = require('discord.js');
+import { ActionRowBuilder, AnyComponentBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, CommandInteraction, ComponentType, EmbedBuilder, InteractionCollector, type Embed } from "discord.js";
 
-module.exports = class Paginator {
-  /**
-   * @param {import('discord.js').Embed[]} data Array of embeds (pages).
-   */
-  constructor(data) {
+export default class Paginator {
+  data: EmbedBuilder[];
+  currentPage: number | null;
+  row: ActionRowBuilder<AnyComponentBuilder>;
+  stopRow: ActionRowBuilder<AnyComponentBuilder>;
+
+  constructor(data: EmbedBuilder[]) {
     if (!data?.length) {
       throw new TypeError('Paginator data must have at least one value.');
     }
@@ -50,18 +47,17 @@ module.exports = class Paginator {
 
   /**
    * Starts the paginator.
-   * @param {object} options
-   * @param {import('discord.js').CommandInteraction} options.interaction
-   * @param {number=} options.time
-   * @returns {Promise<void>}
    */
-  async start({ interaction, time = 60000 }) {
+  async start({ interaction, time = 60000 }: {
+    interaction: CommandInteraction,
+    time?: number,
+  }): Promise<void> {
     const message = await interaction.editReply({
       ...this.getPage(0),
       fetchReply: true,
     });
 
-    const filter = (i) => {
+    const filter = (i: CommandInteraction) => {
       return i.user.id === interaction.user.id;
     };
     const collector = message.createMessageComponentCollector({
@@ -79,7 +75,7 @@ module.exports = class Paginator {
    * @param {import('discord.js').InteractionCollector} collector
    * @returns {Promise<void>}
    */
-  async onClicked(interaction, collector) {
+  async onClicked(interaction: ButtonInteraction, collector: InteractionCollector<ButtonInteraction>): Promise<void> {
     if (interaction.customId === 'first') {
       if (this.currentPage === 0) {
         interaction.deferUpdate();
@@ -111,19 +107,16 @@ module.exports = class Paginator {
 
   /**
    * Listener for when the collector ends.
-   * @param {import('discord.js').CommandInteraction} interaction
-   * @returns {Promise<void>}
    */
-  async onEnd(interaction) {
+  async onEnd(interaction: CommandInteraction): Promise<void> {
     this.row.components.forEach((component) => component.setDisabled(true));
     await interaction.editReply({ components: [this.row] });
   }
 
   /**
    * Gets the send options for a page.
-   * @param {number} number
    */
-  getPage(number) {
+  getPage(number: number) {
     this.currentPage = number;
     this.row.components
       .find((component) => component.data.custom_id === 'currentPage')

@@ -8,12 +8,12 @@
   },
   "main": "src/app.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "deploy": "node scripts/deploy.js",
-    "undeploy": "node scripts/undeploy.js",
-    "deploy-global": "node scripts/deployGlobal.js",
-    "undeploy-global": "node scripts/undeployGlobal.js",
+    "start": "ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "deploy": "ts-node scripts/deploy.ts",
+    "undeploy": "ts-node scripts/undeploy.ts",
+    "deploy-global": "ts-node scripts/deployGlobal.ts",
+    "undeploy-global": "ts-node scripts/undeployGlobal.ts",
     "ncu:check": "npx npm-check-updates -x eslint",
     "ncu:update": "npx npm-check-updates -u -x eslint"
   },
@@ -34,7 +34,12 @@
     "winston": "^3.14.2"
   },
   "devDependencies": {
+    "@types/dotenv": "^6.1.1",
+    "@types/node": "^22.5.0",
+    "@types/winston": "^2.4.4",
     "eslint": "^8.57.0",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
   }
 }
