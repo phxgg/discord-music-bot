@@ -1,5 +1,11 @@
-import { ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
-import logger from "../../utils/logger";
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  PermissionFlagsBits,
+  SlashCommandBuilder,
+} from 'discord.js';
+
+import logger from '../../utils/logger';
 
 export default {
   data: new SlashCommandBuilder()
@@ -11,19 +17,30 @@ export default {
 
     const promises = [
       interaction.client.shard?.fetchClientValues('guilds.cache.size'),
-      interaction.client.shard?.broadcastEval(c => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
+      interaction.client.shard?.broadcastEval((c) =>
+        c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0),
+      ),
     ];
 
     Promise.all(promises)
-      .then(results => {
-        const totalGuilds = results[0]?.reduce((acc: any, guildCount: any) => acc + guildCount, 0);
-        const totalMembers = results[1]?.reduce((acc: any, memberCount: any) => acc + memberCount, 0);
+      .then((results) => {
+        const totalGuilds = results[0]?.reduce(
+          (acc: any, guildCount: any) => acc + guildCount,
+          0,
+        );
+        const totalMembers = results[1]?.reduce(
+          (acc: any, memberCount: any) => acc + memberCount,
+          0,
+        );
 
         const { heapUsed, heapTotal } = process.memoryUsage();
 
         const embed = new EmbedBuilder()
           .setTitle('Application Stats')
-          .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL() })
+          .setAuthor({
+            name: interaction.user.tag,
+            iconURL: interaction.user.displayAvatarURL(),
+          })
           .setTimestamp()
           .addFields(
             {
@@ -67,7 +84,9 @@ export default {
       })
       .catch((err) => {
         logger.error('There was an error while fetching stats.', err);
-        return interaction.editReply('There was an error while fetching stats.');
+        return interaction.editReply(
+          'There was an error while fetching stats.',
+        );
       });
   },
 };

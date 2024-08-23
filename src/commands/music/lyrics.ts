@@ -1,19 +1,33 @@
-import { ChatInputCommandInteraction, Colors, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  Colors,
+  EmbedBuilder,
+  SlashCommandBuilder,
+} from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
+
 import { MessageType } from '../../types/MessageType';
-import { createEmbedMessage } from '../../utils/funcs';
+import { createEmbedMessage, parseError } from '../../utils/funcs';
 import logger from '../../utils/logger';
-import { parseError } from '../../utils/funcs';
 
 export default {
   data: new SlashCommandBuilder()
     .setName('lyrics')
     .setDescription('Get song lyrics.')
-    .addStringOption(option => option.setName('query').setDescription('Song title. If empty we\'ll check for the current playing song.').setRequired(false)),
+    .addStringOption((option) =>
+      option
+        .setName('query')
+        .setDescription(
+          "Song title. If empty we'll check for the current playing song.",
+        )
+        .setRequired(false),
+    ),
   async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
-      return interaction.reply(createEmbedMessage(MessageType.Warning, 'Player is not ready.'));
+      return interaction.reply(
+        createEmbedMessage(MessageType.Warning, 'Player is not ready.'),
+      );
     }
 
     await interaction.deferReply();
@@ -23,7 +37,13 @@ export default {
       const queue = useQueue(interaction.guild!.id);
       if (!query) {
         if (!queue || !queue.isPlaying()) {
-          return interaction.editReply(createEmbedMessage(MessageType.Warning, 'You did not provide a song title, and the player is not playing anything.', true));
+          return interaction.editReply(
+            createEmbedMessage(
+              MessageType.Warning,
+              'You did not provide a song title, and the player is not playing anything.',
+              true,
+            ),
+          );
         } else {
           songToSearch = `${queue.currentTrack?.cleanTitle} ${queue.currentTrack?.author}`;
         }
@@ -31,9 +51,17 @@ export default {
         songToSearch = query;
       }
 
-      const lyricsResults = await player.lyrics.search({ q: songToSearch }).catch(() => null);
+      const lyricsResults = await player.lyrics
+        .search({ q: songToSearch })
+        .catch(() => null);
       const lyrics = lyricsResults?.[0];
-      if (!lyrics || !lyrics.plainLyrics) return interaction.editReply(createEmbedMessage(MessageType.Warning, `No lyrics found for \`${songToSearch}\`.`));
+      if (!lyrics || !lyrics.plainLyrics)
+        return interaction.editReply(
+          createEmbedMessage(
+            MessageType.Warning,
+            `No lyrics found for \`${songToSearch}\`.`,
+          ),
+        );
 
       const trimmedLyrics = lyrics.plainLyrics.substring(0, 1997);
 
@@ -46,7 +74,9 @@ export default {
           // iconURL: lyrics.artist.image,
           // url: lyrics.artist.url,
         })
-        .setDescription(trimmedLyrics.length === 1997 ? `${trimmedLyrics}...` : trimmedLyrics)
+        .setDescription(
+          trimmedLyrics.length === 1997 ? `${trimmedLyrics}...` : trimmedLyrics,
+        )
         .setFooter({
           text: 'Powered by LRCLIB',
         })
@@ -55,7 +85,12 @@ export default {
       return interaction.editReply({ embeds: [embed] });
     } catch (err) {
       logger.error(`${interaction.guild!.id} -> ${err}`);
-      return interaction.editReply(createEmbedMessage(MessageType.Error, `Something went wrong: ${parseError(err)}`));
+      return interaction.editReply(
+        createEmbedMessage(
+          MessageType.Error,
+          `Something went wrong: ${parseError(err)}`,
+        ),
+      );
     }
   },
 };

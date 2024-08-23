@@ -1,8 +1,9 @@
-import { ActivityType, Client, Events } from "discord.js";
-import logger from "../utils/logger";
-import { Player, PlayerInitOptions } from "discord-player";
-import { YoutubeiExtractor } from "discord-player-youtubei";
-import { registerPlayerEvents } from "../init/registerPlayerEvents";
+import { ActivityType, Client, Events } from 'discord.js';
+import { Player, PlayerInitOptions } from 'discord-player';
+import { YoutubeiExtractor } from 'discord-player-youtubei';
+
+import { registerPlayerEvents } from '../init/registerPlayerEvents';
+import logger from '../utils/logger';
 
 export default {
   name: Events.ClientReady,
@@ -40,7 +41,9 @@ export default {
         },
       });
       // load all default extractors except YouTubeExtractor since we are using YoutubeiExtractor
-      await player.extractors.loadDefault((ext) => !['YouTubeExtractor'].includes(ext));
+      await player.extractors.loadDefault(
+        (ext) => !['YouTubeExtractor'].includes(ext),
+      );
     } catch (err) {
       logger.error('Failed to register extractors.', err);
       process.exit(1);

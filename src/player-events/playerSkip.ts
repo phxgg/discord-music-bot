@@ -1,8 +1,9 @@
-import { GuildQueue, Track } from "discord-player";
-import logger from "../utils/logger";
-import { CommandInteraction } from "discord.js";
-import { createEmbedMessage } from "../utils/funcs";
-import { MessageType } from "../types/MessageType";
+import { CommandInteraction } from 'discord.js';
+import { GuildQueue, Track } from 'discord-player';
+
+import { MessageType } from '../types/MessageType';
+import { createEmbedMessage } from '../utils/funcs';
+import logger from '../utils/logger';
 
 export default {
   name: 'playerSkip',

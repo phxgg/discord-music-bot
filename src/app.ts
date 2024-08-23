@@ -1,9 +1,10 @@
 import 'dotenv/config';
 
-import { Client, GatewayIntentBits, Collection } from 'discord.js';
-import logger from './utils/logger';
-import { registerSlashCommands } from './init/registerSlashCommands';
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
+
 import { registerClientEvents } from './init/registerClientEvents';
+import { registerSlashCommands } from './init/registerSlashCommands';
+import logger from './utils/logger';
 
 process
   .on('unhandledRejection', (reason, p) => {
@@ -18,10 +19,7 @@ process
   try {
     // Discord client
     const client = new Client({
-      intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildVoiceStates,
-      ],
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates],
     });
 
     // Register Slash Commands
@@ -37,4 +35,4 @@ process
   } catch (err) {
     logger.error('Failed to initialize the bot.', err);
   }
-})()
+})();

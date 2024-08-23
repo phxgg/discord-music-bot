@@ -1,8 +1,9 @@
-import { GuildQueue } from "discord-player";
-import logger from "../utils/logger";
-import { CommandInteraction } from "discord.js";
-import { MessageType } from "../types/MessageType";
-import { cleanupQueue, createEmbedMessage } from "../utils/funcs";
+import { CommandInteraction } from 'discord.js';
+import { GuildQueue } from 'discord-player';
+
+import { MessageType } from '../types/MessageType';
+import { cleanupQueue, createEmbedMessage } from '../utils/funcs';
+import logger from '../utils/logger';
 
 export default {
   name: 'emptyChannel',
@@ -12,6 +13,11 @@ export default {
     // Bot will automatically leave the voice channel with this event
     const metadata = queue.metadata as CommandInteraction;
     await cleanupQueue(queue);
-    await metadata.channel?.send(createEmbedMessage(MessageType.Info, 'Leaving because no vc activity for the past 5 minutes'));
+    await metadata.channel?.send(
+      createEmbedMessage(
+        MessageType.Info,
+        'Leaving because no vc activity for the past 5 minutes',
+      ),
+    );
   },
 };

@@ -1,4 +1,3 @@
-import { GuildQueue, QueueRepeatMode } from "discord-player";
 import {
   ActionRowBuilder,
   ButtonBuilder,
@@ -9,12 +8,14 @@ import {
   InteractionCollector,
   Message,
   TextBasedChannel,
-} from "discord.js";
-import logger from "./logger";
-import { appConfig } from "../config/appConfig";
-import { MessageType } from "../types/MessageType";
-import inSameVoiceChannel from "../middleware/inSameVoiceChannel";
-import { createEmbedMessage, parseError } from "./funcs";
+} from 'discord.js';
+import { GuildQueue, QueueRepeatMode } from 'discord-player';
+
+import { appConfig } from '../config/appConfig';
+import inSameVoiceChannel from '../middleware/inSameVoiceChannel';
+import { MessageType } from '../types/MessageType';
+import { createEmbedMessage, parseError } from './funcs';
+import logger from './logger';
 
 const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
 const COLLECTOR_EXTRA_TIME = 10000;
@@ -32,7 +33,7 @@ function getLoopModeName(value: QueueRepeatMode): string {
     default:
       return 'Unknown';
   }
-};
+}
 
 export default class TrackBox {
   updateMessageInterval: NodeJS.Timeout | null = null;
@@ -71,9 +72,12 @@ export default class TrackBox {
   //     .setStyle(ButtonStyle.Danger),
   // );
 
-  constructor({ channel, queue }: {
-    channel: TextBasedChannel,
-    queue: GuildQueue
+  constructor({
+    channel,
+    queue,
+  }: {
+    channel: TextBasedChannel;
+    queue: GuildQueue;
   }) {
     if (!channel || !queue) {
       throw new TypeError('TrackBox constructor data cannot be empty.');
@@ -96,7 +100,8 @@ export default class TrackBox {
       this.resetCollectorTimerInterval = null;
     }
 
-    const time = (this.queue.currentTrack?.durationMS || 0) + COLLECTOR_EXTRA_TIME;
+    const time =
+      (this.queue.currentTrack?.durationMS || 0) + COLLECTOR_EXTRA_TIME;
     const resetTimer = () => this.collector?.resetTimer({ time: time });
     // immediately reset the timer
     resetTimer();
@@ -116,7 +121,8 @@ export default class TrackBox {
       clearInterval(this.resetCollectorTimerInterval);
       this.resetCollectorTimerInterval = null;
     }
-    const time = (this.queue.currentTrack?.durationMS || 0) + COLLECTOR_EXTRA_TIME;
+    const time =
+      (this.queue.currentTrack?.durationMS || 0) + COLLECTOR_EXTRA_TIME;
     const resetTimer = () => this.collector?.resetTimer({ time: time });
     // immediately reset the timer
     resetTimer();
@@ -133,9 +139,14 @@ export default class TrackBox {
   }
 
   private updatePauseButton() {
-    this.row.components.filter((component) => (component.data as any).custom_id === 'pause')[0]
+    this.row.components
+      .filter((component) => (component.data as any).custom_id === 'pause')[0]
       .setLabel(this.queue.node.isPaused() ? '⏵' : '⏸')
-      .setStyle(this.queue.node.isPaused() ? ButtonStyle.Primary : ButtonStyle.Secondary);
+      .setStyle(
+        this.queue.node.isPaused()
+          ? ButtonStyle.Primary
+          : ButtonStyle.Secondary,
+      );
   }
 
   /**
@@ -148,7 +159,10 @@ export default class TrackBox {
           components: [this.row], // , this.secondRow
         });
       } catch (err) {
-        logger.error(`updateMessageComponents() -> ${this.queue.guild.id}`, err);
+        logger.error(
+          `updateMessageComponents() -> ${this.queue.guild.id}`,
+          err,
+        );
       }
     }
   }
@@ -188,7 +202,9 @@ export default class TrackBox {
       .setAuthor({
         name: 'Now Playing',
       })
-      .setTitle(`${this.queue.currentTrack?.author} - ${this.queue.currentTrack?.title}`)
+      .setTitle(
+        `${this.queue.currentTrack?.author} - ${this.queue.currentTrack?.title}`,
+      )
       .setURL(this.queue.currentTrack?.url || '')
       .setDescription(progressBar)
       .setThumbnail(this.queue.currentTrack?.thumbnail || '')
@@ -243,7 +259,10 @@ export default class TrackBox {
     });
 
     // Update message each 10 seconds.
-    this.updateMessageInterval = setInterval(() => this.updateMessage(), UPDATE_MESSAGE_INTERVAL);
+    this.updateMessageInterval = setInterval(
+      () => this.updateMessage(),
+      UPDATE_MESSAGE_INTERVAL,
+    );
 
     this.collector = this.message.createMessageComponentCollector({
       time: (this.queue.currentTrack?.durationMS || 0) + COLLECTOR_EXTRA_TIME,
@@ -267,12 +286,25 @@ export default class TrackBox {
         return interaction.deferUpdate();
       }
 
-      await this.queue.history.previous().then(async () => {
-        interaction.update({ components: [], embeds: [], content: 'Going back...' });
-      }).catch(async (err) => {
-        interaction.deferUpdate();
-        interaction.channel?.send(createEmbedMessage(MessageType.Warning, `<@${interaction.user.id}> ` + (parseError(err) || 'An error occurred!')));
-      });
+      await this.queue.history
+        .previous()
+        .then(async () => {
+          interaction.update({
+            components: [],
+            embeds: [],
+            content: 'Going back...',
+          });
+        })
+        .catch(async (err) => {
+          interaction.deferUpdate();
+          interaction.channel?.send(
+            createEmbedMessage(
+              MessageType.Warning,
+              `<@${interaction.user.id}> ` +
+                (parseError(err) || 'An error occurred!'),
+            ),
+          );
+        });
     } else if (interaction.customId === 'pause') {
       if (this.queue) {
         // this.collector.resetTimer({ time: this.queue.currentTrack.durationMS + 30000 });
@@ -284,13 +316,22 @@ export default class TrackBox {
       if (!this.queue || !this.queue.node.skip()) {
         interaction.deferUpdate();
       } else {
-        await interaction.update({ components: [], embeds: [], content: 'Skipping...' });
+        await interaction.update({
+          components: [],
+          embeds: [],
+          content: 'Skipping...',
+        });
       }
     } else if (interaction.customId === 'shuffle') {
       interaction.deferUpdate();
       if (this.queue) {
         this.queue.tracks.shuffle();
-        await interaction.channel?.send(createEmbedMessage(MessageType.Info, `<@${interaction.user.id}> Shuffled the queue.`));
+        await interaction.channel?.send(
+          createEmbedMessage(
+            MessageType.Info,
+            `<@${interaction.user.id}> Shuffled the queue.`,
+          ),
+        );
       }
     } else if (interaction.customId === 'stop') {
       if (this.queue) {
@@ -338,4 +379,4 @@ export default class TrackBox {
     await this.updateMessageComponents();
     this.collector = null;
   }
-};
+}
