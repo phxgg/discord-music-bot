@@ -1,11 +1,11 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const { Player } = require('discord-player');
-const { Events, ActivityType } = require('discord.js');
-const logger = require('../utils/logger');
-const { YoutubeiExtractor } = require('discord-player-youtubei');
+import { ActivityType, Client, Events } from "discord.js";
+import logger from "../utils/logger";
+import { Player } from "discord-player";
+import { YoutubeiExtractor } from "discord-player-youtubei";
+import path from "path";
+import fs from "fs";
 
-module.exports = {
+export default {
   name: Events.ClientReady,
   once: true,
   /**
@@ -13,9 +13,9 @@ module.exports = {
    * @param {import('discord.js').Client} client
    * @returns {Promise<void>}
    */
-  async execute(client) {
-    logger.info(`Logged in as ${client.user.tag}`);
-    client.user.setActivity('music', { type: ActivityType.Listening });
+  async execute(client: Client) {
+    logger.info(`Logged in as ${client.user?.tag}`);
+    client.user?.setActivity('music', { type: ActivityType.Listening });
 
     // Player options
     /**
@@ -26,7 +26,7 @@ module.exports = {
       useLegacyFFmpeg: false,
     };
     if (process.env.ENABLE_IP_ROTATION === 'true') {
-      const ipv6Blocks = process.env.IPV6_BLOCKS.split(' ');
+      const ipv6Blocks = process.env.IPV6_BLOCKS?.split(' ');
       Object.assign(playerOptions, {
         ipconfig: {
           blocks: ipv6Blocks,
@@ -58,8 +58,15 @@ module.exports = {
 
     for (const file of playerEventFiles) {
       const filePath = path.join(playerEventsPath, file);
-      const event = require(filePath);
-      player.events.on(event.name, (...args) => event.execute(...args));
+      (async () => {
+        try {
+          const module = await import(filePath);
+          const event = module.default;
+          player.events.on(event.name, (...args: any) => event.execute(...args));
+        } catch (error) {
+          console.error(`Error loading player event at ${filePath}:`, error);
+        }
+      })();
     }
   },
 };

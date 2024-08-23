@@ -6,14 +6,15 @@
   "engines": {
     "node": ">=20"
   },
-  "main": "src/app.js",
+  "main": "dist/index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon --exec ts-node src/index.ts",
-    "deploy": "ts-node scripts/deploy.ts",
-    "undeploy": "ts-node scripts/undeploy.ts",
-    "deploy-global": "ts-node scripts/deployGlobal.ts",
-    "undeploy-global": "ts-node scripts/undeployGlobal.ts",
+    "build": "tsc",
+    "start": "node .",
+    "dev": "nodemon .",
+    "deploy": "node scripts/deploy.js",
+    "undeploy": "node scripts/undeploy.js",
+    "deploy-global": "node scripts/deployGlobal.js",
+    "undeploy-global": "node scripts/undeployGlobal.js",
     "ncu:check": "npx npm-check-updates -x eslint",
     "ncu:update": "npx npm-check-updates -u -x eslint"
   },

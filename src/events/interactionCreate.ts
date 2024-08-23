@@ -1,14 +1,14 @@
-const { Events } = require('discord.js');
-const logger = require('../utils/logger');
+import { Events, Interaction } from "discord.js";
+import logger from "../utils/logger";
 
-module.exports = {
+export default {
   name: Events.InteractionCreate,
   /**
    * This event runs when a user creates an interaction.
    * @param {import('discord.js').Interaction} interaction
    * @returns {Promise<void>}
    */
-  async execute(interaction) {
+  async execute(interaction: Interaction) {
     if (!interaction.isChatInputCommand()) return;
 
     const command = interaction.client.commands.get(interaction.commandName);

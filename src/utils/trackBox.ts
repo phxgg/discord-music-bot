@@ -1,21 +1,10 @@
-// const {
-//   ActionRowBuilder,
-//   ButtonBuilder,
-//   ButtonStyle,
-//   ComponentType,
-//   EmbedBuilder,
-// } = require('discord.js');
-// const MessageType = require('../types/MessageType');
-// const createEmbedMessage = require('./createEmbedMessage');
-// const { QueueRepeatMode, GuildQueueEvent } = require('discord-player');
-// const appConfig = require('../config/appConfig');
-// const logger = require('../utils/logger');
-// const { parseError } = require('./funcs');
-// const inSameVoiceChannel = require('../middleware/inSameVoiceChannel');
-
 import { GuildQueue, QueueRepeatMode } from "discord-player";
-import { ActionRowBuilder, AnyComponentBuilder, APIButtonComponent, ButtonBuilder, ButtonInteraction, ButtonStyle, InteractionCollector, Message, TextChannel } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, ComponentType, EmbedBuilder, InteractionCollector, Message, TextBasedChannel, TextChannel } from "discord.js";
 import logger from "./logger";
+import { appConfig } from "../config/appConfig";
+import { MessageType } from "../types/MessageType";
+import inSameVoiceChannel from "../middleware/inSameVoiceChannel";
+import { createEmbedMessage, parseError } from "./funcs";
 
 const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
 const COLLECTOR_EXTRA_TIME = 10000;
@@ -30,66 +19,56 @@ export default class TrackBox {
   updateMessageInterval: NodeJS.Timeout | null = null;
   resetCollectorTimerInterval: NodeJS.Timeout | null = null;
   collector: InteractionCollector<ButtonInteraction> | null = null;
-  channel: TextChannel;
+  channel: TextBasedChannel;
   queue: GuildQueue;
   message: Message | null = null;
-  row: ActionRowBuilder;
+  row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId('previous')
+      .setDisabled(true)
+      .setLabel('⏮')
+      .setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder()
+      .setCustomId('pause')
+      .setLabel('⏸')
+      .setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder()
+      .setCustomId('next')
+      .setLabel('⏭')
+      .setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder()
+      .setCustomId('shuffle')
+      .setLabel('🔀')
+      .setStyle(ButtonStyle.Secondary),
+    new ButtonBuilder()
+      .setCustomId('stop')
+      .setLabel('⏹')
+      .setStyle(ButtonStyle.Danger),
+  );
+  // secondRow = new ActionRowBuilder().addComponents(
+  //   new ButtonBuilder()
+  //     .setCustomId('stop')
+  //     .setLabel('⏹')
+  //     .setStyle(ButtonStyle.Danger),
+  // );
 
   constructor({ channel, queue }: {
-    channel: TextChannel,
+    channel: TextBasedChannel,
     queue: GuildQueue
   }) {
     if (!channel || !queue) {
       throw new TypeError('TrackBox constructor data cannot be empty.');
     }
-
-    this.updateMessageInterval = null;
-    this.resetCollectorTimerInterval = null;
-    this.collector = null;
     this.channel = channel;
     this.queue = queue;
-    /**
-     * @type {import('discord.js').Message} The message that will display the trackbox embed
-     */
-    this.message = null;
-    this.row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId('previous')
-        .setDisabled(true)
-        .setLabel('⏮')
-        .setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setCustomId('pause')
-        .setLabel('⏸')
-        .setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setCustomId('next')
-        .setLabel('⏭')
-        .setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setCustomId('shuffle')
-        .setLabel('🔀')
-        .setStyle(ButtonStyle.Secondary),
-      new ButtonBuilder()
-        .setCustomId('stop')
-        .setLabel('⏹')
-        .setStyle(ButtonStyle.Danger),
-    );
-    // this.secondRow = new ActionRowBuilder().addComponents(
-    //   new ButtonBuilder()
-    //     .setCustomId('stop')
-    //     .setLabel('⏹')
-    //     .setStyle(ButtonStyle.Danger),
-    // );
   }
 
   /**
    * This method should be called when the player gets paused.
    * This method will keep resetting the component collector timer so that the it won't time out when the player is paused.
    * If this method is not called, the component collector will be timed out and the buttons will be disabled.
-   * @returns {Promise<void>}
    */
-  async playerPause() {
+  public async playerPause(): Promise<void> {
     this.updatePauseButton();
     await this.updateMessageComponents();
 
@@ -109,9 +88,8 @@ export default class TrackBox {
   /**
    * This method should be called when the player gets resumed.
    * This method will reset things that were set by the playerPause() method.
-   * @returns {Promise<void>}
    */
-  async playerResume() {
+  public async playerResume(): Promise<void> {
     this.updatePauseButton();
     await this.updateMessageComponents();
 
@@ -135,17 +113,16 @@ export default class TrackBox {
     // this.secondRow.components.forEach((component) => component.setDisabled(true));
   }
 
-  updatePauseButton() {
-    this.row.components.filter((component) => component.data.custom_id === 'pause')[0]
+  private updatePauseButton() {
+    this.row.components.filter((component) => (component.data as any).custom_id === 'pause')[0]
       .setLabel(this.queue.node.isPaused() ? '⏵' : '⏸')
       .setStyle(this.queue.node.isPaused() ? ButtonStyle.Primary : ButtonStyle.Secondary);
   }
 
   /**
    * Updates the message components.
-   * @returns {Promise<void>}
    */
-  async updateMessageComponents() {
+  private async updateMessageComponents(): Promise<void> {
     if (this.message) {
       try {
         await this.message.edit({
@@ -159,9 +136,8 @@ export default class TrackBox {
 
   /**
    * Updates the trackbox message.
-   * @returns {Promise<void>}
    */
-  async updateMessage() {
+  async updateMessage(): Promise<void> {
     if (this.message) {
       try {
         this.updatePauseButton();
@@ -176,7 +152,7 @@ export default class TrackBox {
     }
   }
 
-  buildTrackBoxEmbed() {
+  public buildTrackBoxEmbed(): EmbedBuilder {
     if (!this.queue) {
       throw new TypeError('buildTrackBoxEmbed() -> queue cannot be empty.');
     }
@@ -193,19 +169,19 @@ export default class TrackBox {
       .setAuthor({
         name: 'Now Playing',
       })
-      .setTitle(`${this.queue.currentTrack.author} - ${this.queue.currentTrack.title}`)
-      .setURL(this.queue.currentTrack.url)
+      .setTitle(`${this.queue.currentTrack?.author} - ${this.queue.currentTrack?.title}`)
+      .setURL(this.queue.currentTrack?.url || '')
       .setDescription(progressBar)
-      .setThumbnail(this.queue.currentTrack.thumbnail)
+      .setThumbnail(this.queue.currentTrack?.thumbnail || '')
       .addFields(
         {
           name: 'Link',
-          value: `[Click](${this.queue.currentTrack.url})`,
+          value: `[Click](${this.queue.currentTrack?.url})`,
           inline: true,
         },
         {
           name: 'Duration',
-          value: `${this.queue.currentTrack.duration}`,
+          value: `${this.queue.currentTrack?.duration}`,
           inline: true,
         },
         {
@@ -215,7 +191,7 @@ export default class TrackBox {
         },
         {
           name: 'Requested by',
-          value: `<@${this.queue.currentTrack.requestedBy.id}>`,
+          value: `<@${this.queue.currentTrack?.requestedBy?.id}>`,
           inline: true,
         },
         {
@@ -225,7 +201,7 @@ export default class TrackBox {
         },
         {
           name: 'Loop',
-          value: `\`${getLoopModeName(this.queue.repeatMode)}\``,
+          value: `\`${getLoopModeName(this.queue.repeatMode.toString())}\``,
           inline: true,
         },
       )
@@ -235,9 +211,8 @@ export default class TrackBox {
 
   /**
    * Starts the trackbox.
-   * @returns {Promise<void>}
    */
-  async start() {
+  public async start(): Promise<void> {
     await this.destroy();
     this.updatePauseButton();
     this.enableButtons();
@@ -245,14 +220,14 @@ export default class TrackBox {
     this.message = await this.channel.send({
       embeds: [this.buildTrackBoxEmbed()],
       components: [this.row], // , this.secondRow
-      fetchReply: true,
+      // fetchReply: true,
     });
 
     // Update message each 10 seconds.
     this.updateMessageInterval = setInterval(() => this.updateMessage(), UPDATE_MESSAGE_INTERVAL);
 
     this.collector = this.message.createMessageComponentCollector({
-      time: this.queue.currentTrack.durationMS + COLLECTOR_EXTRA_TIME,
+      time: (this.queue.currentTrack?.durationMS || 0) + COLLECTOR_EXTRA_TIME,
       componentType: ComponentType.Button,
     });
     this.collector.on('collect', (i) => this.onClicked(i));
@@ -261,10 +236,8 @@ export default class TrackBox {
 
   /**
    * Listener for when a button is clicked.
-   * @param {import('discord.js').ButtonInteraction} interaction
-   * @returns {Promise<void>}
    */
-  async onClicked(interaction) {
+  async onClicked(interaction: ButtonInteraction) {
     // run the inSameVoiceChannel middleware
     if (!(await inSameVoiceChannel(interaction))) {
       return;
@@ -279,7 +252,7 @@ export default class TrackBox {
         interaction.update({ components: [], embeds: [], content: 'Going back...' });
       }).catch(async (err) => {
         interaction.deferUpdate();
-        interaction.channel.send(createEmbedMessage(MessageType.Warning, `<@${interaction.user.id}> ` + (parseError(err) || 'An error occurred!')));
+        interaction.channel?.send(createEmbedMessage(MessageType.Warning, `<@${interaction.user.id}> ` + (parseError(err) || 'An error occurred!')));
       });
     } else if (interaction.customId === 'pause') {
       if (this.queue) {
@@ -298,7 +271,7 @@ export default class TrackBox {
       interaction.deferUpdate();
       if (this.queue) {
         this.queue.tracks.shuffle();
-        await interaction.channel.send(createEmbedMessage(MessageType.Info, `<@${interaction.user.id}> Shuffled the queue.`));
+        await interaction.channel?.send(createEmbedMessage(MessageType.Info, `<@${interaction.user.id}> Shuffled the queue.`));
       }
     } else if (interaction.customId === 'stop') {
       if (this.queue) {
@@ -309,9 +282,8 @@ export default class TrackBox {
 
   /**
    * Deletes the trackbox message and stops the collector.
-   * @returns {Promise<void>}
    */
-  async destroy() {
+  async destroy(): Promise<void> {
     try {
       if (this.message) {
         await this.message.delete();
@@ -341,9 +313,8 @@ export default class TrackBox {
 
   /**
    * Listener for when the collector ends.
-   * @returns {Promise<void>}
    */
-  async onEnd() {
+  async onEnd(): Promise<void> {
     this.disableButtons();
     await this.updateMessageComponents();
     this.collector = null;

@@ -1,26 +1,23 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
-const logger = require('../../utils/logger');
+import { ChatInputCommandInteraction, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } from "discord.js";
+import logger from "../../utils/logger";
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('stats')
     .setDescription('Application stats')
     .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
-  /**
-   * @param {import('discord.js').CommandInteraction} interaction
-   */
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
 
     const promises = [
-      interaction.client.shard.fetchClientValues('guilds.cache.size'),
-      interaction.client.shard.broadcastEval(c => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
+      interaction.client.shard?.fetchClientValues('guilds.cache.size'),
+      interaction.client.shard?.broadcastEval(c => c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0)),
     ];
 
     Promise.all(promises)
       .then(results => {
-        const totalGuilds = results[0].reduce((acc, guildCount) => acc + guildCount, 0);
-        const totalMembers = results[1].reduce((acc, memberCount) => acc + memberCount, 0);
+        const totalGuilds = results[0]?.reduce((acc: any, guildCount: any) => acc + guildCount, 0);
+        const totalMembers = results[1]?.reduce((acc: any, memberCount: any) => acc + memberCount, 0);
 
         const { heapUsed, heapTotal } = process.memoryUsage();
 
@@ -41,12 +38,12 @@ module.exports = {
             },
             {
               name: 'Shards Count',
-              value: `\`${interaction.client.shard.count}\``,
+              value: `\`${interaction.client.shard?.count}\``,
               inline: true,
             },
             {
               name: 'Current Shard ID',
-              value: `\`${interaction.guild.shardId}\``,
+              value: `\`${interaction.guild?.shardId}\``,
               inline: true,
             },
             {

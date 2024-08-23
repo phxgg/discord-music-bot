@@ -1,12 +1,9 @@
-const logger = require('../utils/logger');
+import { GuildQueue } from "discord-player";
+import logger from "../utils/logger";
 
-module.exports = {
+export default {
   name: 'debug',
-  /**
-   * @param {import('discord-player').GuildQueue} queue 
-   * @param {*} message 
-   */
-  async execute(queue, message) {
+  async execute(queue: GuildQueue, message: any) {
     // Emitted when the player queue sends debug info
     // Useful for seeing what state the current queue is at
     logger.debug(`Player debug event -> ${queue.guild.id} -> ${message}`);
