@@ -283,7 +283,12 @@ export default class TrackBox {
 
     if (interaction.customId === 'previous') {
       if (!this.queue) {
-        return interaction.deferUpdate();
+        // If the queue is empty, do nothing
+        // We can use ButtonInteraction.deferUpdate() here.
+        // This will not show "This interaction failed", it replies with saying that you will edit it later,
+        // even though we do not have to edit it later.
+        interaction.deferUpdate();
+        return;
       }
 
       await this.queue.history
@@ -296,7 +301,9 @@ export default class TrackBox {
           });
         })
         .catch(async (err) => {
+          // do nothing on the trackbox message
           interaction.deferUpdate();
+          // send a message to the channel
           interaction.channel?.send(
             createEmbedMessage(
               MessageType.Warning,
