@@ -2,7 +2,6 @@ import {
   ButtonInteraction,
   ChatInputCommandInteraction,
   GuildMember,
-  Interaction,
 } from 'discord.js';
 
 import { MessageType } from '../types/MessageType';
@@ -27,6 +26,7 @@ export default async function inVoiceChannel(
       return false;
     }
     return true;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     return false;
   }

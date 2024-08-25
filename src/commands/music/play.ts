@@ -1,4 +1,5 @@
 import {
+  AutocompleteInteraction,
   ChatInputCommandInteraction,
   GuildMember,
   SlashCommandBuilder,
@@ -7,7 +8,11 @@ import { useMainPlayer } from 'discord-player';
 
 import inVoiceChannel from '../../middleware/inVoiceChannel';
 import { MessageType } from '../../types/MessageType';
-import { createEmbedMessage, parseError } from '../../utils/funcs';
+import {
+  createEmbedMessage,
+  parseError,
+  truncateString,
+} from '../../utils/funcs';
 import logger from '../../utils/logger';
 
 export default {
@@ -18,6 +23,7 @@ export default {
       option
         .setName('query')
         .setDescription('The song to play')
+        .setAutocomplete(true)
         .setRequired(true),
     ),
   middleware: [inVoiceChannel],
@@ -63,6 +69,32 @@ export default {
           `Something went wrong: ${parseError(err)}`,
         ),
       );
+    }
+  },
+  async autocomplete(interaction: AutocompleteInteraction) {
+    // Discord does not allow us to defer autocomplete interactions.
+    const player = useMainPlayer();
+    if (!player) {
+      return interaction.respond([]);
+    }
+    const query = interaction.options.getString('query', true);
+    if (!query || query.length < 3) {
+      return interaction.respond([]);
+    }
+    try {
+      const results = await player.search(query, {
+        requestedBy: interaction.user,
+      });
+      // Returns a list of songs with their title
+      return interaction.respond(
+        results.tracks.slice(0, 10).map((t) => ({
+          name: truncateString(t.title, 100),
+          value: t.url,
+        })),
+      );
+    } catch (err) {
+      logger.error(`${interaction.guild!.id} -> ${err}`);
+      return interaction.respond([]);
     }
   },
 };

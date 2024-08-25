@@ -1,4 +1,8 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import {
+  AutocompleteInteraction,
+  ChatInputCommandInteraction,
+  SlashCommandBuilder,
+} from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
 
 import inVoiceChannel from '../../middleware/inVoiceChannel';
@@ -16,6 +20,7 @@ export default {
       option
         .setName('query')
         .setDescription('The song to play')
+        .setAutocomplete(true)
         .setRequired(true),
     ),
   middleware: [inVoiceChannel],
@@ -64,5 +69,8 @@ export default {
         ),
       );
     }
+  },
+  async autocomplete(interaction: AutocompleteInteraction) {
+    return (await import('./play')).default.autocomplete(interaction);
   },
 };

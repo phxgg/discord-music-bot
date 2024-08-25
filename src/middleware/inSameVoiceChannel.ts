@@ -2,7 +2,6 @@ import type {
   ButtonInteraction,
   ChatInputCommandInteraction,
   GuildMember,
-  Interaction,
 } from 'discord.js';
 
 import { appConfig } from '../config/appConfig';
@@ -51,6 +50,7 @@ export default async function inSameVoiceChannel(
       return false;
     }
     return true;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (err) {
     return false;
   }
