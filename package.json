@@ -11,6 +11,8 @@
     "build": "tsc",
     "start": "node .",
     "format": "prettier --write \"src/**/*.ts\"",
+    "lint:check": "eslint --ext .ts src",
+    "lint:fix": "eslint --ext .ts src --fix",
     "preview": "tsc && node .",
     "dev": "concurrently \"tsc -w\" \"nodemon --watch dist dist/index.js\"",
     "deploy": "node scripts/deploy.js",

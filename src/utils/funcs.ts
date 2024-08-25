@@ -39,3 +39,12 @@ export function parseError(err: any): string {
     return err.name || 'Unknown error';
   }
 }
+
+export function truncateString(str: string, maxLength: number = 100): string {
+  const ellipsis = '...';
+
+  if (str.length > maxLength) {
+    return str.slice(0, maxLength - ellipsis.length) + ellipsis;
+  }
+  return str;
+}
