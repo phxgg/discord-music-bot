@@ -54,6 +54,10 @@ export default {
         nodeOptions: {
           // nodeOptions are the options for guild node (aka your queue in simple word)
           metadata: interaction, // we can access this metadata object using queue.metadata later on
+          leaveOnEmpty: true,
+          leaveOnEmptyCooldown: 60000, // leave vc after 1 minute of empty channel
+          leaveOnEnd: true,
+          leaveOnEndCooldown: 60000, // leave vc after 1 minute of end of queue
         },
         requestedBy: interaction.user, // who requested the track
       });
