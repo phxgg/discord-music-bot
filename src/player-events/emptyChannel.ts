@@ -16,7 +16,7 @@ export default {
     await metadata.channel?.send(
       createEmbedMessage(
         MessageType.Info,
-        'Leaving because no vc activity for the past 5 minutes',
+        'Leaving because no vc activity for the past 1 minute.',
       ),
     );
   },
