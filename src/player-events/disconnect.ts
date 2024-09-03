@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js';
+import { ChannelType, CommandInteraction } from 'discord.js';
 import { GuildQueue } from 'discord-player';
 
 import { MessageType } from '../types/MessageType';
@@ -12,11 +12,13 @@ export default {
     // Emitted when the bot leaves the voice channel
     const metadata = queue.metadata as CommandInteraction;
     await cleanupQueue(queue);
-    await metadata.channel?.send(
-      createEmbedMessage(
-        MessageType.Info,
-        'Looks like my job here is done, leaving now!',
-      ),
-    );
+    if (metadata.channel?.type === ChannelType.GuildText) {
+      await metadata.channel?.send(
+        createEmbedMessage(
+          MessageType.Info,
+          'Looks like my job here is done, leaving now!',
+        ),
+      );
+    }
   },
 };

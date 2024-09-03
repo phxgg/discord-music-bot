@@ -36,7 +36,7 @@ export default {
       await player.extractors.register(YoutubeiExtractor, {
         authentication: process.env.YT_EXTRACTOR_AUTH || '',
         streamOptions: {
-          useClient: 'iOS',
+          useClient: 'IOS',
           highWaterMark: 2 * 1024 * 1024, // 2MB, default is 512 KB (512 * 1024)
         },
       });
