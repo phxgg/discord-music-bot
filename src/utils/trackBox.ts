@@ -3,11 +3,12 @@ import {
   ButtonBuilder,
   ButtonInteraction,
   ButtonStyle,
+  ChannelType,
   ComponentType,
   EmbedBuilder,
+  GuildTextBasedChannel,
   InteractionCollector,
   Message,
-  TextBasedChannel,
 } from 'discord.js';
 import { GuildQueue, QueueRepeatMode } from 'discord-player';
 
@@ -39,7 +40,7 @@ export default class TrackBox {
   updateMessageInterval: NodeJS.Timeout | null = null;
   resetCollectorTimerInterval: NodeJS.Timeout | null = null;
   collector: InteractionCollector<ButtonInteraction> | null = null;
-  channel: TextBasedChannel;
+  channel: GuildTextBasedChannel;
   queue: GuildQueue;
   message: Message | null = null;
   row = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -76,7 +77,7 @@ export default class TrackBox {
     channel,
     queue,
   }: {
-    channel: TextBasedChannel;
+    channel: GuildTextBasedChannel;
     queue: GuildQueue;
   }) {
     if (!channel || !queue) {
@@ -304,13 +305,15 @@ export default class TrackBox {
           // do nothing on the trackbox message
           interaction.deferUpdate();
           // send a message to the channel
-          interaction.channel?.send(
-            createEmbedMessage(
-              MessageType.Warning,
-              `<@${interaction.user.id}> ` +
-                (parseError(err) || 'An error occurred!'),
-            ),
-          );
+          if (interaction.channel?.type === ChannelType.GuildText) {
+            interaction.channel.send(
+              createEmbedMessage(
+                MessageType.Warning,
+                `<@${interaction.user.id}> ` +
+                  (parseError(err) || 'An error occurred!'),
+              ),
+            );
+          }
         });
     } else if (interaction.customId === 'pause') {
       if (this.queue) {
@@ -333,12 +336,14 @@ export default class TrackBox {
       interaction.deferUpdate();
       if (this.queue) {
         this.queue.tracks.shuffle();
-        await interaction.channel?.send(
-          createEmbedMessage(
-            MessageType.Info,
-            `<@${interaction.user.id}> Shuffled the queue.`,
-          ),
-        );
+        if (interaction.channel?.type === ChannelType.GuildText) {
+          await interaction.channel?.send(
+            createEmbedMessage(
+              MessageType.Info,
+              `<@${interaction.user.id}> Shuffled the queue.`,
+            ),
+          );
+        }
       }
     } else if (interaction.customId === 'stop') {
       if (this.queue) {

@@ -1,4 +1,8 @@
-import { CommandInteraction } from 'discord.js';
+import {
+  ChannelType,
+  CommandInteraction,
+  GuildTextBasedChannel,
+} from 'discord.js';
 import { GuildQueue, Track } from 'discord-player';
 
 import { MessageType } from '../types/MessageType';
@@ -15,18 +19,20 @@ export default {
     if (process.env.ENABLE_TRACKBOX === 'true') {
       if (!queue.trackbox) {
         queue.trackbox = new TrackBox({
-          channel: metadata.channel!,
+          channel: metadata.channel! as GuildTextBasedChannel,
           queue: queue,
         });
       }
       queue.trackbox.start();
     } else {
-      await metadata.channel?.send(
-        createEmbedMessage(
-          MessageType.Info,
-          `Now playing **[${track.title}](${track.url})**!`,
-        ),
-      );
+      if (metadata.channel?.type === ChannelType.GuildText) {
+        await metadata.channel?.send(
+          createEmbedMessage(
+            MessageType.Info,
+            `Now playing **[${track.title}](${track.url})**!`,
+          ),
+        );
+      }
     }
   },
 };

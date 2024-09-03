@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js';
+import { ChannelType, CommandInteraction } from 'discord.js';
 import { GuildQueue } from 'discord-player';
 
 import { MessageType } from '../types/MessageType';
@@ -13,11 +13,13 @@ export default {
     // Bot will automatically leave the voice channel with this event
     const metadata = queue.metadata as CommandInteraction;
     await cleanupQueue(queue);
-    await metadata.channel?.send(
-      createEmbedMessage(
-        MessageType.Info,
-        'Leaving because no vc activity for the past 1 minute.',
-      ),
-    );
+    if (metadata.channel?.type === ChannelType.GuildText) {
+      await metadata.channel?.send(
+        createEmbedMessage(
+          MessageType.Info,
+          'Leaving because no vc activity for the past 1 minute.',
+        ),
+      );
+    }
   },
 };

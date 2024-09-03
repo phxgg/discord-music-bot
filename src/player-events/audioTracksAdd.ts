@@ -1,4 +1,4 @@
-import { CommandInteraction } from 'discord.js';
+import { ChannelType, CommandInteraction } from 'discord.js';
 import { GuildQueue, Track } from 'discord-player';
 
 import { MessageType } from '../types/MessageType';
@@ -11,13 +11,16 @@ export default {
     logger.info(`${queue.guild.id} -> audioTracksAdd event`);
     // Emitted when the player adds multiple songs to its queue
     const metadata = queue.metadata as CommandInteraction;
-    await metadata.channel?.send(
-      createEmbedMessage(
-        MessageType.Success,
-        tracks[0].playlist?.title
-          ? `Added ${tracks.length} tracks from playlist **[${tracks[0].playlist?.title}](${tracks[0].playlist?.url})** to queue.`
-          : `Added ${tracks.length} tracks to queue.`,
-      ),
-    );
+    // Check if the channel is a guild text channel
+    if (metadata.channel?.type === ChannelType.GuildText) {
+      await metadata.channel?.send(
+        createEmbedMessage(
+          MessageType.Success,
+          tracks[0].playlist?.title
+            ? `Added ${tracks.length} tracks from playlist **[${tracks[0].playlist?.title}](${tracks[0].playlist?.url})** to queue.`
+            : `Added ${tracks.length} tracks to queue.`,
+        ),
+      );
+    }
   },
 };
