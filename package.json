@@ -19,8 +19,8 @@
     "undeploy": "node scripts/undeploy.js",
     "deploy-global": "node scripts/deployGlobal.js",
     "undeploy-global": "node scripts/undeployGlobal.js",
-    "ncu:check": "npx npm-check-updates -x eslint",
-    "ncu:update": "npx npm-check-updates -u -x eslint"
+    "ncu:check": "npx npm-check-updates -x @types/node,eslint",
+    "ncu:update": "npx npm-check-updates -u -x @types/node,eslint"
   },
   "keywords": [
     "discord",
@@ -40,10 +40,10 @@
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
-    "@types/node": "^22.7.4",
+    "@types/node": "^20.16.11",
     "@types/winston": "^2.4.4",
-    "@typescript-eslint/eslint-plugin": "^8.8.0",
-    "@typescript-eslint/parser": "^8.8.0",
+    "@typescript-eslint/eslint-plugin": "^8.8.1",
+    "@typescript-eslint/parser": "^8.8.1",
     "concurrently": "^9.0.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -51,6 +51,6 @@
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.3"
   }
 }
