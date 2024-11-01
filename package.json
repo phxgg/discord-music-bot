@@ -29,6 +29,9 @@
     "discord.js",
     "node.js"
   ],
+  "_moduleAliases": {
+    "@": "./dist"
+  },
   "dependencies": {
     "@discord-player/extractor": "^4.5.1",
     "discord-player": "^6.7.1",
@@ -42,6 +45,7 @@
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.14.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
+    "@types/module-alias": "^2.0.4",
     "@types/node": "^20.16.11",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^8.12.2",
@@ -51,9 +55,9 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.11.0",
+    "module-alias": "^2.2.3",
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
-    "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
   }
 }
