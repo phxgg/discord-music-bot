@@ -4,9 +4,9 @@ import type {
   GuildMember,
 } from 'discord.js';
 
-import { appConfig } from '../config/appConfig';
-import { MessageType } from '../types/MessageType';
-import { createEmbedMessage } from '../utils/funcs';
+import { MessageType } from '@/types/MessageType';
+import { appConfig } from '@/config/appConfig';
+import { createEmbedMessage } from '@/utils/funcs';
 
 /**
  * Middleware to check if the user is connected in the same voice channel as the bot.

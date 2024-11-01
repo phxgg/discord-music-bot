@@ -1,9 +1,9 @@
 import { ChannelType, CommandInteraction } from 'discord.js';
 import { GuildQueue, Track } from 'discord-player';
 
-import { MessageType } from '../types/MessageType';
-import { createEmbedMessage } from '../utils/funcs';
-import logger from '../utils/logger';
+import { MessageType } from '@/types/MessageType';
+import { createEmbedMessage } from '@/utils/funcs';
+import logger from '@/utils/logger';
 
 export default {
   name: 'audioTracksAdd',

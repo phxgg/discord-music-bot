@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Client } from 'discord.js';
 
-import logger from '../utils/logger';
+import logger from '@/utils/logger';
 
 export async function registerSlashCommands(client: Client) {
   const foldersPath = path.join(__dirname, '..', 'commands');

@@ -5,7 +5,7 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 
-import logger from '../../utils/logger';
+import logger from '@/utils/logger';
 
 export default {
   data: new SlashCommandBuilder()

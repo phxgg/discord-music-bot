@@ -1,9 +1,9 @@
 import { ActivityType, Client, Events } from 'discord.js';
 import { Player, PlayerInitOptions } from 'discord-player';
+import { registerPlayerEvents } from '@/init/registerPlayerEvents';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
 
-import { registerPlayerEvents } from '../init/registerPlayerEvents';
-import logger from '../utils/logger';
+import logger from '@/utils/logger';
 
 export default {
   name: Events.ClientReady,

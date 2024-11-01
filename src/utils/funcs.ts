@@ -1,7 +1,8 @@
 import { EmbedBuilder } from 'discord.js';
 import { GuildQueue } from 'discord-player';
 
-import { MessageType } from '../types/MessageType';
+import { MessageType } from '@/types/MessageType';
+
 import logger from './logger';
 
 /**

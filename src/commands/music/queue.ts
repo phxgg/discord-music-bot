@@ -6,10 +6,10 @@ import {
 } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
 
-import { MessageType } from '../../types/MessageType';
-import { createEmbedMessage, parseError } from '../../utils/funcs';
-import logger from '../../utils/logger';
-import Paginator from '../../utils/paginator';
+import { MessageType } from '@/types/MessageType';
+import { createEmbedMessage, parseError } from '@/utils/funcs';
+import logger from '@/utils/logger';
+import Paginator from '@/utils/paginator';
 
 export default {
   data: new SlashCommandBuilder()
