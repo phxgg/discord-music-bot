@@ -19,8 +19,8 @@
     "undeploy": "node scripts/undeploy.js",
     "deploy-global": "node scripts/deployGlobal.js",
     "undeploy-global": "node scripts/undeployGlobal.js",
-    "ncu:check": "npx npm-check-updates -x eslint",
-    "ncu:update": "npx npm-check-updates -u -x eslint"
+    "ncu:check": "npx npm-check-updates -x @types/node,eslint",
+    "ncu:update": "npx npm-check-updates -u -x @types/node,eslint"
   },
   "keywords": [
     "discord",
@@ -32,25 +32,25 @@
   "dependencies": {
     "@discord-player/extractor": "^4.5.1",
     "discord-player": "^6.7.1",
-    "discord-player-youtubei": "^1.3.1",
-    "discord.js": "^14.16.1",
+    "discord-player-youtubei": "^1.3.4",
+    "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
     "mediaplex": "^0.0.9",
-    "winston": "^3.14.2"
+    "winston": "^3.15.0"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
-    "@types/node": "^22.5.2",
+    "@types/node": "^20.16.11",
     "@types/winston": "^2.4.4",
-    "@typescript-eslint/eslint-plugin": "^8.4.0",
-    "@typescript-eslint/parser": "^8.4.0",
-    "concurrently": "^8.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
+    "concurrently": "^9.0.1",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "nodemon": "^3.1.4",
+    "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.3"
   }
 }
