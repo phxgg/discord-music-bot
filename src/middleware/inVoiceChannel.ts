@@ -4,8 +4,8 @@ import {
   GuildMember,
 } from 'discord.js';
 
-import { MessageType } from '../types/MessageType';
-import { createEmbedMessage } from '../utils/funcs';
+import { MessageType } from '@/types/MessageType';
+import { createEmbedMessage } from '@/utils/funcs';
 
 /**
  * Middleware to check if the user is currently connected in a voice channel.

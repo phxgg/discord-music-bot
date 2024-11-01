@@ -12,9 +12,10 @@ import {
 } from 'discord.js';
 import { GuildQueue, QueueRepeatMode } from 'discord-player';
 
-import { appConfig } from '../config/appConfig';
-import inSameVoiceChannel from '../middleware/inSameVoiceChannel';
-import { MessageType } from '../types/MessageType';
+import { MessageType } from '@/types/MessageType';
+import { appConfig } from '@/config/appConfig';
+import inSameVoiceChannel from '@/middleware/inSameVoiceChannel';
+
 import { createEmbedMessage, parseError } from './funcs';
 import logger from './logger';
 

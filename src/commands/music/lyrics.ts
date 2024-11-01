@@ -6,9 +6,9 @@ import {
 } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
 
-import { MessageType } from '../../types/MessageType';
-import { createEmbedMessage, parseError } from '../../utils/funcs';
-import logger from '../../utils/logger';
+import { MessageType } from '@/types/MessageType';
+import { createEmbedMessage, parseError } from '@/utils/funcs';
+import logger from '@/utils/logger';
 
 export default {
   data: new SlashCommandBuilder()

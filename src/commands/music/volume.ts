@@ -1,14 +1,10 @@
-import {
-  ChatInputCommandInteraction,
-  GuildMember,
-  SlashCommandBuilder,
-} from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { useMainPlayer, useQueue, useTimeline } from 'discord-player';
 
-import inSameVoiceChannel from '../../middleware/inSameVoiceChannel';
-import { MessageType } from '../../types/MessageType';
-import { createEmbedMessage, parseError } from '../../utils/funcs';
-import logger from '../../utils/logger';
+import { MessageType } from '@/types/MessageType';
+import { createEmbedMessage, parseError } from '@/utils/funcs';
+import logger from '@/utils/logger';
+import inSameVoiceChannel from '@/middleware/inSameVoiceChannel';
 
 export default {
   data: new SlashCommandBuilder()
