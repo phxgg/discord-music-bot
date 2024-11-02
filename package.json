@@ -39,7 +39,7 @@
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.5",
     "mediaplex": "^0.0.9",
-    "winston": "^3.15.0"
+    "winston": "^3.16.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
