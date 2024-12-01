@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.15.0",
+    "@eslint/js": "^9.16.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
     "@types/module-alias": "^2.0.4",
     "@types/node": "^20.16.11",
@@ -57,6 +57,6 @@
     "module-alias": "^2.2.3",
     "nodemon": "^3.1.7",
     "prettier": "^3.4.1",
-    "typescript": "^5.6.3"
+    "typescript": "^5.7.2"
   }
 }
