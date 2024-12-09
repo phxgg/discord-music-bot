@@ -4,7 +4,7 @@
   "description": "A simple discord music bot",
   "author": "phxgg",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "main": "dist/index.js",
   "scripts": {
@@ -19,8 +19,8 @@
     "undeploy": "node scripts/undeploy.js",
     "deploy-global": "node scripts/deployGlobal.js",
     "undeploy-global": "node scripts/undeployGlobal.js",
-    "ncu:check": "npx npm-check-updates -x @types/node",
-    "ncu:update": "npx npm-check-updates -u -x @types/node"
+    "ncu:check": "npx npm-check-updates",
+    "ncu:update": "npx npm-check-updates -u"
   },
   "keywords": [
     "discord",
@@ -46,9 +46,9 @@
     "@eslint/js": "^9.16.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
     "@types/module-alias": "^2.0.4",
-    "@types/node": "^20.16.11",
-    "@typescript-eslint/eslint-plugin": "^8.17.0",
-    "@typescript-eslint/parser": "^8.17.0",
+    "@types/node": "^22.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
     "concurrently": "^9.1.0",
     "eslint": "^9",
     "eslint-config-prettier": "^9.1.0",
