@@ -4,7 +4,7 @@
   "description": "A simple discord music bot",
   "author": "phxgg",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "main": "dist/index.js",
   "scripts": {
@@ -19,8 +19,8 @@
     "undeploy": "node scripts/undeploy.js",
     "deploy-global": "node scripts/deployGlobal.js",
     "undeploy-global": "node scripts/undeployGlobal.js",
-    "ncu:check": "npx npm-check-updates -x @types/node",
-    "ncu:update": "npx npm-check-updates -u -x @types/node"
+    "ncu:check": "npx npm-check-updates",
+    "ncu:update": "npx npm-check-updates -u"
   },
   "keywords": [
     "discord",
@@ -35,28 +35,28 @@
   "dependencies": {
     "@discord-player/extractor": "^4.5.1",
     "discord-player": "^6.7.1",
-    "discord-player-youtubei": "^1.3.5",
+    "discord-player-youtubei": "^1.3.6",
     "discord.js": "^14.16.3",
-    "dotenv": "^16.4.5",
-    "mediaplex": "^0.0.9",
+    "dotenv": "^16.4.7",
+    "mediaplex": "^1.0.0",
     "winston": "^3.17.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.15.0",
+    "@eslint/js": "^9.16.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
     "@types/module-alias": "^2.0.4",
-    "@types/node": "^20.16.11",
-    "@typescript-eslint/eslint-plugin": "^8.14.0",
-    "@typescript-eslint/parser": "^8.14.0",
+    "@types/node": "^22.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
     "concurrently": "^9.1.0",
     "eslint": "^9",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "globals": "^15.12.0",
+    "globals": "^15.13.0",
     "module-alias": "^2.2.3",
     "nodemon": "^3.1.7",
-    "prettier": "^3.3.3",
-    "typescript": "^5.6.3"
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2"
   }
 }
