@@ -1,6 +1,7 @@
 import { ActivityType, Client, Events } from 'discord.js';
 import { Player, PlayerInitOptions } from 'discord-player';
 import { registerPlayerEvents } from '@/init/registerPlayerEvents';
+import { DefaultExtractors } from '@discord-player/extractor';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
 
 import logger from '@/utils/logger';
@@ -16,23 +17,21 @@ export default {
     client.user?.setActivity('music', { type: ActivityType.Listening });
 
     // Player options
-    const playerOptions: Omit<PlayerInitOptions, 'ignoreInstance'> = {
+    const playerOptions: PlayerInitOptions = {
       skipFFmpeg: false,
-      useLegacyFFmpeg: false,
     };
-    if (process.env.ENABLE_IP_ROTATION === 'true') {
-      const ipv6Blocks = process.env.IPV6_BLOCKS?.split(' ');
-      Object.assign(playerOptions, {
-        ipconfig: {
-          blocks: ipv6Blocks,
-        },
-      });
-    }
+    // if (process.env.ENABLE_IP_ROTATION === 'true') {
+    //   const ipv6Blocks = process.env.IPV6_BLOCKS?.split(' ');
+    //   Object.assign(playerOptions, {
+    //     ipconfig: {
+    //       blocks: ipv6Blocks,
+    //     },
+    //   });
+    // }
 
     // Initialize discord player
-    const player = Player.singleton(client, playerOptions);
+    const player = new Player(client, playerOptions);
     try {
-      // await player.extractors.loadDefault();
       await player.extractors.register(YoutubeiExtractor, {
         authentication: process.env.YT_EXTRACTOR_AUTH || '',
         streamOptions: {
@@ -40,10 +39,8 @@ export default {
           highWaterMark: 2 * 1024 * 1024, // 2MB, default is 512 KB (512 * 1024)
         },
       });
-      // load all default extractors except YouTubeExtractor since we are using YoutubeiExtractor
-      await player.extractors.loadDefault(
-        (ext) => !['YouTubeExtractor'].includes(ext),
-      );
+      // load all default extractors
+      await player.extractors.loadMulti(DefaultExtractors);
     } catch (err) {
       logger.error('Failed to register extractors.', err);
       process.exit(1);

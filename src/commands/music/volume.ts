@@ -37,12 +37,17 @@ export default {
       );
     }
 
-    const { setVolume } = useTimeline(interaction.guild!.id)!;
+    const timeline = useTimeline({ node: interaction.guild!.id });
+    if (!timeline) {
+      return interaction.reply(
+        createEmbedMessage(MessageType.Warning, 'Timeline is not ready.'),
+      );
+    }
 
     try {
       // const value = interaction.options.getString('value', true); // we need input/query to play
       const value = interaction.options.getNumber('value', true);
-      setVolume(value);
+      timeline.setVolume(value);
       return interaction.reply(
         createEmbedMessage(MessageType.Info, `Volume set to ${value}.`),
       );
