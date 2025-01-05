@@ -1,12 +1,12 @@
 import { ChannelType, CommandInteraction } from 'discord.js';
-import { GuildQueue } from 'discord-player';
+import { GuildQueue, GuildQueueEvent } from 'discord-player';
 
 import { MessageType } from '@/types/MessageType';
 import { cleanupQueue, createEmbedMessage } from '@/utils/funcs';
 import logger from '@/utils/logger';
 
 export default {
-  name: 'disconnect',
+  name: GuildQueueEvent.Disconnect,
   async execute(queue: GuildQueue) {
     logger.info(`${queue.guild.id} -> disconnect event`);
     // Emitted when the bot leaves the voice channel
