@@ -1,4 +1,5 @@
 import { Events, Interaction } from 'discord.js';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import logger from '@/utils/logger';
 
@@ -11,7 +12,9 @@ export default {
     if (!interaction.isChatInputCommand() && !interaction.isAutocomplete())
       return;
 
-    const command = interaction.client.commands?.get(interaction.commandName);
+    const command = interaction.client.commands?.get(
+      interaction.commandName,
+    ) as IBaseCommand;
     if (!command) {
       console.error(
         `No command matching ${interaction.commandName} was found.`,
