@@ -34,12 +34,22 @@ for (const folder of commandFolders) {
   // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
   for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
-    const module = require(filePath);
-    const command = module.default;
-    if ('data' in command && 'execute' in command) {
-      commands.push(command.data.toJSON());
-    } else {
-      console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+    try {
+      // Dynamically import the command module
+      const module = require(filePath);
+      if (module.default && typeof module.default === 'function') {
+        const CommandClass = module.default;
+        const command = new CommandClass();
+        if ('data' in command && 'execute' in command) {
+          commands.push(command.data.toJSON());
+        } else {
+          console.warn(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+        }
+      } else {
+        console.warn(`[WARNING] The module at ${filePath} does not export a valid command class.`);
+      }
+    } catch (err) {
+      console.error(`[ERROR] Failed to load command at ${filePath}.`);
     }
   }
 }

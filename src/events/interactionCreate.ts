@@ -22,7 +22,13 @@ export default {
     // Handle autocomplete interactions and return early
     if (interaction.isAutocomplete()) {
       try {
-        await command.autocomplete(interaction);
+        if (typeof command.autocomplete === 'function') {
+          await command.autocomplete(interaction);
+        } else {
+          logger.warn(
+            `Autocomplete is not implemented for command '${interaction.commandName}'.`,
+          );
+        }
       } catch (err) {
         logger.error(
           `Error executing autocomplete for command '${interaction.commandName}'`,
@@ -34,7 +40,7 @@ export default {
 
     // Handle command interactions and execute the command
     try {
-      if ('middleware' in command) {
+      if (Array.isArray(command.middleware)) {
         for (const middleware of command.middleware) {
           const result = await middleware(interaction);
           if (!result) {
@@ -43,7 +49,14 @@ export default {
           }
         }
       }
-      await command.execute(interaction);
+      // Execute the main command logic
+      if (typeof command.execute === 'function') {
+        await command.execute(interaction);
+      } else {
+        logger.warn(
+          `Execute is not implemented for command '${interaction.commandName}'.`,
+        );
+      }
     } catch (err) {
       logger.error(`Error executing '${interaction.commandName}'`, err);
     }

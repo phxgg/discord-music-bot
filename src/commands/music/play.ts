@@ -5,14 +5,15 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { useMainPlayer } from 'discord-player';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
 import { createEmbedMessage, parseError, truncateString } from '@/utils/funcs';
 import logger from '@/utils/logger';
 import inVoiceChannel from '@/middleware/inVoiceChannel';
 
-export default {
-  data: new SlashCommandBuilder()
+export default class PlayCommand implements IBaseCommand {
+  data = new SlashCommandBuilder()
     .setName('play')
     .setDescription('Play a track.')
     .addStringOption((option) =>
@@ -21,8 +22,10 @@ export default {
         .setDescription('The song to play')
         .setAutocomplete(true)
         .setRequired(true),
-    ),
-  middleware: [inVoiceChannel],
+    );
+
+  middleware = [inVoiceChannel];
+
   async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
@@ -70,7 +73,8 @@ export default {
         ),
       );
     }
-  },
+  }
+
   async autocomplete(interaction: AutocompleteInteraction) {
     // Discord does not allow us to defer autocomplete interactions.
     const player = useMainPlayer();
@@ -96,5 +100,5 @@ export default {
       logger.error(`${interaction.guild!.id} -> ${err}`);
       return interaction.respond([]);
     }
-  },
-};
+  }
+}

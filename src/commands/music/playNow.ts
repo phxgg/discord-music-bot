@@ -4,14 +4,17 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
 import { createEmbedMessage, parseError } from '@/utils/funcs';
 import logger from '@/utils/logger';
 import inVoiceChannel from '@/middleware/inVoiceChannel';
 
-export default {
-  data: new SlashCommandBuilder()
+import PlayCommand from './play';
+
+export default class PlayNowCommand implements IBaseCommand {
+  data = new SlashCommandBuilder()
     .setName('playnow')
     .setDescription(
       'Insert a track at the top of the queue and skip current track.',
@@ -22,8 +25,10 @@ export default {
         .setDescription('The song to play')
         .setAutocomplete(true)
         .setRequired(true),
-    ),
-  middleware: [inVoiceChannel],
+    );
+
+  middleware = [inVoiceChannel];
+
   async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
@@ -69,8 +74,9 @@ export default {
         ),
       );
     }
-  },
+  }
+
   async autocomplete(interaction: AutocompleteInteraction) {
-    return (await import('./play')).default.autocomplete(interaction);
-  },
-};
+    return PlayCommand.prototype.autocomplete(interaction);
+  }
+}

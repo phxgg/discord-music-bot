@@ -5,16 +5,18 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
 import { createEmbedMessage, parseError } from '@/utils/funcs';
 import logger from '@/utils/logger';
 import Paginator from '@/utils/paginator';
 
-export default {
-  data: new SlashCommandBuilder()
+export default class QueueCommand implements IBaseCommand {
+  data = new SlashCommandBuilder()
     .setName('queue')
-    .setDescription('Display current queue.'),
+    .setDescription('Display current queue.');
+
   async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
@@ -73,5 +75,5 @@ export default {
         ),
       );
     }
-  },
-};
+  }
+}

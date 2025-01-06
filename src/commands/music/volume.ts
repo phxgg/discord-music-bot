@@ -1,13 +1,14 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { useMainPlayer, useQueue, useTimeline } from 'discord-player';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
 import { createEmbedMessage, parseError } from '@/utils/funcs';
 import logger from '@/utils/logger';
 import inSameVoiceChannel from '@/middleware/inSameVoiceChannel';
 
-export default {
-  data: new SlashCommandBuilder()
+export default class VolumeCommand implements IBaseCommand {
+  data = new SlashCommandBuilder()
     .setName('volume')
     .setDescription('Adjust the player volume.')
     .addNumberOption((option) =>
@@ -17,8 +18,10 @@ export default {
         .setRequired(true)
         .setMaxValue(100)
         .setMinValue(0),
-    ),
-  middleware: [inSameVoiceChannel],
+    );
+
+  middleware = [inSameVoiceChannel];
+
   /**
    * @param {import('discord.js').CommandInteraction} interaction
    */
@@ -60,5 +63,5 @@ export default {
         ),
       );
     }
-  },
-};
+  }
+}

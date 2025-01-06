@@ -4,14 +4,17 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
 import { createEmbedMessage, parseError } from '@/utils/funcs';
 import logger from '@/utils/logger';
 import inVoiceChannel from '@/middleware/inVoiceChannel';
 
-export default {
-  data: new SlashCommandBuilder()
+import PlayCommand from './play';
+
+export default class PlayNextCommand implements IBaseCommand {
+  data = new SlashCommandBuilder()
     .setName('playnext')
     .setDescription('Insert a track at the top of the queue.')
     .addStringOption((option) =>
@@ -20,8 +23,10 @@ export default {
         .setDescription('The song to insert')
         .setAutocomplete(true)
         .setRequired(true),
-    ),
-  middleware: [inVoiceChannel],
+    );
+
+  middleware = [inVoiceChannel];
+
   async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
@@ -66,9 +71,10 @@ export default {
         ),
       );
     }
-  },
+  }
+
   // autcomplete function is the same as in the play command, so we can import it from there
   async autocomplete(interaction: AutocompleteInteraction) {
-    return (await import('./play')).default.autocomplete(interaction);
-  },
-};
+    return PlayCommand.prototype.autocomplete(interaction);
+  }
+}

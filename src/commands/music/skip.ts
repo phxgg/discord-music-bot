@@ -1,16 +1,19 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
 import { createEmbedMessage, parseError } from '@/utils/funcs';
 import logger from '@/utils/logger';
 import inSameVoiceChannel from '@/middleware/inSameVoiceChannel';
 
-export default {
-  data: new SlashCommandBuilder()
+export default class SkipCommand implements IBaseCommand {
+  data = new SlashCommandBuilder()
     .setName('skip')
-    .setDescription('Skip current track.'),
-  middleware: [inSameVoiceChannel],
+    .setDescription('Skip current track.');
+
+  middleware = [inSameVoiceChannel];
+
   async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
@@ -45,5 +48,5 @@ export default {
         ),
       );
     }
-  },
-};
+  }
+}
