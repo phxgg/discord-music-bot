@@ -1,12 +1,12 @@
 import { ChannelType, CommandInteraction } from 'discord.js';
-import { GuildQueue } from 'discord-player';
+import { GuildQueue, GuildQueueEvent } from 'discord-player';
 
 import { MessageType } from '@/types/MessageType';
 import { cleanupQueue, createEmbedMessage } from '@/utils/funcs';
 import logger from '@/utils/logger';
 
 export default {
-  name: 'queueDelete',
+  name: GuildQueueEvent.QueueDelete,
   async execute(queue: GuildQueue) {
     logger.info(`${queue.guild.id} -> queueDelete event`);
     // Emitted when the player queue has been deleted

@@ -1,16 +1,19 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
 import { createEmbedMessage, parseError } from '@/utils/funcs';
 import logger from '@/utils/logger';
 import inSameVoiceChannel from '@/middleware/inSameVoiceChannel';
 
-export default {
-  data: new SlashCommandBuilder()
+export default class PauseCommand implements IBaseCommand {
+  data = new SlashCommandBuilder()
     .setName('pause')
-    .setDescription('Pause/resume player.'),
-  middleware: [inSameVoiceChannel],
+    .setDescription('Pause/resume player.');
+
+  middleware = [inSameVoiceChannel];
+
   async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
@@ -43,5 +46,5 @@ export default {
         ),
       );
     }
-  },
-};
+  }
+}

@@ -1,10 +1,10 @@
 import { CommandInteraction } from 'discord.js';
-import { GuildQueue, Track } from 'discord-player';
+import { GuildQueue, GuildQueueEvent, Track } from 'discord-player';
 
 import logger from '@/utils/logger';
 
 export default {
-  name: 'playerSkip',
+  name: GuildQueueEvent.PlayerSkip,
   async execute(queue: GuildQueue, track: Track) {
     logger.info(`${queue.guild.id} -> playerSkip event`);
     // Emitted when the audio player fails to load the stream for a song

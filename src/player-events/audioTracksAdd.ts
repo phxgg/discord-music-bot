@@ -1,12 +1,12 @@
 import { ChannelType, CommandInteraction } from 'discord.js';
-import { GuildQueue, Track } from 'discord-player';
+import { GuildQueue, GuildQueueEvent, Track } from 'discord-player';
 
 import { MessageType } from '@/types/MessageType';
 import { createEmbedMessage } from '@/utils/funcs';
 import logger from '@/utils/logger';
 
 export default {
-  name: 'audioTracksAdd',
+  name: GuildQueueEvent.AudioTracksAdd,
   async execute(queue: GuildQueue, tracks: Track[]) {
     logger.info(`${queue.guild.id} -> audioTracksAdd event`);
     // Emitted when the player adds multiple songs to its queue

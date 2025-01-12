@@ -5,13 +5,14 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
 import { createEmbedMessage, parseError } from '@/utils/funcs';
 import logger from '@/utils/logger';
 
-export default {
-  data: new SlashCommandBuilder()
+export default class LyricsCommand implements IBaseCommand {
+  data = new SlashCommandBuilder()
     .setName('lyrics')
     .setDescription('Get song lyrics.')
     .addStringOption((option) =>
@@ -21,7 +22,8 @@ export default {
           "Song title. If empty we'll check for the current playing song.",
         )
         .setRequired(false),
-    ),
+    );
+
   async execute(interaction: ChatInputCommandInteraction) {
     const player = useMainPlayer();
     if (!player) {
@@ -92,5 +94,5 @@ export default {
         ),
       );
     }
-  },
-};
+  }
+}

@@ -1,12 +1,12 @@
 import { ChannelType, CommandInteraction } from 'discord.js';
-import { GuildQueue } from 'discord-player';
+import { GuildQueue, GuildQueueEvent } from 'discord-player';
 
 import { MessageType } from '@/types/MessageType';
 import { cleanupQueue, createEmbedMessage } from '@/utils/funcs';
 import logger from '@/utils/logger';
 
 export default {
-  name: 'emptyChannel',
+  name: GuildQueueEvent.EmptyChannel,
   async execute(queue: GuildQueue) {
     logger.info(`${queue.guild.id} -> emptyChannel event`);
     // Emitted when the voice channel has been empty for the set threshold

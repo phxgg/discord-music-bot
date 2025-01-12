@@ -4,14 +4,16 @@ import {
   PermissionFlagsBits,
   SlashCommandBuilder,
 } from 'discord.js';
+import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import logger from '@/utils/logger';
 
-export default {
-  data: new SlashCommandBuilder()
+export default class StatsCommand implements IBaseCommand {
+  data = new SlashCommandBuilder()
     .setName('stats')
     .setDescription('Application stats')
-    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
+
   async execute(interaction: ChatInputCommandInteraction) {
     await interaction.deferReply();
 
@@ -88,5 +90,5 @@ export default {
           'There was an error while fetching stats.',
         );
       });
-  },
-};
+  }
+}

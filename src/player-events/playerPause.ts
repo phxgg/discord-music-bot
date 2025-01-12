@@ -1,11 +1,11 @@
 import { CommandInteraction } from 'discord.js';
-import { GuildQueue } from 'discord-player';
+import { GuildQueue, GuildQueueEvent } from 'discord-player';
 
 import logger from '@/utils/logger';
 import TrackBox from '@/utils/trackBox';
 
 export default {
-  name: 'playerPause',
+  name: GuildQueueEvent.PlayerPause,
   async execute(queue: GuildQueue) {
     logger.info(`${queue.guild.id} -> playerPause event`);
     // Emitted when the audio player fails to load the stream for a song
