@@ -7,7 +7,7 @@ A Discord bot that plays music.
 
 ## Installation
 
-**Node.js v20.12.1** or newer is required.
+**Node.js v22.12.0** or newer is required.
 
 1. Copy `.env.example` to `.env` and configure the values. See [Environment variables](#environment-variables) for more information.
 2. Install dependencies: `npm install`
