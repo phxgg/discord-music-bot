@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
-    "@eslint/js": "^9.21.0",
+    "@eslint/js": "^9.22.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
     "@types/module-alias": "^2.0.4",
     "@types/node": "^22.13.9",
