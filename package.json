@@ -36,7 +36,7 @@
     "@discord-player/extractor": "^7.1.0",
     "bgutils-js": "^3.2.0",
     "discord-player": "^7.1.0",
-    "discord-player-youtubei": "^1.4.3",
+    "discord-player-youtubei": "^1.4.4",
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
     "mediaplex": "^1.0.0",
@@ -58,6 +58,6 @@
     "module-alias": "^2.2.3",
     "nodemon": "^3.1.9",
     "prettier": "^3.5.3",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   }
 }
