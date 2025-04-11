@@ -38,7 +38,7 @@
     "discord-player": "^7.1.0",
     "discord-player-youtubei": "^1.4.5",
     "discord.js": "^14.18.0",
-    "dotenv": "^16.4.7",
+    "dotenv": "^16.5.0",
     "mediaplex": "^1.0.0",
     "winston": "^3.17.0"
   },
@@ -52,7 +52,7 @@
     "@typescript-eslint/parser": "^8.29.1",
     "concurrently": "^9.1.2",
     "eslint": "^9",
-    "eslint-config-prettier": "^10.1.1",
+    "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
     "globals": "^16.0.0",
     "module-alias": "^2.2.3",
