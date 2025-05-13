@@ -33,7 +33,9 @@ export default {
     const player = new Player(client, playerOptions);
     try {
       await player.extractors.register(YoutubeiExtractor, {
-        authentication: process.env.YT_EXTRACTOR_AUTH || '',
+        // https://github.com/retrouser955/discord-player-youtubei?tab=readme-ov-file#signing-into-youtube
+        // authentication: process.env.YT_EXTRACTOR_AUTH || '',
+        cookie: process.env.YT_EXTRACTOR_AUTH || '',
         streamOptions: {
           useClient: 'IOS',
           highWaterMark: 2 * 1024 * 1024, // 2MB, default is 512 KB (512 * 1024)
