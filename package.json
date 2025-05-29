@@ -45,9 +45,9 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.27.0",
-    "@ianvs/prettier-plugin-sort-imports": "^4.4.1",
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.2",
     "@types/module-alias": "^2.0.4",
-    "@types/node": "^22.15.23",
+    "@types/node": "^22.15.24",
     "@typescript-eslint/eslint-plugin": "^8.33.0",
     "@typescript-eslint/parser": "^8.33.0",
     "concurrently": "^9.1.2",
