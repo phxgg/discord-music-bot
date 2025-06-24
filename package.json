@@ -48,16 +48,16 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.4.2",
     "@types/module-alias": "^2.0.4",
     "@types/node": "^22.15.30",
-    "@typescript-eslint/eslint-plugin": "^8.34.1",
-    "@typescript-eslint/parser": "^8.34.1",
-    "concurrently": "^9.1.2",
+    "@typescript-eslint/eslint-plugin": "^8.35.0",
+    "@typescript-eslint/parser": "^8.35.0",
+    "concurrently": "^9.2.0",
     "eslint": "^9",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.5.0",
     "globals": "^16.2.0",
     "module-alias": "^2.2.3",
     "nodemon": "^3.1.10",
-    "prettier": "^3.5.3",
+    "prettier": "^3.6.0",
     "typescript": "^5.8.3"
   }
 }
