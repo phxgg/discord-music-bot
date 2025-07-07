@@ -207,9 +207,9 @@ export default class TrackBox {
       .setTitle(
         `${this.queue.currentTrack?.author} - ${this.queue.currentTrack?.title}`,
       )
-      .setURL(this.queue.currentTrack?.url || '')
+      .setURL(this.queue.currentTrack?.url || null)
       .setDescription(progressBar)
-      .setThumbnail(this.queue.currentTrack?.thumbnail || '')
+      .setThumbnail(this.queue.currentTrack?.thumbnail || null)
       .addFields(
         {
           name: 'Link',
