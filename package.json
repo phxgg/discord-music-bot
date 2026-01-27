@@ -17,10 +17,10 @@
     "dev": "concurrently \"tsc -w\" \"nodemon --watch dist dist/index.js\"",
     "deploy": "node scripts/deploy.js",
     "undeploy": "node scripts/undeploy.js",
-    "deploy-global": "node scripts/deployGlobal.js",
-    "undeploy-global": "node scripts/undeployGlobal.js",
-    "ncu:check": "npx npm-check-updates",
-    "ncu:update": "npx npm-check-updates -u",
+    "deploy:global": "node scripts/deploy-global.js",
+    "undeploy:global": "node scripts/undeploy-global.js",
+    "ncu:check": "npx npm-check-updates -x @types/node",
+    "ncu:update": "npx npm-check-updates -u -x @types/node",
     "bump-deps": "npm run ncu:update && npm install && git add . && git commit -m \"chore: bump deps\""
   },
   "keywords": [
@@ -41,24 +41,24 @@
     "discord.js": "^14.25.1",
     "dotenv": "^17.2.3",
     "mediaplex": "^1.0.0",
-    "winston": "^3.18.3"
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
-    "@eslint/js": "^9.39.1",
+    "@eslint/js": "^9.39.2",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
     "@types/module-alias": "^2.0.4",
     "@types/node": "^24.10.1",
-    "@typescript-eslint/eslint-plugin": "^8.48.1",
-    "@typescript-eslint/parser": "^8.48.1",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "concurrently": "^9.2.1",
     "eslint": "^9",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-prettier": "^5.5.4",
-    "globals": "^16.5.0",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.2.0",
     "module-alias": "^2.2.3",
     "nodemon": "^3.1.11",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "typescript": "^5.9.3"
   }
 }

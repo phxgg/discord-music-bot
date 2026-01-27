@@ -5,7 +5,7 @@ import {
 } from 'discord.js';
 
 import { MessageType } from '@/types/MessageType';
-import { createEmbedMessage } from '@/utils/funcs';
+import { createEmbedMessage } from '@/lib/utils';
 
 /**
  * Middleware to check if the user is currently connected in a voice channel.

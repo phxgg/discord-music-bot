@@ -1,8 +1,8 @@
 import { CommandInteraction } from 'discord.js';
 import { GuildQueue, GuildQueueEvent } from 'discord-player';
 
-import logger from '@/utils/logger';
-import TrackBox from '@/utils/trackBox';
+import logger from '@/lib/logger';
+import TrackBox from '@/lib/trackBox';
 
 export default {
   name: GuildQueueEvent.PlayerPause,

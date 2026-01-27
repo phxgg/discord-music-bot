@@ -6,9 +6,9 @@ import {
 import { GuildQueue, GuildQueueEvent, Track } from 'discord-player';
 
 import { MessageType } from '@/types/MessageType';
-import { createEmbedMessage } from '@/utils/funcs';
-import logger from '@/utils/logger';
-import TrackBox from '@/utils/trackBox';
+import logger from '@/lib/logger';
+import TrackBox from '@/lib/trackBox';
+import { createEmbedMessage } from '@/lib/utils';
 
 export default {
   name: GuildQueueEvent.PlayerStart,

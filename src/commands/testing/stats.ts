@@ -6,7 +6,7 @@ import {
 } from 'discord.js';
 import { IBaseCommand } from '@/commands/IBaseCommand';
 
-import logger from '@/utils/logger';
+import logger from '@/lib/logger';
 
 export default class StatsCommand implements IBaseCommand {
   data = new SlashCommandBuilder()

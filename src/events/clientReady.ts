@@ -4,7 +4,7 @@ import { registerPlayerEvents } from '@/init/registerPlayerEvents';
 import { DefaultExtractors } from '@discord-player/extractor';
 import { YoutubeiExtractor } from 'discord-player-youtubei';
 
-import logger from '@/utils/logger';
+import logger from '@/lib/logger';
 
 export default {
   name: Events.ClientReady,
