@@ -32,9 +32,12 @@ A Discord bot that plays music.
 
 ## Deploy commands
 
+> [!NOTE]
+> To deploy or undeploy commands, you will have to first build the project using `npm run build`.
+
 1. For a specific guild: `npm run deploy` (must have set the `GUILD_ID` variable in `.env`)
-2. For all guilds: `npm run deploy-global` (will take a while for discord to deploy)
+2. For all guilds: `npm run deploy:global` (will take a while for discord to deploy)
 
 **Undeploy**
 1. For a specific guild: `npm run undeploy` (must have set the `GUILD_ID` variable in `.env`)
-2. For all guilds: `npm run undeploy-global`
+2. For all guilds: `npm run undeploy:global`

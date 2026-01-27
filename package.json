@@ -17,8 +17,8 @@
     "dev": "concurrently \"tsc -w\" \"nodemon --watch dist dist/index.js\"",
     "deploy": "node scripts/deploy.js",
     "undeploy": "node scripts/undeploy.js",
-    "deploy-global": "node scripts/deployGlobal.js",
-    "undeploy-global": "node scripts/undeployGlobal.js",
+    "deploy:global": "node scripts/deploy-global.js",
+    "undeploy:global": "node scripts/undeploy-global.js",
     "ncu:check": "npx npm-check-updates -x @types/node",
     "ncu:update": "npx npm-check-updates -u -x @types/node",
     "bump-deps": "npm run ncu:update && npm install && git add . && git commit -m \"chore: bump deps\""
