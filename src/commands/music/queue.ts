@@ -8,9 +8,9 @@ import { useMainPlayer, useQueue } from 'discord-player';
 import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
-import { createEmbedMessage, parseError } from '@/utils/funcs';
-import logger from '@/utils/logger';
-import Paginator from '@/utils/paginator';
+import logger from '@/lib/logger';
+import Paginator from '@/lib/paginator';
+import { createEmbedMessage, parseError } from '@/lib/utils';
 
 export default class QueueCommand implements IBaseCommand {
   data = new SlashCommandBuilder()

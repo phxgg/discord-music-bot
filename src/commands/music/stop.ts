@@ -3,8 +3,8 @@ import { useMainPlayer, useQueue } from 'discord-player';
 import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
-import { createEmbedMessage, parseError } from '@/utils/funcs';
-import logger from '@/utils/logger';
+import logger from '@/lib/logger';
+import { createEmbedMessage, parseError } from '@/lib/utils';
 import inSameVoiceChannel from '@/middleware/inSameVoiceChannel';
 
 export default class StopCommand implements IBaseCommand {

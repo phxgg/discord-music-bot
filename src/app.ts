@@ -5,7 +5,7 @@ import { Client, Collection, GatewayIntentBits } from 'discord.js';
 
 import { registerClientEvents } from './init/registerClientEvents';
 import { registerSlashCommands } from './init/registerSlashCommands';
-import logger from './utils/logger';
+import logger from './lib/logger';
 
 process
   .on('unhandledRejection', (reason, p) => {

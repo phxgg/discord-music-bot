@@ -2,8 +2,8 @@ import { ChannelType, CommandInteraction } from 'discord.js';
 import { GuildQueue, GuildQueueEvent } from 'discord-player';
 
 import { MessageType } from '@/types/MessageType';
-import { cleanupQueue, createEmbedMessage } from '@/utils/funcs';
-import logger from '@/utils/logger';
+import logger from '@/lib/logger';
+import { cleanupQueue, createEmbedMessage } from '@/lib/utils';
 
 export default {
   name: GuildQueueEvent.EmptyChannel,

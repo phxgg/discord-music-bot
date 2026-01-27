@@ -13,7 +13,7 @@ module.exports = {
     '^types$',
     '^@/types/(.*)$',
     '^@/config/(.*)$',
-    '^@/utils/(.*)$',
+    '^@/lib/(.*)$',
     '^@/middleware/(.*)$',
     '',
     '^[./]',

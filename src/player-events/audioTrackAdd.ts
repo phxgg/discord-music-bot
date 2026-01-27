@@ -1,7 +1,7 @@
 import { CommandInteraction } from 'discord.js';
 import { GuildQueue, GuildQueueEvent, Track } from 'discord-player';
 
-import logger from '@/utils/logger';
+import logger from '@/lib/logger';
 
 export default {
   name: GuildQueueEvent.AudioTrackAdd,

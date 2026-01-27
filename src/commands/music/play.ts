@@ -8,8 +8,8 @@ import { useMainPlayer } from 'discord-player';
 import { IBaseCommand } from '@/commands/IBaseCommand';
 
 import { MessageType } from '@/types/MessageType';
-import { createEmbedMessage, parseError, truncateString } from '@/utils/funcs';
-import logger from '@/utils/logger';
+import logger from '@/lib/logger';
+import { createEmbedMessage, parseError, truncateString } from '@/lib/utils';
 import inVoiceChannel from '@/middleware/inVoiceChannel';
 
 export default class PlayCommand implements IBaseCommand {
