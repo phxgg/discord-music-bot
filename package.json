@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A simple discord music bot",
   "author": "phxgg",
+  "license": "MIT",
   "engines": {
     "node": ">=24"
   },
