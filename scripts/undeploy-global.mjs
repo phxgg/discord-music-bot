@@ -1,7 +1,6 @@
-require('module-alias/register');
-require('dotenv').config();
+import 'dotenv/config';
 
-const { REST, Routes } = require('discord.js');
+import { REST, Routes } from 'discord.js';
 
 if (!process.env.APPLICATION_ID || !process.env.DISCORD_BOT_TOKEN) {
   console.error('[ERROR] Missing required environment variables.');

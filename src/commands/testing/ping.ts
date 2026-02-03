@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { IBaseCommand } from '@/commands/IBaseCommand';
+import { IBaseCommand } from '@/commands/IBaseCommand.js';
 
 export default class PingCommand implements IBaseCommand {
   data = new SlashCommandBuilder()

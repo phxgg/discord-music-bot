@@ -4,14 +4,14 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
-import { IBaseCommand } from '@/commands/IBaseCommand';
+import { IBaseCommand } from '@/commands/IBaseCommand.js';
 
-import { MessageType } from '@/types/MessageType';
-import logger from '@/lib/logger';
-import { createEmbedMessage, parseError } from '@/lib/utils';
-import inVoiceChannel from '@/middleware/inVoiceChannel';
+import { MessageType } from '@/types/MessageType.js';
+import logger from '@/lib/logger.js';
+import { createEmbedMessage, parseError } from '@/lib/utils.js';
+import inVoiceChannel from '@/middleware/inVoiceChannel.js';
 
-import PlayCommand from './play';
+import PlayCommand from './play.js';
 
 export default class PlayNowCommand implements IBaseCommand {
   data = new SlashCommandBuilder()

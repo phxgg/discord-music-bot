@@ -5,10 +5,10 @@ import {
 } from 'discord.js';
 import { GuildQueue, GuildQueueEvent, Track } from 'discord-player';
 
-import { MessageType } from '@/types/MessageType';
-import logger from '@/lib/logger';
-import TrackBox from '@/lib/trackBox';
-import { createEmbedMessage } from '@/lib/utils';
+import { MessageType } from '@/types/MessageType.js';
+import logger from '@/lib/logger.js';
+import TrackBox from '@/lib/trackBox.js';
+import { createEmbedMessage } from '@/lib/utils.js';
 
 export default {
   name: GuildQueueEvent.PlayerStart,

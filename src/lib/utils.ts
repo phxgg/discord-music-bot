@@ -1,9 +1,8 @@
 import { EmbedBuilder } from 'discord.js';
 import { GuildQueue } from 'discord-player';
 
-import { MessageType } from '@/types/MessageType';
-
-import logger from './logger';
+import { MessageType } from '@/types/MessageType.js';
+import logger from '@/lib/logger.js';
 
 /**
  * Creates an embed message with the given message type and message body.

@@ -12,12 +12,11 @@ import {
 } from 'discord.js';
 import { GuildQueue, QueueRepeatMode } from 'discord-player';
 
-import { MessageType } from '@/types/MessageType';
-import { appConfig } from '@/config/appConfig';
-import inSameVoiceChannel from '@/middleware/inSameVoiceChannel';
-
-import logger from './logger';
-import { createEmbedMessage, parseError } from './utils';
+import { MessageType } from '@/types/MessageType.js';
+import { appConfig } from '@/config/appConfig.js';
+import logger from '@/lib//logger.js';
+import { createEmbedMessage, parseError } from '@/lib/utils.js';
+import inSameVoiceChannel from '@/middleware/inSameVoiceChannel.js';
 
 const UPDATE_MESSAGE_INTERVAL = 10000; // in milliseconds
 const COLLECTOR_EXTRA_TIME = 10000;

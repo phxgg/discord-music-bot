@@ -1,11 +1,20 @@
-require('module-alias/register');
-require('dotenv').config();
+import 'dotenv/config';
 
-const { REST, Routes } = require('discord.js');
-const fs = require('node:fs');
-const path = require('node:path');
+import { REST, Routes } from 'discord.js';
+import fs from 'node:fs';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
-if (!process.env.APPLICATION_ID || !process.env.DISCORD_BOT_TOKEN) {
+const __dirname = import.meta.dirname;
+
+const guildId = process.env.GUILD_ID || process.argv[2];
+
+if (!guildId) {
+  console.error('[ERROR] Missing required guild id.');
+  process.exit(1);
+}
+
+if (!process.env.APPLICATION_ID || !process.env.DISCORD_BOT_TOKEN || !guildId) {
   console.error('[ERROR] Missing required environment variables.');
   process.exit(1);
 }
@@ -29,7 +38,8 @@ for (const folder of commandFolders) {
     const filePath = path.join(commandsPath, file);
     try {
       // Dynamically import the command module
-      const module = require(filePath);
+      const fileUrl = pathToFileURL(filePath).href;
+      const module = await import(fileUrl);
       if (module.default && typeof module.default === 'function') {
         const CommandClass = module.default;
         const command = new CommandClass();
@@ -53,15 +63,15 @@ const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
 // and deploy your commands!
 (async () => {
   try {
-    console.log(`Started refreshing ${commands.length} application (/) commands.`);
+    console.log(`Started refreshing ${commands.length} guild (/) commands.`);
 
-    // The put method is used to fully refresh all global commands with the current set
+    // The put method is used to fully refresh all commands in the guild with the current set
     const data = await rest.put(
-      Routes.applicationCommands(process.env.APPLICATION_ID),
+      Routes.applicationGuildCommands(process.env.APPLICATION_ID, guildId),
       { body: commands },
     );
 
-    console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    console.log(`Successfully reloaded ${data.length} guild (/) commands.`);
   } catch (err) {
     // And of course, make sure you catch and log any errors!
     console.error(err);
