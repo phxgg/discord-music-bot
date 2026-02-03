@@ -13,10 +13,9 @@ const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
 (async () => {
   try {
     // The put method is used to fully refresh all global commands with the current set
-    await rest.put(
-      Routes.applicationCommands(process.env.APPLICATION_ID),
-      { body: [] },
-    );
+    await rest.put(Routes.applicationCommands(process.env.APPLICATION_ID), {
+      body: [],
+    });
 
     console.log('Successfully unregistered all application (/) commands.');
   } catch (err) {
