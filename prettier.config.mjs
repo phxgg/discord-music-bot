@@ -1,5 +1,8 @@
-/** @type {import('prettier').Config} */
-module.exports = {
+/**
+ * @see https://prettier.io/docs/configuration
+ * @type {import('prettier').Config}
+ */
+export default {
   endOfLine: 'lf',
   semi: true,
   singleQuote: true,

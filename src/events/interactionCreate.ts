@@ -1,7 +1,7 @@
 import { Events, Interaction } from 'discord.js';
-import { IBaseCommand } from '@/commands/IBaseCommand';
+import { IBaseCommand } from '@/commands/IBaseCommand.js';
 
-import logger from '@/lib/logger';
+import logger from '@/lib/logger.js';
 
 export default {
   name: Events.InteractionCreate,

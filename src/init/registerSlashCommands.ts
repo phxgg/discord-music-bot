@@ -1,8 +1,11 @@
 import fs from 'fs';
 import path from 'path';
+import { pathToFileURL } from 'url';
 import { Client } from 'discord.js';
 
-import logger from '@/lib/logger';
+import logger from '@/lib/logger.js';
+
+const __dirname = import.meta.dirname;
 
 export async function registerSlashCommands(client: Client) {
   const foldersPath = path.join(__dirname, '..', 'commands');
@@ -25,7 +28,8 @@ export async function registerSlashCommands(client: Client) {
 
       try {
         // Dynamically import the command module
-        const module = await import(filePath);
+        const fileUrl = pathToFileURL(filePath).href;
+        const module = await import(fileUrl);
         if (module.default && typeof module.default === 'function') {
           const CommandClass = module.default;
           const command = new CommandClass();

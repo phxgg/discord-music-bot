@@ -1,8 +1,8 @@
 import { CommandInteraction } from 'discord.js';
 import { GuildQueue, GuildQueueEvent } from 'discord-player';
 
-import logger from '@/lib/logger';
-import TrackBox from '@/lib/trackBox';
+import logger from '@/lib/logger.js';
+import TrackBox from '@/lib/trackBox.js';
 
 export default {
   name: GuildQueueEvent.PlayerResume,

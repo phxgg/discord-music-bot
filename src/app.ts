@@ -1,11 +1,10 @@
-import 'module-alias/register';
 import 'dotenv/config';
 
 import { Client, Collection, GatewayIntentBits } from 'discord.js';
+import { registerClientEvents } from '@/init/registerClientEvents.js';
+import { registerSlashCommands } from '@/init/registerSlashCommands.js';
 
-import { registerClientEvents } from './init/registerClientEvents';
-import { registerSlashCommands } from './init/registerSlashCommands';
-import logger from './lib/logger';
+import logger from '@/lib/logger.js';
 
 process
   .on('unhandledRejection', (reason, p) => {

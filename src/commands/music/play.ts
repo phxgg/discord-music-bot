@@ -5,12 +5,12 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { useMainPlayer } from 'discord-player';
-import { IBaseCommand } from '@/commands/IBaseCommand';
+import { IBaseCommand } from '@/commands/IBaseCommand.js';
 
-import { MessageType } from '@/types/MessageType';
-import logger from '@/lib/logger';
-import { createEmbedMessage, parseError, truncateString } from '@/lib/utils';
-import inVoiceChannel from '@/middleware/inVoiceChannel';
+import { MessageType } from '@/types/MessageType.js';
+import logger from '@/lib/logger.js';
+import { createEmbedMessage, parseError, truncateString } from '@/lib/utils.js';
+import inVoiceChannel from '@/middleware/inVoiceChannel.js';
 
 export default class PlayCommand implements IBaseCommand {
   data = new SlashCommandBuilder()

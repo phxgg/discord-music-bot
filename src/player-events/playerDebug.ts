@@ -1,6 +1,6 @@
 import { GuildQueue, GuildQueueEvent } from 'discord-player';
 
-import logger from '@/lib/logger';
+import logger from '@/lib/logger.js';
 
 export default {
   name: GuildQueueEvent.Debug,

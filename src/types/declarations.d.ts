@@ -1,6 +1,6 @@
 import { Collection, CommandInteraction } from 'discord.js';
 
-import TrackBox from '@/lib/trackBox';
+import TrackBox from '@/lib/trackBox.js';
 
 declare module 'discord-player' {
   interface GuildQueue {

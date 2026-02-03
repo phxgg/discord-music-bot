@@ -3,6 +3,8 @@ import 'dotenv/config';
 import path from 'path';
 import { ShardingManager } from 'discord.js';
 
+const __dirname = import.meta.dirname;
+
 const manager = new ShardingManager(path.join(__dirname, 'app.js'), {
   token: process.env.DISCORD_BOT_TOKEN,
 });

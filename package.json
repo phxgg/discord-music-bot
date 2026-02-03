@@ -3,22 +3,25 @@
   "version": "1.0.0",
   "description": "A simple discord music bot",
   "author": "phxgg",
+  "license": "MIT",
+  "type": "module",
   "engines": {
     "node": ">=24"
   },
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc && tsc-alias",
     "start": "node .",
     "format": "prettier --write \"src/**/*.ts\"",
     "lint:check": "eslint",
     "lint:fix": "eslint --fix",
-    "preview": "tsc && node .",
-    "dev": "concurrently \"tsc -w\" \"nodemon --watch dist dist/index.js\"",
-    "deploy": "node scripts/deploy.js",
-    "undeploy": "node scripts/undeploy.js",
-    "deploy:global": "node scripts/deploy-global.js",
-    "undeploy:global": "node scripts/undeploy-global.js",
+    "preview": "npm run build && node .",
+    "dev": "concurrently \"tsc -w\" \"tsc-alias -w\" \"nodemon --watch dist dist/index.js\"",
+    "deploy": "node scripts/deploy.mjs",
+    "undeploy": "node scripts/undeploy.mjs",
+    "deploy:global": "node scripts/deploy-global.mjs",
+    "undeploy:global": "node scripts/undeploy-global.mjs",
     "ncu:check": "npx npm-check-updates -x @types/node",
     "ncu:update": "npx npm-check-updates -u -x @types/node",
     "bump-deps": "npm run ncu:update && npm install && git add . && git commit -m \"chore: bump deps\""
@@ -30,9 +33,6 @@
     "discord.js",
     "node.js"
   ],
-  "_moduleAliases": {
-    "@": "./dist"
-  },
   "dependencies": {
     "@discord-player/extractor": "^7.1.0",
     "bgutils-js": "^3.2.0",
@@ -47,7 +47,6 @@
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@ianvs/prettier-plugin-sort-imports": "^4.7.0",
-    "@types/module-alias": "^2.0.4",
     "@types/node": "^24.10.1",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
@@ -56,9 +55,10 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "globals": "^17.2.0",
-    "module-alias": "^2.2.3",
     "nodemon": "^3.1.11",
     "prettier": "^3.8.1",
+    "rimraf": "^6.1.2",
+    "tsc-alias": "^1.8.16",
     "typescript": "^5.9.3"
   }
 }

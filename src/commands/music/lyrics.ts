@@ -5,11 +5,11 @@ import {
   SlashCommandBuilder,
 } from 'discord.js';
 import { useMainPlayer, useQueue } from 'discord-player';
-import { IBaseCommand } from '@/commands/IBaseCommand';
+import { IBaseCommand } from '@/commands/IBaseCommand.js';
 
-import { MessageType } from '@/types/MessageType';
-import logger from '@/lib/logger';
-import { createEmbedMessage, parseError } from '@/lib/utils';
+import { MessageType } from '@/types/MessageType.js';
+import logger from '@/lib/logger.js';
+import { createEmbedMessage, parseError } from '@/lib/utils.js';
 
 export default class LyricsCommand implements IBaseCommand {
   data = new SlashCommandBuilder()
