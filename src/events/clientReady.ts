@@ -30,7 +30,10 @@ export default {
     // }
 
     // Initialize discord player
-    const player = new Player(client, playerOptions);
+    const player = new Player(
+      client as unknown as ConstructorParameters<typeof Player>[0],
+      playerOptions,
+    );
     try {
       await player.extractors.register(YoutubeiExtractor, {
         // https://github.com/retrouser955/discord-player-youtubei?tab=readme-ov-file#signing-into-youtube

@@ -49,7 +49,7 @@ export default class PlayCommand implements IBaseCommand {
     // let's defer the interaction as things can take time to process
     await interaction.deferReply();
     try {
-      const { track } = await player.play(channel, query, {
+      const { track } = await player.play(channel.id, query, {
         nodeOptions: {
           // nodeOptions are the options for guild node (aka your queue in simple word)
           metadata: interaction, // we can access this metadata object using queue.metadata later on
@@ -58,7 +58,9 @@ export default class PlayCommand implements IBaseCommand {
           leaveOnEnd: true,
           leaveOnEndCooldown: 60000, // leave vc after 1 minute of end of queue
         },
-        requestedBy: interaction.user, // who requested the track
+        requestedBy: interaction.user as unknown as NonNullable<
+          Parameters<typeof player.play>[2]
+        >['requestedBy'], // who requested the track
       });
 
       return interaction.followUp(
@@ -87,7 +89,9 @@ export default class PlayCommand implements IBaseCommand {
     }
     try {
       const results = await player.search(query, {
-        requestedBy: interaction.user,
+        requestedBy: interaction.user as unknown as NonNullable<
+          Parameters<typeof player.search>[1]
+        >['requestedBy'],
       });
       // Returns a list of songs with their title
       return interaction.respond(
