@@ -49,7 +49,9 @@ export default class PlayNowCommand implements IBaseCommand {
     await interaction.deferReply();
     try {
       const search = await player.search(query, {
-        requestedBy: interaction.user,
+        requestedBy: interaction.user as unknown as NonNullable<
+          Parameters<typeof player.search>[1]
+        >['requestedBy'],
       });
       if (!search || search.tracks.length === 0) {
         return interaction.editReply(
